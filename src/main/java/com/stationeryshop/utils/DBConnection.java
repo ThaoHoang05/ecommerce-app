@@ -27,8 +27,8 @@ public class DBConnection {
     public Statement connect(){
         try{
             Class.forName(className);
-            Connection conn = DriverManager.getConnection(urlDB, username, password);
-             stmt = conn.createStatement();
+            conn = DriverManager.getConnection(urlDB, username, password);
+            stmt = conn.createStatement();
             return stmt;
         }
         catch(Exception e){
