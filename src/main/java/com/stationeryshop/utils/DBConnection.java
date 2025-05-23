@@ -2,6 +2,8 @@ package com.stationeryshop.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /*
@@ -24,17 +26,16 @@ public class DBConnection {
         this.username = username;
         this.password = password;
     }
-    public Statement connect(){
+    public Connection connect(){
         try{
             Class.forName(className);
             conn = DriverManager.getConnection(urlDB, username, password);
-            stmt = conn.createStatement();
-            return stmt;
+            return conn;
         }
         catch(Exception e){
             System.out.println(e);
+            return null;
         }
-        return null;
     }
     public void closeConnect(){
         try{

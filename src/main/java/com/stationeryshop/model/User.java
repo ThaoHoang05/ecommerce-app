@@ -1,6 +1,11 @@
 package com.stationeryshop.model;
 
+import com.stationeryshop.utils.DBConnection;
+
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class User {
     private int user_id;
