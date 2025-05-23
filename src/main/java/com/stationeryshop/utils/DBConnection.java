@@ -11,7 +11,6 @@ import java.sql.Statement;
     nhân viên quản lý.
     Trong lớp này gồm:
         phương thức khởi tạo;
-        phương thức kết nối;
         phương thức đóng kết nối.
  */
 
