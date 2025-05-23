@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 /*
     Lớp DBConnection có nhiệm vụ thực hiện kết nối tới database khi có yêu cầu từ người dùng hoặc
@@ -16,7 +17,7 @@ import java.sql.Statement;
 
 public class DBConnection {
     private String className = "org.postgresql.Driver";
-    private String urlDB = "jdbc:postgresql://localhost:5432/stationeryshop";
+    private String urlDB ;
     private String username;
     private String password;
     private Connection conn;
@@ -26,6 +27,9 @@ public class DBConnection {
         this.password = password;
     }
     public Connection connect(){
+        Properties props = new Properties();
+        urlDB = props.getProperty("db.url");
+        if(urlDB == null) throw new RuntimeException("Database URL not found");else{
         try{
             Class.forName(className);
             conn = DriverManager.getConnection(urlDB, username, password);
@@ -34,6 +38,7 @@ public class DBConnection {
         catch(Exception e){
             System.out.println(e);
             return null;
+        }
         }
     }
     public void closeConnect(){
