@@ -6,13 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TestMainView extends Application {
+public class TestLogin extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-        primaryStage.setTitle("Stationery");
-        primaryStage.setScene(new Scene(root, 1315, 890));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 115, 735));
         primaryStage.show();
     }
 
@@ -20,4 +20,3 @@ public class TestMainView extends Application {
         launch(args);
     }
 }
-
