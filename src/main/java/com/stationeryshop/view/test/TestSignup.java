@@ -12,7 +12,7 @@ public class TestSignup extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Signup.fxml"));
         primaryStage.setTitle("Signup");
-        primaryStage.setScene(new Scene(root, 115, 735));
+        primaryStage.setScene(new Scene(root, 550, 800));
         primaryStage.show();
     }
 
