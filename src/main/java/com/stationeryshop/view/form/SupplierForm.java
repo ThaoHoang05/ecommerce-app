@@ -1,5 +1,4 @@
 package com.stationeryshop.view.form;
 
-public class SalesForm {
-
+public class SupplierForm {
 }
