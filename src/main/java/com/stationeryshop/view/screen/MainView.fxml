@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.view.controller.MainViewController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="white-background" stylesheets="@../css/style.css" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" prefHeight="67.0" prefWidth="233.0" text="Menu" textFill="#ff5060">
+               <font>
+                  <Font name="Edwardian Script ITC" size="36.0" />
+               </font>
+            </Label>
+            <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="36.0" prefWidth="6.0" />
+            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="41.0" prefWidth="308.0" spacing="5.0" styleClass="round-layout" stylesheets="@../css/style.css">
+               <children>
+                  <TextField prefHeight="39.0" prefWidth="283.0" promptText="Search" styleClass="transparent" stylesheets="@../css/style.css" />
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../resources/images/Search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
+            <StackPane prefHeight="60.0" prefWidth="293.0">
+               <children>
+                  <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                        <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Log In">
+                           <font>
+                              <Font name="Georgia" size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="signupBtn" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" text="Sign Up">
+                           <font>
+                              <Font name="Georgia" size="20.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="customerAva" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../resources/images/Customer.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+         </children>
+         <BorderPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+</BorderPane>
