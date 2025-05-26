@@ -1,25 +1,25 @@
 package com.stationeryshop.dao;
 
 import com.stationeryshop.model.Invoice;
-import model.InvoiceDetail;
-import model.User;
-import model.Customer;
-import model.Product;
-import util.DBConnection;
+import com.stationeryshop.model.InvoiceDetail;
+import com.stationeryshop.model.User;
+import com.stationeryshop.model.Customer;
+import com.stationeryshop.model.Product;
+import com.stationeryshop.utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceDAO {
-
+    static DBConnection db;
     public boolean saveInvoice(Invoice invoice) {
         Connection conn = null;
         PreparedStatement invoiceStmt = null;
         PreparedStatement detailStmt = null;
 
         try {
-            conn = DBConnection.getConnection();
+            conn = db.connect();
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             // 1. Insert hóa đơn
