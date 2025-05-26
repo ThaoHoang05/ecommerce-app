@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+   <children>
+      <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+   
+            <!-- Tiêu đề -->
+            <Label fx:id="loginLabel" alignment="CENTER" text="Login">
+               <font>
+                  <Font name="Arial Narrow Bold" size="60.0" />
+               </font>
+            </Label>
+   
+            <!-- GridPane chứa các trường -->
+            <GridPane alignment="CENTER" hgap="10" vgap="15">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" />
+                  <ColumnConstraints halignment="LEFT" />
+               </columnConstraints>
+   
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+               </rowConstraints>
+      <children>
+      
+                  <!-- Tên đăng nhập -->
+                  <Label fx:id="UserName" text="Tên đăng nhập :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      
+                  <!-- Mật khẩu -->
+                  <Label fx:id="Password" text="Mật khẩu :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                  <!-- Nút đăng nhập -->
+                  <Button fx:id="btnLoginPressed" alignment="CENTER_RIGHT" onAction="#btnLogin" text="Đăng nhập" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      </children>
+            </GridPane>
+            <Label fx:id="loginCheck" textFill="RED" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

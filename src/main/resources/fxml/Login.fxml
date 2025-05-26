@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="550.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.LoginController">
+   <padding>
+      <Insets left="50.0" right="50.0" />
+   </padding>
+   <children>
+      <VBox alignment="CENTER" prefHeight="280.0" prefWidth="450.0" spacing="30.0">
+         <children>
+            <ImageView fitHeight="98.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Inquiry.png" />
+               </image>
+            </ImageView>
+            <Label text="Log In Your Account" textFill="#da9422">
+               <font>
+                  <Font name="High Tower Text" size="36.0" />
+               </font>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets top="15.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="183.0" prefWidth="450.0" spacing="30.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="input1" stylesheets="@../styles/SignupStyle.css">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="150.0" stylesheets="@../styles/SignupStyle.css" text="Login Name" textFill="#fda540">
+                     <font>
+                        <Font name="Bell MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="input1" stylesheets="@../styles/SignupStyle.css">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="150.0" stylesheets="@../styles/SignupStyle.css" text="Password" textFill="#fda540">
+                     <font>
+                        <Font name="Bell MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="50.0" />
+         </padding>
+      </VBox>
+      <Pane prefHeight="75.0" prefWidth="450.0" />
+      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Log In" textFill="WHITE">
+         <font>
+            <Font name="Blackadder ITC" size="22.0" />
+         </font>
+         <styleClass>
+            <String fx:value="radius" />
+            <String fx:value="primary-color" />
+         </styleClass>
+      </Button>
+      <Pane prefHeight="192.0" prefWidth="450.0" />
+      <VBox alignment="TOP_CENTER" prefHeight="192.0" prefWidth="450.0" spacing="20.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="255.0" text="Don't have an account?" textFill="#dd8929">
+               <font>
+                  <Font name="Bell MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Sign Up" textFill="WHITE">
+               <font>
+                  <Font name="Blackadder ITC" size="22.0" />
+               </font>
+               <styleClass>
+                  <String fx:value="radius" />
+                  <String fx:value="primary-color" />
+               </styleClass>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+   <opaqueInsets>
+      <Insets top="50.0" />
+   </opaqueInsets>
+</VBox>
