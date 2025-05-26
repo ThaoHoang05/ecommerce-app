@@ -1,5 +1,8 @@
 package com.stationeryshop.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -28,6 +31,9 @@ public class DBConnection {
     }
     public Connection connect(){
         Properties props = new Properties();
+        try{
+            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
+            props.load(fis);
         urlDB = props.getProperty("db.url");
         if(urlDB == null) throw new RuntimeException("Database URL not found");else{
         try{
@@ -39,6 +45,10 @@ public class DBConnection {
             System.out.println(e);
             return null;
         }
+        }} catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     public void closeConnect(){
@@ -48,5 +58,11 @@ public class DBConnection {
         }catch(Exception e) {
             System.out.println(e);
         }
+    }
+    public static void main(String[] args) {
+        DBConnection db = new DBConnection("postgres", "HTPTmm1ty210705");
+        Connection conn = db.connect();
+        if(conn != null) System.out.println("Connect success");else System.out.println("Connect fail");
+        db.closeConnect();
     }
 }

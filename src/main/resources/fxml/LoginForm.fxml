@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="../styles/LoginFormstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
    <children>
       <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -42,9 +42,10 @@
                   <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       
                   <!-- Nút đăng nhập -->
-                  <Button fx:id="btnLoginPressed" alignment="CENTER_RIGHT" text="Đăng nhập" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button fx:id="btnLoginPressed" alignment="CENTER_RIGHT" onAction="#btnLogin" text="Đăng nhập" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       </children>
             </GridPane>
+            <Label fx:id="loginCheck" textFill="RED" />
          </children>
       </VBox>
    </children>
