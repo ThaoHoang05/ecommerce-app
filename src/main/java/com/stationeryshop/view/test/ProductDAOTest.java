@@ -1,9 +1,9 @@
-package test;
+package com.stationeryshop.view.test;
 
-import dao.CategoryDAO;
-import dao.ProductDAO;
-import model.Category;
-import model.Product;
+import com.stationeryshop.dao.CategoryDAO;
+import com.stationeryshop.dao.ProductDAO;
+import com.stationeryshop.model.Category;
+import com.stationeryshop.model.Product;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
