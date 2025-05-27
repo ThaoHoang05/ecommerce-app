@@ -24,6 +24,10 @@ public class LoginFormController {
 
     @FXML
     void handleLogin(ActionEvent event) {
+        int result = new UserController().handleLogin(usernameField.getText(), passwordField.getText());
+        if(result == 1) JOptionPane.showMessageDialog(null, "Login Successful");
+        else if(result == 0) JOptionPane.showMessageDialog(null, "Wrong Password","ERROR",JOptionPane.ERROR_MESSAGE);
+        else JOptionPane.showMessageDialog(null, "User Not Found","ERROR",JOptionPane.ERROR_MESSAGE);
     }
 
     @FXML
