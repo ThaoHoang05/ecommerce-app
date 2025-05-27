@@ -1,7 +1,7 @@
-package test;
+package com.stationeryshop.test;
 
-import dao.CategoryDAO;
-import model.Category;
+import com.stationeryshop.dao.CategoryDAO;
+import com.stationeryshop.model.Category;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

@@ -1,9 +1,9 @@
-package test;
+package com.stationeryshop.test;
 
-import dao.InventoryDAO;
-import dao.ProductDAO;
-import model.InventoryItem;
-import model.Product;
+import com.stationeryshop.dao.InventoryDAO;
+import com.stationeryshop.dao.ProductDAO;
+import com.stationeryshop.model.InventoryItem;
+import com.stationeryshop.model.Product;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
