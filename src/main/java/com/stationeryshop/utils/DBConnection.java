@@ -60,10 +60,4 @@ public class DBConnection {
             System.out.println(e);
         }
     }
-    public static void main(String[] args) {
-        DBConnection db = new DBConnection("postgres", "HTPTmm1ty210705");
-        Connection conn = db.connect();
-        if(conn != null) System.out.println("Connect success");else System.out.println("Connect fail");
-        db.closeConnect();
-    }
 }
