@@ -1,4 +1,3 @@
-
 package com.stationeryshop.dao;
 
 import com.stationeryshop.model.Invoice;
@@ -8,14 +7,11 @@ import com.stationeryshop.model.Customer;
 import com.stationeryshop.model.Product;
 import com.stationeryshop.utils.DBConnection;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceDAO {
-
-    static DBConnection db;
 
     public boolean saveInvoice(Invoice invoice) {
         Connection conn = null;
@@ -23,8 +19,7 @@ public class InvoiceDAO {
         PreparedStatement detailStmt = null;
 
         try {
-
-            conn = db.connect();
+            conn = DBConnection.getConnection();
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             // 1. Insert hóa đơn
