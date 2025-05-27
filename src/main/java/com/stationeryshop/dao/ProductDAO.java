@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-    private DBConnection
     private Connection conn;
 
     public ProductDAO(Connection conn) {
