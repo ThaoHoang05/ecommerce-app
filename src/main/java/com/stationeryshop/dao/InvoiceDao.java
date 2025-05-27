@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceDAO {
-
+    private DBConnection db;
     public boolean saveInvoice(Invoice invoice) {
         Connection conn = null;
         PreparedStatement invoiceStmt = null;
         PreparedStatement detailStmt = null;
-
+        db = new DBConnection("admin","123456");
         try {
-            conn = DBConnection.getConnection();
+            conn = db.connect();
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             // 1. Insert hóa đơn
             String invoiceSQL = "INSERT INTO invoices (user_id, customer_id, invoice_date, total_amount, discount_amount, final_amount, status) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
             invoiceStmt = conn.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);
-            invoiceStmt.setInt(1, invoice.getUser().getUserId());
-            invoiceStmt.setInt(2, invoice.getCustomer().getCustomerId());
+            invoiceStmt.setString(1, invoice.getUser().getUser_id());
+            invoiceStmt.setInt(2, invoice.getCustomer().getId());
             invoiceStmt.setDate(3, Date.valueOf(invoice.getInvoiceDate()));
             invoiceStmt.setDouble(4, invoice.getTotalAmount());
             invoiceStmt.setDouble(5, invoice.getDiscountAmount());
@@ -77,7 +77,7 @@ public class InvoiceDAO {
             return false;
 
         } finally {
-            DBConnection.close(conn, invoiceStmt, detailStmt);
+            db.closeConnect();
         }
     }
 
@@ -88,7 +88,7 @@ public class InvoiceDAO {
         ResultSet rs = null;
 
         try {
-            conn = DBConnection.getConnection();
+            conn = db.connect();
             String sql = "SELECT * FROM invoices WHERE invoice_id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, invoiceId);
@@ -103,7 +103,7 @@ public class InvoiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnection.close(conn, stmt, rs);
+            db.closeConnect();
         }
 
         return invoice;
@@ -116,7 +116,7 @@ public class InvoiceDAO {
         ResultSet rs = null;
 
         try {
-            conn = DBConnection.getConnection();
+            conn = db.connect();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM invoices");
 
@@ -128,7 +128,7 @@ public class InvoiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnection.close(conn, stmt, rs);
+            db.closeConnect();
         }
 
         return list;

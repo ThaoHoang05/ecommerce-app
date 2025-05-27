@@ -1,6 +1,6 @@
-package dao;
+package com.stationeryshop.dao;
 
-import model.Category;
+import com.stationeryshop.model.Category;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

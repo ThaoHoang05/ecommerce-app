@@ -1,7 +1,7 @@
-package dao;
+package com.stationeryshop.dao;
 
-import model.InventoryItem;
-import model.Product;
+import com.stationeryshop.model.InventoryItem;
+import com.stationeryshop.model.Product;
 
 import java.sql.*;
 import java.time.LocalDate;

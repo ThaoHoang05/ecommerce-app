@@ -1,7 +1,8 @@
-package dao;
+package com.stationeryshop.dao;
 
-import model.Category;
-import model.Product;
+import com.stationeryshop.model.Category;
+import com.stationeryshop.model.Product;
+import com.stationeryshop.utils.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-
+    private DBConnection
     private Connection conn;
 
     public ProductDAO(Connection conn) {
