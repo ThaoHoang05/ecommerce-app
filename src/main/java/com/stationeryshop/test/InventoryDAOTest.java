@@ -1,4 +1,4 @@
-package com.stationeryshop.view.test;
+package com.stationeryshop.test;
 
 import com.stationeryshop.dao.InventoryDAO;
 import com.stationeryshop.dao.ProductDAO;
