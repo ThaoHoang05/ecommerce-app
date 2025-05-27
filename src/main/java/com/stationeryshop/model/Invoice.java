@@ -1,6 +1,5 @@
 package com.stationeryshop.model;
 
-import com.stationeryshop.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
