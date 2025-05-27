@@ -6,9 +6,9 @@ SELECT
     c.customer_name,
     u.full_name AS staff_name
 FROM 
-    invoices i
+    invoice i
 LEFT JOIN 
-    customers c ON i.customer_id = c.customer_id
+    customer c ON i.customer_id = c.customer_id
 LEFT JOIN 
     users u ON i.created_by = u.user_id
 WHERE 

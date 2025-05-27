@@ -1,10 +1,10 @@
 package com.stationeryshop.dao;
 
 import com.stationeryshop.model.Category;
-import com.stationeryshop.utils.DBConnection;
 
-import javax.swing.*;
+import com.stationeryshop.utils.DBConnection;
 import java.io.FileInputStream;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,7 @@ package com.stationeryshop.dao;
 
 import com.stationeryshop.model.InventoryItem;
 import com.stationeryshop.model.Product;
+
 import com.stationeryshop.utils.DBConnection;
 
 import javax.swing.*;
