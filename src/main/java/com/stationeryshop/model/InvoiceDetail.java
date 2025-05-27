@@ -1,4 +1,4 @@
-package model;
+package com.stationeryshop.model;
 
 public class InvoiceDetail {
     private int invoiceDetailId;

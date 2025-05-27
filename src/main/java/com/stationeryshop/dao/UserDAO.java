@@ -111,6 +111,37 @@ public class UserDAO {
         }
         return false;
     }
+    public boolean updateUser(String username, String password){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "update users set pwd_hash=? where user_name=?";
+        String pwd = new PwdHash(password).getHash();
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,pwd);
+            stmt.setString(2, username);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteUser(String username){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "delete from users where user_name=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         UserDAO dao = new UserDAO();
         //admin, 123456
