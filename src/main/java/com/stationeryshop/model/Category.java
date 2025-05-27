@@ -1,4 +1,4 @@
-package model;
+package com.stationeryshop.model;
 
 public class Category {
     private int categoryId;

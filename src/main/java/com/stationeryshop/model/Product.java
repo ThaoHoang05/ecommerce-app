@@ -1,4 +1,4 @@
-package model;
+package com.stationeryshop.model;
 
 import java.time.LocalDateTime;
 
