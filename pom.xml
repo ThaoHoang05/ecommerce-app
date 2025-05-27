@@ -35,8 +35,21 @@
             <artifactId>openai-java</artifactId>
             <version>0.22.0</version> <!-- Kiểm tra phiên bản mới nhất trên Maven Central -->
         </dependency>
+        <!-- Thêm thư viện vào Maven -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
 
     </dependencies>
+
 
 
 </project>
