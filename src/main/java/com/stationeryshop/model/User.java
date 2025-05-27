@@ -4,7 +4,7 @@ package com.stationeryshop.model;
 import java.sql.Date;
 
 public class User {
-    private String user_id;
+    private String user_id; //varchar(5)
     private String username;
     private String pwd_hash;
     private String role;
