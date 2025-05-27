@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="550.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.LoginController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="550.0" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.LoginFormController">
    <padding>
       <Insets left="50.0" right="50.0" />
    </padding>
@@ -43,7 +43,7 @@
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfUsername" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="usernameField" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="input1" stylesheets="@../styles/SignupStyle.css">
@@ -53,7 +53,7 @@
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfPwd" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <PasswordField fx:id="passwordField" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
             </HBox>
          </children>
@@ -62,7 +62,7 @@
          </padding>
       </VBox>
       <Pane prefHeight="75.0" prefWidth="450.0" />
-      <Button mnemonicParsing="false" onAction="#btnLoginPressed" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Log In" textFill="WHITE">
+      <Button fx:id="LoginConfirmBtn" mnemonicParsing="false" onAction="#handleLogin" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Log In" textFill="WHITE">
          <font>
             <Font name="Blackadder ITC" size="22.0" />
          </font>
@@ -79,7 +79,7 @@
                   <Font name="Bell MT Bold" size="24.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Sign Up" textFill="WHITE">
+            <Button fx:id="signupBtn" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Sign Up" textFill="WHITE">
                <font>
                   <Font name="Blackadder ITC" size="22.0" />
                </font>
