@@ -40,7 +40,7 @@
                         <Font name="Bell MT" size="24.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="tfName" prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -56,7 +56,7 @@
                         <Font name="Bell MT" size="24.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="tfLoginName" prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -72,7 +72,7 @@
                         <Font name="Bell MT" size="24.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <PasswordField fx:id="pfPassword" prefHeight="31.0" prefWidth="226.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -88,7 +88,7 @@
                         <Font name="Bell MT" size="24.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="tfEmail" prefHeight="41.0" prefWidth="300.0" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -97,12 +97,12 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <RadioButton mnemonicParsing="false" text="I accept terms and conditions and privicy policy" textFill="WHITE">
+            <RadioButton mnemonicParsing="false" onAction="#btnAcceptCreate" text="I accept terms and conditions and privicy policy" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
             </RadioButton>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="215.0" styleClass="radius" stylesheets="@../styles/SignupStyle.css" text="Sign Up" textFill="#e17510">
+            <Button mnemonicParsing="false" onAction="#btnSignupPressed" prefHeight="40.0" prefWidth="215.0" styleClass="radius" stylesheets="@../styles/SignupStyle.css" text="Sign Up" textFill="#e17510">
                <font>
                   <Font name="Blackadder ITC" size="22.0" />
                </font>

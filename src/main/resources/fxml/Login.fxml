@@ -43,7 +43,7 @@
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="tfUsername" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="input1" stylesheets="@../styles/SignupStyle.css">
@@ -53,7 +53,7 @@
                         <Font name="Bell MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
+                  <TextField fx:id="tfPwd" styleClass="transparent" stylesheets="@../styles/SignupStyle.css" />
                </children>
             </HBox>
          </children>
@@ -62,7 +62,7 @@
          </padding>
       </VBox>
       <Pane prefHeight="75.0" prefWidth="450.0" />
-      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Log In" textFill="WHITE">
+      <Button mnemonicParsing="false" onAction="#btnLoginPressed" prefHeight="40.0" prefWidth="215.0" stylesheets="@../styles/SignupStyle.css" text="Log In" textFill="WHITE">
          <font>
             <Font name="Blackadder ITC" size="22.0" />
          </font>
