@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 
 public class ProductDAO {
-
     private static DBConnection db;
 
     public ProductDAO() {
