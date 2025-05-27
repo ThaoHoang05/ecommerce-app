@@ -1,5 +1,6 @@
 package com.stationeryshop.controller;
 
+import com.stationeryshop.dao.UserDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,4 @@ import java.net.URL;
 import java.util.Objects;
 
 public class UserController {
-    public int handleLogin(String username, String password){
-
-    }
 }

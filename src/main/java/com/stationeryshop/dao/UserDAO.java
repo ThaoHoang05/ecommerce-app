@@ -111,11 +111,4 @@ public class UserDAO {
         }
         return false;
     }
-    public static void main(String[] args) {
-        UserDAO dao = new UserDAO();
-        //admin, 123456
-        System.out.println(dao.findUserByUsername("admin"));
-        System.out.println(dao.verifyPassword("admin", "123456"));
-
-    }
 }
