@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Objects;
 
 public class UserController {
-    public void handleLogin(String username, String password){
+    public int handleLogin(String username, String password){
 
     }
 }

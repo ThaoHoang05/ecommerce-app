@@ -1,14 +1,12 @@
 package com.stationeryshop.controller;
-import com.stationeryshop.dao.UserDAO;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.FileInputStream;
-import java.util.Properties;
+import javax.swing.*;
 
 public class LoginFormController {
 
@@ -16,36 +14,40 @@ public class LoginFormController {
     private TextField usernameField;
 
     @FXML
+    private Button signupBtn;
+
+    @FXML
     private PasswordField passwordField;
 
     @FXML
-    private Label loginCheck;
+    private Button LoginConfirmBtn;
 
-    private String useradmin;
-    private String pwdadmin;
+    @FXML
+    void handleLogin(ActionEvent event) {
+        UserController currentUser = new UserController();
+        int canLogin = currentUser.handleLogin(usernameField.getText(), passwordField.getText());
+        switch(canLogin){
+            case 0:
+                System.out.println("Invalid username or password");
+                JOptionPane.showMessageDialog(null, "Invalid username or password","Login Error", JOptionPane.ERROR_MESSAGE);
+                usernameField.setText("");
+                passwordField.setText("");
+                break;
+            case 1:
+                System.out.println("Login successful");
+                //Chuyen toi mainview theo vai tro nguoi dung
+            break;
+            default:
+                JOptionPane.showMessageDialog(null, "Something went wrong","Login Error", JOptionPane.ERROR_MESSAGE);
+                // Thoat man hinh login
 
-    public LoginFormController(){
-        Properties props = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-            this.useradmin = props.getProperty("db.loginuser");
-            this.pwdadmin = props.getProperty("db.loginpwd");
-        }catch(Exception e){
-            e.printStackTrace();
+                System.out.println("Something went wrong");
         }
     }
+
     @FXML
-    void btnLogin(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        UserDAO dao = new UserDAO(useradmin, pwdadmin);
-        if(dao.verifyPassword(username, password)){
-            loginCheck.setText("Login Success");
-        }else{
-            loginCheck.setText("Login Fail");
-        }
+    void gotoSignupForm(ActionEvent event) {
+
     }
 
 }
-
