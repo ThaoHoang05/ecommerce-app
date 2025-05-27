@@ -1,11 +1,12 @@
-package controller;
 
-import dao.CategoryDAO;
-import dao.InventoryDAO;
-import dao.ProductDAO;
-import model.Category;
-import model.InventoryItem;
-import model.Product;
+package com.stationery.controller;
+
+import com.stationery.dao.CategoryDAO;
+import com.stationery.dao.InventoryDAO;
+import com.stationery.dao.ProductDAO;
+import com.stationery.model.Category;
+import com.stationery.model.InventoryItem;
+import com.stationery.model.Product;
 
 import java.sql.Connection;
 import java.sql.SQLException;
