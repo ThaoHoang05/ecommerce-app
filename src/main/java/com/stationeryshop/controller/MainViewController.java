@@ -1,4 +1,4 @@
-package com;
+package com.stationeryshop.controller;
 
 import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
@@ -38,13 +38,8 @@ public class MainViewController {
     private HBox reportTab;
 
     @FXML
-    private ImageView customerAvatar;
-
-    @FXML
     private HBox AccountHbox;
 
-    @FXML
-    private StackPane ContentArea;
 
     @FXML
     private Region spacer;
@@ -52,8 +47,6 @@ public class MainViewController {
     @FXML
 
     private HBox supplierTab;
-
-    private TextField searchitemField;
 
     @FXML
     private Button AIChatbotBtn;
@@ -64,12 +57,6 @@ public class MainViewController {
 
     @FXML
     private HBox LoginHbox;
-
-    @FXML
-    private HBox LoginHbox;
-
-    @FXML
-    private Label customerName;
   
   
     @FXML
@@ -105,9 +92,6 @@ public class MainViewController {
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
-      
-    }
-
 
     }
 
