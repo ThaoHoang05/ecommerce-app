@@ -195,11 +195,11 @@ public class InvoiceDAO {
         invoice.setInvoiceId(rs.getInt("invoice_id"));
 
         User user = new User();
-        user.setUserId(rs.getInt("user_id"));
+        user.setUser_id(rs.getString("user_id"));
         invoice.setUser(user);
 
         Customer customer = new Customer();
-        customer.setCustomerId(rs.getInt("customer_id"));
+        customer.setId(rs.getInt("customer_id"));
         invoice.setCustomer(customer);
 
         invoice.setInvoiceDate(rs.getDate("invoice_date").toLocalDate());
