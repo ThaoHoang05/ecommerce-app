@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class InventoryDAO {
 
-    private static DBConnection db;
+    private DBConnection db;
 
     public InventoryDAO() {
         Properties props = new Properties();
@@ -27,6 +27,10 @@ public class InventoryDAO {
         }
         String useradmin = props.getProperty("db.admin");
         String pwdadmin = props.getProperty("db.adminpwd");
+        if (useradmin == null || pwdadmin == null) {
+            JOptionPane.showMessageDialog(null, "Database credentials not found in properties file", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         this.db = new DBConnection(useradmin, pwdadmin);
     }
 
