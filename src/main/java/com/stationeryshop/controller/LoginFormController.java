@@ -1,7 +1,13 @@
 package com.stationeryshop.controller;
 
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import com.stationeryshop.dao.UserDAO;
 import com.stationeryshop.utils.Session;
+
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,42 +16,37 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.application.Application;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-import java.io.IOException;
 
 public class LoginFormController extends Application {
 
     @FXML
-    private TextField usernameField;
+    public TextField usernameField;
 
     @FXML
     private Button signupBtn;
 
     @FXML
-    private PasswordField passwordField;
+    public PasswordField passwordField;
 
     @FXML
     private Button LoginConfirmBtn;
 
     @FXML
-    void handleLogin(ActionEvent event) {
+    public void handleLogin(ActionEvent event) {
         int result = new UserController().handleLogin(usernameField.getText(), passwordField.getText());
         if(result == 1) {
             JOptionPane.showMessageDialog(null, "Login Successful");
             //Tao doi tuong nguoi dung, tao session roi tien hanh chuyen sang mainview
             Session.setCurrentUser(new UserDAO().getUser(usernameField.getText()));
             // Nhay sang mainview
-            launch();
         }
         else if(result == 0) JOptionPane.showMessageDialog(null, "Wrong Password","ERROR",JOptionPane.ERROR_MESSAGE);
         else JOptionPane.showMessageDialog(null, "User Not Found","ERROR",JOptionPane.ERROR_MESSAGE);
     }
 
     @FXML
-    void gotoSignupForm(ActionEvent event) {
+    public void gotoSignupForm(ActionEvent event) {
 
     }
     public void start(Stage primaryStage) throws IOException {
@@ -57,5 +58,8 @@ public class LoginFormController extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    public static void main(String[] args){
+        launch(args);
     }
 }
