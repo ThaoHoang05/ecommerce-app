@@ -35,6 +35,7 @@ public class User {
     public String getUsername() {
         return username;
     }
+    public String getPwd_hash() {return pwd_hash;}
     public void setPwd_hash(String pwd) {
         this.pwd_hash = pwd;        //Sau nay viet them class de ma hoa pwd
     }
