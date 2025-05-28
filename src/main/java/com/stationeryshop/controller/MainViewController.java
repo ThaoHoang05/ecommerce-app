@@ -14,13 +14,31 @@ import javafx.scene.layout.StackPane;
 public class MainViewController {
 
     @FXML
-    private Button signupBtn;
+    private HBox inventoryTab;
 
     @FXML
     private ImageView customerAvatar;
 
     @FXML
     private Button loginBtn;
+
+    @FXML
+    private StackPane ContentArea;
+
+    @FXML
+    private TextField searchitemField;
+
+    @FXML
+    private Label customerName;
+
+    @FXML
+    private Button signupBtn;
+
+    @FXML
+    private HBox reportTab;
+
+    @FXML
+    private ImageView customerAvatar;
 
     @FXML
     private HBox AccountHbox;
@@ -32,17 +50,48 @@ public class MainViewController {
     private Region spacer;
 
     @FXML
+
+    private HBox supplierTab;
+
     private TextField searchitemField;
 
     @FXML
     private Button AIChatbotBtn;
 
     @FXML
+
+    private HBox cartTab;
+
+    @FXML
+    private HBox LoginHbox;
+
+    @FXML
     private HBox LoginHbox;
 
     @FXML
     private Label customerName;
+  
+  
+    @FXML
+    void gotoCartForm(ActionEvent event) {
+    
+    }
 
+
+    @FXML
+    void gotoProductForm(ActionEvent event) {
+
+    }
+
+    @FXML
+    void gotoSupplierForm(ActionEvent event) {
+      
+    }
+
+    @FXML
+    void gotoReportForm(ActionEvent event) {
+
+    }
 
     @FXML
     void gotoAIChatbot(ActionEvent event) {
@@ -51,14 +100,15 @@ public class MainViewController {
 
     @FXML
     void gotoLoginForm(ActionEvent event) {
-    }
 
+    }
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
+      
     }
 
-    public MainViewController(){
 
     }
+
 }
