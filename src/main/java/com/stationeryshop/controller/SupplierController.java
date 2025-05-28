@@ -33,6 +33,4 @@ public class SupplierController {
         return supplierDAO.getSupplierById(supplierId);
     }
 
-public class SupplierController {
-
 }
