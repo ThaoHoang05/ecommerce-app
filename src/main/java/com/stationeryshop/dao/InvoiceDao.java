@@ -7,19 +7,49 @@ import com.stationeryshop.model.Customer;
 import com.stationeryshop.model.Product;
 import com.stationeryshop.utils.DBConnection;
 
+import javax.swing.*;
+import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class InvoiceDAO {
     private DBConnection db;
+    
+    // Constructor mặc định - đọc từ file properties
+    public InvoiceDAO(){
+        Properties props = new Properties();
+        try{
+            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
+            props.load(fis);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        String useradmin = props.getProperty("db.adminuser");
+        String pwdadmin = props.getProperty("db.adminpwd");
+        this.db = new DBConnection(useradmin, pwdadmin);
+    }
+    
+    // Constructor với tham số
+    public InvoiceDAO(String useradmin, String pwdadmin){
+        this.db = new DBConnection(useradmin, pwdadmin);
+    }
+    
     public boolean saveInvoice(Invoice invoice) {
         Connection conn = null;
         PreparedStatement invoiceStmt = null;
         PreparedStatement detailStmt = null;
-        db = new DBConnection("admin","123456");
+        ResultSet generatedKeys = null;
+        
         try {
             conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             // 1. Insert hóa đơn
@@ -40,7 +70,7 @@ public class InvoiceDAO {
                 return false;
             }
 
-            ResultSet generatedKeys = invoiceStmt.getGeneratedKeys();
+            generatedKeys = invoiceStmt.getGeneratedKeys();
             int invoiceId;
             if (generatedKeys.next()) {
                 invoiceId = generatedKeys.getInt(1);
@@ -65,6 +95,7 @@ public class InvoiceDAO {
 
             detailStmt.executeBatch();
             conn.commit();
+            System.out.println("Save invoice success");
             return true;
 
         } catch (SQLException e) {
@@ -77,18 +108,32 @@ public class InvoiceDAO {
             return false;
 
         } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (generatedKeys != null) generatedKeys.close();
+                if (detailStmt != null) detailStmt.close();
+                if (invoiceStmt != null) invoiceStmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             db.closeConnect();
         }
     }
 
     public Invoice getInvoiceById(int invoiceId) {
-        Invoice invoice = null;
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        Invoice invoice = null;
 
         try {
             conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+            
             String sql = "SELECT * FROM invoices WHERE invoice_id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, invoiceId);
@@ -96,13 +141,20 @@ public class InvoiceDAO {
 
             if (rs.next()) {
                 invoice = mapInvoiceFromResultSet(rs);
-
                 // Lấy chi tiết hóa đơn
                 invoice.setDetails(getInvoiceDetails(invoiceId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             db.closeConnect();
         }
 
@@ -117,6 +169,11 @@ public class InvoiceDAO {
 
         try {
             conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return list;
+            }
+            
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM invoices");
 
@@ -128,6 +185,14 @@ public class InvoiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             db.closeConnect();
         }
 
@@ -141,7 +206,12 @@ public class InvoiceDAO {
         ResultSet rs = null;
 
         try {
-            conn = DBConnection.getConnection();
+            conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return list;
+            }
+            
             String sql = "SELECT * FROM invoices WHERE invoice_date BETWEEN ? AND ?";
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, startDate);
@@ -156,37 +226,130 @@ public class InvoiceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBConnection.close(conn, stmt, rs);
+            // Đóng kết nối an toàn
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            db.closeConnect();
         }
 
         return list;
     }
 
+    public boolean updateInvoice(int invoiceId, String status) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "UPDATE invoices SET status = ? WHERE invoice_id = ?";
+        
+        try {
+            conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, status);
+            stmt.setInt(2, invoiceId);
+            int rowsAffected = stmt.executeUpdate();
+            
+            if(rowsAffected > 0) {
+                System.out.println("Update invoice success");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            db.closeConnect();
+        }
+        return false;
+    }
+
+    public boolean deleteInvoice(int invoiceId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "DELETE FROM invoices WHERE invoice_id = ?";
+        
+        try {
+            conn = db.connect();
+            if(conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, invoiceId);
+            int rowsAffected = stmt.executeUpdate();
+            
+            if(rowsAffected > 0) {
+                System.out.println("Delete invoice success");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            db.closeConnect();
+        }
+        return false;
+    }
+
     // Helper method: Lấy chi tiết hóa đơn
     private List<InvoiceDetail> getInvoiceDetails(int invoiceId) throws SQLException {
         List<InvoiceDetail> details = new ArrayList<>();
-        Connection conn = DBConnection.getConnection();
-        String sql = "SELECT * FROM invoice_details WHERE invoice_id = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, invoiceId);
-        ResultSet rs = stmt.executeQuery();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = db.connect();
+            String sql = "SELECT * FROM invoice_details WHERE invoice_id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, invoiceId);
+            rs = stmt.executeQuery();
 
-        while (rs.next()) {
-            InvoiceDetail detail = new InvoiceDetail();
-            detail.setInvoiceDetailId(rs.getInt("invoice_detail_id"));
-            detail.setQuantity(rs.getInt("quantity"));
-            detail.setUnitPrice(rs.getDouble("unit_price"));
-            detail.setSubtotal(rs.getDouble("subtotal"));
+            while (rs.next()) {
+                InvoiceDetail detail = new InvoiceDetail();
+                detail.setInvoiceDetailId(rs.getInt("invoice_detail_id"));
+                detail.setQuantity(rs.getInt("quantity"));
+                detail.setUnitPrice(rs.getDouble("unit_price"));
+                detail.setSubtotal(rs.getDouble("subtotal"));
 
-            // Gán Product tạm (nếu cần lấy chi tiết hơn thì join hoặc DAO riêng)
-            Product product = new Product();
-            product.setProductId(rs.getInt("product_id"));
-            detail.setProduct(product);
+                // Gán Product tạm (nếu cần lấy chi tiết hơn thì join hoặc DAO riêng)
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                detail.setProduct(product);
 
-            details.add(detail);
+                details.add(detail);
+            }
+        } finally {
+            // Đóng kết nối an toàn
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-        DBConnection.close(null, stmt, rs);
+        
         return details;
     }
 
@@ -197,7 +360,7 @@ public class InvoiceDAO {
         User user = new User();
         user.setUser_id(rs.getString("user_id"));
         invoice.setUser(user);
-
+        
         Customer customer = new Customer();
         customer.setId(rs.getInt("customer_id"));
         invoice.setCustomer(customer);
