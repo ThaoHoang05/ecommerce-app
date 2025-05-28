@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+
+<ScrollPane prefHeight="1191.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.ReportController">
+    <content>
+        <VBox spacing="20.0" style="-fx-background-color: #f8f9fa;">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+           <children>
+   
+               <!-- Header Section -->
+               <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                   <padding>
+                       <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                   </padding>
+      <children>
+                      <Label text="Báo Cáo Doanh Thu" textFill="#2c3e50">
+                          <font>
+                              <Font name="System Bold" size="28.0" />
+                          </font>
+                      </Label>
+                      <Region HBox.hgrow="ALWAYS" />
+      </children>
+               </HBox>
+   
+               <!-- Filter Controls Section -->
+               <HBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                   <padding>
+                       <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                   </padding>
+      <children>
+      
+                      <VBox spacing="8.0">
+         <children>
+                             <Label text="Loại Báo Cáo:" textFill="#34495e">
+                                 <font>
+                                     <Font name="System Bold" size="14.0" />
+                                 </font>
+                             </Label>
+                             <ComboBox fx:id="reportTypeComboBox" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                                 <items>
+                                     <FXCollections fx:factory="observableArrayList">
+                                         <String fx:value="Doanh thu theo ngày" />
+                                         <String fx:value="Doanh thu theo tháng" />
+                                         <String fx:value="Doanh thu theo năm" />
+                                         <String fx:value="Sản phẩm bán chạy" />
+                                         <String fx:value="Khách hàng VIP" />
+                                     </FXCollections>
+                                 </items>
+                             </ComboBox>
+         </children>
+                      </VBox>
+      
+                      <Region prefWidth="20.0" />
+      
+                      <VBox spacing="8.0">
+         <children>
+                             <Label text="Từ Ngày:" textFill="#34495e">
+                                 <font>
+                                     <Font name="System Bold" size="14.0" />
+                                 </font>
+                             </Label>
+                             <DatePicker fx:id="fromDatePicker" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-radius: 5;" />
+         </children>
+                      </VBox>
+      
+                      <VBox spacing="8.0">
+         <children>
+                             <Label text="Đến Ngày:" textFill="#34495e">
+                                 <font>
+                                     <Font name="System Bold" size="14.0" />
+                                 </font>
+                             </Label>
+                             <DatePicker fx:id="toDatePicker" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-radius: 5;" />
+         </children>
+                      </VBox>
+      
+                      <Region HBox.hgrow="ALWAYS" />
+      
+                      <VBox alignment="BOTTOM_CENTER">
+         <children>
+                             <Button fx:id="generateReportBtn" mnemonicParsing="false" onAction="#handleGenerateReport" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold; -fx-padding: 12 25;" text="Xem Báo Cáo" />
+         </children>
+                      </VBox>
+                  <VBox alignment="BOTTOM_CENTER" layoutX="824.0" layoutY="30.0">
+                     <children>
+                        <Button fx:id="exportReportBtn" mnemonicParsing="false" onAction="#handleExportReport" prefHeight="51.0" prefWidth="163.0" style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold; -fx-padding: 10 20;" text="Xuất Báo Cáo" />
+                     </children>
+                  </VBox>
+      </children>
+               </HBox>
+   
+               <!-- Charts Section -->
+               <HBox spacing="20.0">
+      <children>
+                      <!-- Revenue Chart -->
+                      <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                          <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                          </padding>
+                         <children>
+                             <Label text="Biểu Đồ Doanh Thu" textFill="#2c3e50">
+                                 <font>
+                                     <Font name="System Bold" size="18.0" />
+                                 </font>
+                             </Label>
+                             <BarChart fx:id="revenueChart" prefHeight="300.0" title="Doanh Thu Theo Thời Gian">
+                                 <xAxis>
+                                     <CategoryAxis label="Thời Gian" fx:id="xAxis" />
+                                 </xAxis>
+                                 <yAxis>
+                                     <NumberAxis fx:id="yAxis" label="Doanh Thu" />
+                                 </yAxis>
+                             </BarChart>
+                         </children>
+                      </VBox>
+      
+                      <!-- Product Distribution Chart -->
+                      <VBox prefWidth="400.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                          <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                          </padding>
+         <children>
+                             <Label text="Phân Bố Sản Phẩm" textFill="#2c3e50">
+                                 <font>
+                                     <Font name="System Bold" size="18.0" />
+                                 </font>
+                             </Label>
+                             <PieChart fx:id="productChart" prefHeight="300.0" title="Tỷ Lệ Sản Phẩm Bán Ra" />
+         </children>
+                      </VBox>
+      </children>
+               </HBox>
+   
+               <!-- Summary Cards Section -->
+               <HBox prefHeight="116.0" prefWidth="1016.0" spacing="20.0">
+      <children>
+                      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: linear-gradient(to bottom, #3498db, #2980b9); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 3);" HBox.hgrow="ALWAYS">
+                          <padding>
+                              <Insets bottom="25.0" left="20.0" right="20.0" top="25.0" />
+                          </padding>
+                         <children>
+                             <Label text="Tổng Doanh Thu" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="16.0" />
+                                 </font>
+                             </Label>
+                             <Label fx:id="totalRevenueLabel" text="0 VNĐ" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="24.0" />
+                                 </font>
+                             </Label>
+                         </children>
+                      </VBox>
+      
+                      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 3);" HBox.hgrow="ALWAYS">
+                          <padding>
+                              <Insets bottom="25.0" left="20.0" right="20.0" top="25.0" />
+                          </padding>
+         <children>
+                             <Label text="Số Đơn Hàng" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="16.0" />
+                                 </font>
+                             </Label>
+                             <Label fx:id="totalOrdersLabel" text="0" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="24.0" />
+                                 </font>
+                             </Label>
+         </children>
+                      </VBox>
+      
+                      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: linear-gradient(to bottom, #f39c12, #e67e22); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 3);" HBox.hgrow="ALWAYS">
+                          <padding>
+                              <Insets bottom="25.0" left="20.0" right="20.0" top="25.0" />
+                          </padding>
+         <children>
+                             <Label text="Khách Hàng" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="16.0" />
+                                 </font>
+                             </Label>
+                             <Label fx:id="totalCustomersLabel" text="0" textFill="white">
+                                 <font>
+                                     <Font name="System Bold" size="24.0" />
+                                 </font>
+                             </Label>
+         </children>
+                      </VBox>
+      </children>
+               </HBox>
+   
+               <!-- Customer Section -->
+               <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                   <padding>
+                       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                   </padding>
+      <children>
+      
+                      <!-- Customer Search Header -->
+                      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+                             <Label text="Danh Sách Khách Hàng" textFill="#2c3e50">
+                                 <font>
+                                     <Font name="System Bold" size="20.0" />
+                                 </font>
+                             </Label>
+                             <Region HBox.hgrow="ALWAYS" />
+                             <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                <children>
+                                    <TextField fx:id="customerSearchField" prefWidth="250.0" promptText="Tìm kiếm khách hàng..." style="-fx-background-color: #f8f9fa; -fx-border-color: #bdc3c7; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15;" />
+                                    <Button fx:id="searchCustomerBtn" mnemonicParsing="false" onAction="#handleSearchCustomer" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-padding: 8 20;" text="Tìm Kiếm" />
+                                    <Button fx:id="clearSearchBtn" mnemonicParsing="false" onAction="#handleClearSearch" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-padding: 8 20;" text="Xóa" />
+                                </children>
+                             </HBox>
+         </children>
+                      </HBox>
+      
+                      <!-- Customer Table -->
+                      <TableView fx:id="customerOrdersTable" prefHeight="229.0" prefWidth="966.0" style="-fx-background-color: transparent;">
+                          <columns>
+                              <TableColumn fx:id="customerIdColumn" prefWidth="80.0" text="ID" />
+                              <TableColumn fx:id="customerNameColumn" prefWidth="200.0" text="Tên Khách Hàng" />
+                              <TableColumn fx:id="customerEmailColumn" prefWidth="250.0" text="Email" />
+                              <TableColumn fx:id="customerPhoneColumn" prefWidth="150.0" text="Số Điện Thoại" />
+                              <TableColumn fx:id="SpentColumn" prefWidth="150.0" text="Giá Trị Đơn" />
+                              <TableColumn fx:id="orderIDColumn" prefWidth="120.0" text="ID Đơn Hàng" />
+                          </columns>
+                      </TableView>
+      </children>
+               </VBox>
+           </children>
+        </VBox>
+    </content>
+</ScrollPane>
