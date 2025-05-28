@@ -1,6 +1,7 @@
 package com.stationeryshop.controller;
 
 import com.stationeryshop.dao.UserDAO;
+import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
 
 import java.util.Properties;

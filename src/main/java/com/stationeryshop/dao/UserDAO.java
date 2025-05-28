@@ -1,5 +1,6 @@
 package com.stationeryshop.dao;
 
+import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
 import com.stationeryshop.utils.PwdHash;
 import com.stationeryshop.utils.RandomUserId;
@@ -48,6 +49,31 @@ public class UserDAO {
             e.printStackTrace();
         }
         db.closeConnect();
+    }
+
+    public User getUser(String username){
+        User user = null;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String query = "select * from users inner join roles on users.role_id = roles.role_id where user_name like ?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,username);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                String user_id = rs.getString("user_id");
+                String user_name = rs.getString("user_name");
+                String role_name = rs.getString("role_name");
+                Date created_at = rs.getDate("created_at");
+                Date updated_at = rs.getDate("updated_at");
+                user = new User(user_id,user_name,role_name,created_at,updated_at);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public void createUser(String username, String password, String fullname, String email){
