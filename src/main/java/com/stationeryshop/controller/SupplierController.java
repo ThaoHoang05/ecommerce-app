@@ -1,5 +1,6 @@
 package com.stationeryshop.controller;
 
+
 import com.stationeryshop.dao.SupplierDAO;
 import com.stationeryshop.model.Supplier;
 
@@ -31,4 +32,7 @@ public class SupplierController {
     public Supplier getSupplierById(int supplierId) {
         return supplierDAO.getSupplierById(supplierId);
     }
+
+public class SupplierController {
+
 }
