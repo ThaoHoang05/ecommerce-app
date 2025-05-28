@@ -21,7 +21,7 @@
             <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="36.0" prefWidth="6.0" />
             <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="41.0" prefWidth="308.0" spacing="5.0" styleClass="round-layout" stylesheets="@../styles/style.css">
                <children>
-                  <TextField prefHeight="39.0" prefWidth="240.0" promptText="Search" styleClass="transparent" stylesheets="@../styles/style.css" />
+                  <TextField fx:id="searchitemField" prefHeight="39.0" prefWidth="240.0" promptText="Search" styleClass="transparent" stylesheets="@../styles/style.css" />
                   <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/Search.png" />
@@ -51,12 +51,12 @@
                   </HBox>
                   <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="round-layout" stylesheets="@../styles/style.css" visible="false">
                      <children>
-                        <Label prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                        <Label fx:id="customerName" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
                            <font>
                               <Font name="Berlin Sans FB" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fx:id="customerAva" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="customerAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Customer.png" />
                            </image>
@@ -304,7 +304,7 @@
                               <Image url="@../images/WeChat.png" />
                            </image>
                         </ImageView>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="168.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
+                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="39.0" prefWidth="168.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
                            <font>
                               <Font name="Berlin Sans FB" size="20.0" />
                            </font>
@@ -322,4 +322,7 @@
          </children>
       </VBox>
    </left>
+   <center>
+      <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

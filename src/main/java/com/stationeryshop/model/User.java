@@ -4,14 +4,14 @@ package com.stationeryshop.model;
 import java.sql.Date;
 
 public class User {
-    private int user_id;
+    private String user_id; //varchar(5)
     private String username;
     private String pwd_hash;
     private String role;
     private Date created_at;
     private Date updated_at;
     public User(){}
-    public User(int user_id, String username, String pawd_hash, String role, Date created_at, Date updated_at) {
+    public User(String user_id, String username, String pawd_hash, String role, Date created_at, Date updated_at) {
         this.user_id = user_id;
         this.username = username;
         this.pwd_hash = pawd_hash;
@@ -19,7 +19,7 @@ public class User {
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
     public String getUsername() {

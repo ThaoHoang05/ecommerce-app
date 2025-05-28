@@ -27,7 +27,7 @@ public class UserDAO {
     public UserDAO(String useradmin, String pwdadmin){
         this.db = new DBConnection(useradmin, pwdadmin);
     }
-    void createUser(String username, String password, String role){
+    public void createUser(String username, String password, String role){
         //Lưu thông tin người dùng vào database
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -49,6 +49,29 @@ public class UserDAO {
         }
         db.closeConnect();
     }
+
+    public void createUser(String username, String password, String fullname, String email){
+        //Lưu thông tin người dùng vào database
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,email) values(?,?,?,?,?,?)";
+        String pwd = new PwdHash(password).getHash();
+        String user_id = new RandomUserId().getRandomUserId();
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,user_id);
+            stmt.setString(2,username);
+            stmt.setString(3,pwd);
+            stmt.setInt(4,3);
+            stmt.setString(5,fullname);
+            stmt.setString(6,email);
+            stmt.executeUpdate();
+            System.out.println("Create user success");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     public boolean findUserByUsername(String username) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -64,9 +87,8 @@ public class UserDAO {
 
             while (result.next()) {
                 System.out.println(result.getString("user_name"));
+                return true;
             }
-
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -108,6 +130,36 @@ public class UserDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+        return false;
+    }
+    public boolean updateUser(String username, String password){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "update users set pwd_hash=? where user_name=?";
+        String pwd = new PwdHash(password).getHash();
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,pwd);
+            stmt.setString(2, username);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteUser(String username){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String query = "delete from users where user_name=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
         }
         return false;
     }
