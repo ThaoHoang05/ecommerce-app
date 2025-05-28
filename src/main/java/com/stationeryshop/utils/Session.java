@@ -4,9 +4,6 @@ import com.stationeryshop.model.User;
 
 public class Session {
     public static User currentUser = new User();
-    public Session(){
-
-    }
     public static void setCurrentUser(User user) {
          currentUser = user;
     }
