@@ -6,6 +6,6 @@ CREATE TABLE customer (
                           address TEXT,
                           user_id VARCHAR(5) NOT NULL UNIQUE,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
