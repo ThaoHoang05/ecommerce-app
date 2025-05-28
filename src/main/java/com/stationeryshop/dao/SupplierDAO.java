@@ -1,7 +1,9 @@
 package com.stationeryshop.dao;
 
 import com.stationeryshop.model.Supplier;
+import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
+import com.stationeryshop.utils.Session;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,8 +16,13 @@ public class SupplierDAO {
     private DBConnection dbConnection;
 
     // Khởi tạo với username và password cho DBConnection
-    public SupplierDAO(String username, String password) {
-        this.dbConnection = new DBConnection(username, password);
+    public SupplierDAO() {
+        String role = Session.getCurrentRole();
+        if(role.equals("admin")) {
+            User user = Session.getCurrentUser();
+            String username = user.getUsername();
+            String password = user.getPwd_hash();
+        this.dbConnection = new DBConnection(username, password);}
     }
 
     // Thêm nhà cung cấp

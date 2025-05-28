@@ -1,5 +1,6 @@
-package com.stationeryshop.controller;
+package com;
 
+import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +15,9 @@ public class MainViewController {
 
     @FXML
     private HBox inventoryTab;
+
+    @FXML
+    private ImageView customerAvatar;
 
     @FXML
     private Button loginBtn;
@@ -40,24 +44,39 @@ public class MainViewController {
     private HBox AccountHbox;
 
     @FXML
+    private StackPane ContentArea;
+
+    @FXML
     private Region spacer;
 
     @FXML
+
     private HBox supplierTab;
+
+    private TextField searchitemField;
 
     @FXML
     private Button AIChatbotBtn;
 
     @FXML
+
     private HBox cartTab;
 
     @FXML
     private HBox LoginHbox;
 
     @FXML
-    void gotoCartForm(ActionEvent event) {
+    private HBox LoginHbox;
 
+    @FXML
+    private Label customerName;
+  
+  
+    @FXML
+    void gotoCartForm(ActionEvent event) {
+    
     }
+
 
     @FXML
     void gotoProductForm(ActionEvent event) {
@@ -66,7 +85,7 @@ public class MainViewController {
 
     @FXML
     void gotoSupplierForm(ActionEvent event) {
-
+      
     }
 
     @FXML
@@ -86,6 +105,9 @@ public class MainViewController {
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
+      
+    }
+
 
     }
 
