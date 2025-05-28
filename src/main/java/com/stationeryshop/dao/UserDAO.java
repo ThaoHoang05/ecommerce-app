@@ -76,13 +76,14 @@ public class UserDAO {
         return user;
     }
 
-    public void createUser(String username, String password, String fullname, String email){
+    public User createUser(String username, String password, String fullname, String email){
         //Lưu thông tin người dùng vào database
         Connection conn = null;
         PreparedStatement stmt = null;
         String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,email) values(?,?,?,?,?,?)";
         String pwd = new PwdHash(password).getHash();
         String user_id = new RandomUserId().getRandomUserId();
+        User user = null;
         try{
             conn = db.connect();
             stmt = conn.prepareStatement(query);
@@ -93,10 +94,18 @@ public class UserDAO {
             stmt.setString(5,fullname);
             stmt.setString(6,email);
             stmt.executeUpdate();
+            user = new User(user_id, username, "customer");
             System.out.println("Create user success");
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return user;
     }
     public boolean findUserByUsername(String username) {
         Connection conn = null;
@@ -126,6 +135,7 @@ public class UserDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         }
 
         return false;
@@ -172,6 +182,8 @@ public class UserDAO {
             return true;
         }catch(SQLException e){
             e.printStackTrace();
+        }finally{
+            db.closeConnect();
         }
         return false;
     }
@@ -186,6 +198,9 @@ public class UserDAO {
             return true;
         }catch(SQLException e){
             e.printStackTrace();
+        }
+        finally {
+            db.closeConnect();
         }
         return false;
     }

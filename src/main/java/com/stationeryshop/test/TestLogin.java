@@ -13,8 +13,6 @@ public class TestLogin extends Application {
     public void start(Stage primaryStage) throws Exception {
         final String LOGIN_FXML_PATH = "/fxml/Login.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML_PATH));
-        LoginFormController loginController = new LoginFormController();
-        loader.setController(loginController);
         Parent root = loader.load();
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, 550, 800));
