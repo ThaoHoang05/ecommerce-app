@@ -1,5 +1,6 @@
 
-package com.stationery.controller;
+package com.stationeryshop.controller;
+import javafx.event.ActionEvent;
 
 import com.stationery.dao.CategoryDAO;
 import com.stationery.dao.InventoryDAO;
@@ -8,11 +9,3 @@ import com.stationery.model.Category;
 import com.stationery.model.InventoryItem;
 import com.stationery.model.Product;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-
-public class ProductController {
-
-   
-}

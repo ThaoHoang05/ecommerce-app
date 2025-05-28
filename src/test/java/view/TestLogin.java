@@ -18,7 +18,7 @@ import javax.swing.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class LoginFormControllerTest {
+class LoginFormControllerTestRenamed {
     private LoginFormController controller;
     private UserController mockUserController;
     private UserDAO mockUserDAO;
