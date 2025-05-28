@@ -18,7 +18,7 @@ import java.util.Properties;
  * Provides methods to retrieve data for different report types.
  */
 public class ReportDAO {
-    private static DBConnection db;
+    private DBConnection db;
     
     /**
      * Constructs a new ReportDAO instance and initializes the database connection.
