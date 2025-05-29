@@ -160,8 +160,6 @@
                      </padding>
                   </Label>
 
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                   <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -337,7 +335,7 @@
                </children>
             </VBox>
          </children>
-      </VBox>
+      </BorderPane>
    </left>
    <center>
       <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
