@@ -108,7 +108,6 @@ public class MainViewController {
             e.printStackTrace();
         }
     }
-}
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
@@ -127,7 +126,6 @@ public class MainViewController {
     }
 
     public MainViewController(){
-
 
     }
 
