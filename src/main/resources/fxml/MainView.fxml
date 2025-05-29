@@ -9,7 +9,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.MainViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.MainViewController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER_LEFT">
          <children>
@@ -88,7 +88,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Thumbs%20Up.png" />
+                              <Image url="@../images/ThumbsUp.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers">
@@ -108,7 +108,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Land%20Sales.png" />
+                              <Image url="@../images/LandSales.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Sales">
@@ -166,7 +166,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Add%20Shopping%20Cart.png" />
+                              <Image url="@../images/AddShoppingCart.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart">
@@ -206,7 +206,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Rating%20Circled.png" />
+                              <Image url="@../images/RatingCircled.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Loyalty Points">
@@ -291,7 +291,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Health%20Graph.png" />
+                              <Image url="@../images/HealthGraph.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report">
@@ -340,6 +340,6 @@
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="ContentArea" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

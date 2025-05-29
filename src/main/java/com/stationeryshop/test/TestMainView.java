@@ -13,12 +13,14 @@ public class TestMainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+      
         try{
         final String MAINVIEW_PATH = "/fxml/MainView.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
         Parent root = loader.load();
         primaryStage.setTitle("Stationery Shop");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 1315, 800));
+
         primaryStage.show();
         }
         catch(Exception e){

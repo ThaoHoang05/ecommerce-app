@@ -1,4 +1,4 @@
 package com.stationeryshop.controller;
 
-public class CartFormController {
+public class CartController {
 }
