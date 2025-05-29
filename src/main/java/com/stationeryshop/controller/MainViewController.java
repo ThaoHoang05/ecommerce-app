@@ -64,11 +64,11 @@ public class MainViewController {
 
     @FXML
     private HBox LoginHbox;
-  
-  
+
+
     @FXML
     void gotoCartForm(ActionEvent event) {
-    
+
     }
 
 
@@ -79,7 +79,7 @@ public class MainViewController {
 
     @FXML
     void gotoSupplierForm(ActionEvent event) {
-      
+
     }
 
     @FXML
@@ -95,40 +95,34 @@ public class MainViewController {
     @FXML
     void gotoLoginForm(ActionEvent event) {
 
-        try{
-            final String    LOGIN_PATH = "/fxml/Login.fxml";
+        try {
+            final String LOGIN_PATH = "/fxml/Login.fxml";
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(LOGIN_PATH));
             Parent root = fxmlloader.load();
-            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
             stage.show();
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-}
+
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
-        try{
+        try {
             final String SIGNUP_PATH = "/fxml/Signup.fxml";
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(SIGNUP_PATH));
             Parent root = fxmlloader.load();
-            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Signup");
             stage.show();
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public MainViewController(){
-
-
-    }
-
 }
