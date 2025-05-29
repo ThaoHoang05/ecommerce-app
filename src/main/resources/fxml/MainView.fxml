@@ -88,7 +88,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Thumbs Up.png" />
+                              <Image url="@../images/ThumbsUp.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers">
@@ -108,7 +108,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Land Sales.png" />
+                              <Image url="@../images/LandSales.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Sales">
@@ -161,7 +161,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Add Shopping Cart.png" />
+                              <Image url="@../images/AddShoppingCart.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart">
@@ -201,7 +201,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Rating Circled.png" />
+                              <Image url="@../images/RatingCircled.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Loyalty Points">
@@ -274,7 +274,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Health Graph.png" />
+                              <Image url="@../images/HealthGraph.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report">

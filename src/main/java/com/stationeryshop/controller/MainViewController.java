@@ -21,7 +21,7 @@ import java.io.IOException;
 public class MainViewController {
 
     @FXML
-    private Button signupBtn;
+    private HBox inventoryTab;
 
     @FXML
     private ImageView customerAvatar;
@@ -30,26 +30,62 @@ public class MainViewController {
     private Button loginBtn;
 
     @FXML
-    private HBox AccountHbox;
-
-    @FXML
     private StackPane ContentArea;
-
-    @FXML
-    private Region spacer;
 
     @FXML
     private TextField searchitemField;
 
     @FXML
+    private Label customerName;
+
+    @FXML
+    private Button signupBtn;
+
+    @FXML
+    private HBox reportTab;
+
+    @FXML
+    private HBox AccountHbox;
+
+
+    @FXML
+    private Region spacer;
+
+    @FXML
+
+    private HBox supplierTab;
+
+    @FXML
     private Button AIChatbotBtn;
 
     @FXML
-    private HBox LoginHbox;
+
+    private HBox cartTab;
 
     @FXML
-    private Label customerName;
+    private HBox LoginHbox;
+  
+  
+    @FXML
+    void gotoCartForm(ActionEvent event) {
+    
+    }
 
+
+    @FXML
+    void gotoProductForm(ActionEvent event) {
+
+    }
+
+    @FXML
+    void gotoSupplierForm(ActionEvent event) {
+      
+    }
+
+    @FXML
+    void gotoReportForm(ActionEvent event) {
+
+    }
 
     @FXML
     void gotoAIChatbot(ActionEvent event) {
@@ -58,6 +94,7 @@ public class MainViewController {
 
     @FXML
     void gotoLoginForm(ActionEvent event) {
+
         try{
             final String    LOGIN_PATH = "/fxml/Login.fxml";
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(LOGIN_PATH));
@@ -71,7 +108,6 @@ public class MainViewController {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
@@ -92,4 +128,5 @@ public class MainViewController {
     public MainViewController(){
 
     }
+
 }
