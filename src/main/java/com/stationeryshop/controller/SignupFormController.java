@@ -48,13 +48,15 @@ public class SignupFormController {
             //Thoat ra tro ve mainview voi session phu hop voi role nguoi dung
                 Session.setCurrentUser( new UserDAO().createUser(usernameField.getText(), passwordField.getText(),nameField.getText(),emailField.getText()));
                 //Chuyen den mainview
+                this.returnMainView(event);
                 break;
             case 0: JOptionPane.showMessageDialog(null, "User name exists!","ERROR",JOptionPane.ERROR_MESSAGE);
-                usernameField.setText("");
+                usernameField.clear();
             break;
             case -1:
                 JOptionPane.showMessageDialog(null, "Something went wrong", "ERROR", JOptionPane.ERROR_MESSAGE);
                 // Thoat ra tro ve mainview
+                this.returnMainView(event);
                 break;
         }
     }
@@ -68,6 +70,20 @@ public class SignupFormController {
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
+            stage.show();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    void returnMainView(ActionEvent event) {
+        try{
+            final String MAINVIEW_PATH = "/fxml/MainView.fxml";
+            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
+            Parent root = fxmlloader.load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Stationery Shop");
             stage.show();
 
         }catch(IOException e){
