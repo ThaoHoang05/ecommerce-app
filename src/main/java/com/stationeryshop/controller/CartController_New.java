@@ -1,6 +1,6 @@
 package com.stationeryshop.controller;
 
-import com.stationeryshop.Cart_ItemController;
+import com.stationeryshop.controller.Cart_ItemController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class CartControllerSkeletonNew {
+public class CartController_New {
 
     @FXML
     private Label totalLabel;

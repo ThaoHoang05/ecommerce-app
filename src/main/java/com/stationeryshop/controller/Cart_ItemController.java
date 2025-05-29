@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 
 import java.awt.event.ActionEvent;
 
-public class CartItemController {
+public class Cart_ItemController {
 
     @FXML
     private Label productSupplier;
