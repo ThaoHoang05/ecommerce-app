@@ -88,7 +88,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Thumbs%20Up.png" />
+                              <Image url="@../images/Thumbs Up.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers">
@@ -108,7 +108,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Land%20Sales.png" />
+                              <Image url="@../images/Land Sales.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Sales">
@@ -149,9 +149,7 @@
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
                <children>
-
                   <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#a14b23">
-
                      <font>
                         <Font name="Georgia Bold Italic" size="24.0" />
                      </font>
@@ -159,14 +157,11 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                   <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Add%20Shopping%20Cart.png" />
+                              <Image url="@../images/Add Shopping Cart.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart">
@@ -206,7 +201,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Rating%20Circled.png" />
+                              <Image url="@../images/Rating Circled.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Loyalty Points">
@@ -235,11 +230,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                   <HBox fx:id="inventoryTab" alignment="CENTER" onMouseClicked="#gotoProductForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -259,11 +250,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                   <HBox fx:id="supplierTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoSupplierForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -283,15 +270,11 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                   <HBox fx:id="reportTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoReportForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/Health%20Graph.png" />
+                              <Image url="@../images/Health Graph.png" />
                            </image>
                         </ImageView>
                         <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report">
