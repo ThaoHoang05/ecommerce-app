@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.MainViewController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER_LEFT">
+            <children>
+                <Label alignment="CENTER" prefHeight="67.0" prefWidth="250.0" text="Stationery" textFill="#ff5060">
+                    <font>
+                        <Font name="Edwardian Script ITC" size="48.0" />
+                    </font>
+                </Label>
+                <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="36.0" prefWidth="6.0" />
+                <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="41.0" prefWidth="308.0" spacing="5.0" styleClass="round-layout" stylesheets="@../styles/style.css">
+                    <children>
+                        <TextField fx:id="searchitemField" prefHeight="39.0" prefWidth="240.0" promptText="Search" styleClass="transparent" stylesheets="@../styles/style.css" />
+                        <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/Search.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
+                <StackPane prefHeight="60.0" prefWidth="293.0">
+                    <children>
+                        <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <children>
+                                <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Log In" textFill="#f2f0f0">
+                                    <font>
+                                        <Font name="Georgia" size="20.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="signupBtn" layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Sign Up" textFill="#f2f0f0">
+                                    <font>
+                                        <Font name="Georgia" size="20.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="round-layout" stylesheets="@../styles/style.css" visible="false">
+                            <children>
+                                <Label fx:id="customerName" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                                <ImageView fx:id="customerAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Customer.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefHeight="200.0" prefWidth="250.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+                    <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Explore" textFill="#a14b23">
+                            <font>
+                                <Font name="Georgia Bold Italic" size="24.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@../styles/style.css">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Thumbs%20Up.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Land%20Sales.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Sales">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Sorting.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Categories">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                    </children>
+                </VBox>
+                <VBox layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+                    <children>
+
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#a14b23">
+
+                            <font>
+                                <Font name="Georgia Bold Italic" size="24.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Label>
+
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                        <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Add%20Shopping%20Cart.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Clock.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="History">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Rating%20Circled.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Loyalty Points">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                    </children>
+                </VBox>
+                <VBox layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+                    <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#a14b23">
+                            <font>
+                                <Font name="Georgia Bold Italic" size="24.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Label>
+
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                        <HBox fx:id="inventoryTab" alignment="CENTER" onMouseClicked="#gotoProductForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Product.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Inventory">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                        <HBox fx:id="supplierTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoSupplierForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Supplier.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Suppliers">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                        <HBox fx:id="reportTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoReportForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Health%20Graph.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                    </children>
+                </VBox>
+                <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="438.0" prefHeight="110.0" prefWidth="250.0" spacing="5.0">
+                    <children>
+                        <Separator prefWidth="200.0" />
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
+                            <children>
+                                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/WeChat.png" />
+                                    </image>
+                                </ImageView>
+                                <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="39.0" prefWidth="168.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="20.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>
