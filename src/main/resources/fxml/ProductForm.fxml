@@ -205,7 +205,7 @@
                                <TableColumn fx:id="invIdColumn" prefWidth="60.0" text="ID" />
                                <TableColumn fx:id="invProductColumn" prefWidth="200.0" text="Sản phẩm" />
                                <TableColumn fx:id="invQuantityColumn" prefWidth="100.0" text="Tồn kho" />
-                               <TableColumn fx:id="invLastStockedColumn" prefWidth="150.0" text="Ngày nhập" />
+                               <TableColumn fx:id="invLastStockedColumn" prefWidth="145.0" text="Ngày nhập" />
                            </columns>
                        </TableView>
                    </children>
