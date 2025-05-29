@@ -21,8 +21,8 @@ public class UserDAO {
         catch(Exception e){
             e.printStackTrace();
         }
-        String useradmin = props.getProperty("db.loginuser");
-        String pwdadmin = props.getProperty("db.loginpwd");
+        String useradmin = props.getProperty("db.admin");
+        String pwdadmin = props.getProperty("db.adminpwd");
         this.db = new DBConnection(useradmin, pwdadmin);
     }
     public UserDAO(String useradmin, String pwdadmin){
@@ -66,9 +66,7 @@ public class UserDAO {
                 String user_id = rs.getString("user_id");
                 String user_name = rs.getString("user_name");
                 String role_name = rs.getString("role_name");
-                Date created_at = rs.getDate("created_at");
-                Date updated_at = rs.getDate("updated_at");
-                user = new User(user_id,user_name,role_name,created_at,updated_at);
+                user = new User(user_id,user_name,role_name);
             }
         }catch(Exception e){
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class TestMainView extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
         Parent root = loader.load();
         primaryStage.setTitle("Stationery Shop");
-        primaryStage.setScene(new Scene(root, 1315, 800));
+        primaryStage.setScene(new Scene(root));
 
         primaryStage.show();
         }
