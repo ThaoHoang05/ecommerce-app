@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="815.0" prefWidth="1203.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CartControllerSkeletonNew">
+    <padding>
+        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+    </padding>
+   <children>
+   
+       <!-- Header Section -->
+       <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="cart-header">
+           <VBox.margin>
+               <Insets bottom="25.0" />
+           </VBox.margin>
+      <children>
+      
+              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../images/AddShoppingCart.png" />
+                  </image>
+              </ImageView>
+      
+              <VBox>
+         <children>
+                     <Label styleClass="cart-title" text="SHOPPING CART" />
+                     <Label fx:id="itemCountLabel" styleClass="cart-subtitle" text="Check out!!" />
+         </children>
+              </VBox>
+      </children>
+       </HBox>
+   
+       <!-- Cart Items Container -->
+       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="cart-scroll-pane" VBox.vgrow="ALWAYS">
+      <content>
+              <VBox fx:id="cartItemsContainer" spacing="15.0" styleClass="cart-items-container">
+                 <children>
+         
+                     <!-- Sample Cart Item 1 -->
+                     <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="cart-item">
+                         <padding>
+                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                         </padding>
+            <children>
+            
+                            <!-- Product Image -->
+                            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="product-image">
+                                <image>
+                                    <Image url="@../images/notebook.png" />
+                                </image>
+                            </ImageView>
+            
+                            <!-- Product Info -->
+                            <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+               <children>
+                                   <Label styleClass="product-name" text="Premium Notebook A5" />
+                                   <Label styleClass="product-description" text="High-quality paper with ruled lines, perfect for notes and journaling" />
+                                   <HBox spacing="15.0">
+                                      <children>
+                                          <Label styleClass="product-category" text="Category: Notebooks" />
+                                          <Label styleClass="product-supplier" text="Supplier: Office Plus Co." />
+                                      </children>
+                                   </HBox>
+               </children>
+                            </VBox>
+            
+                            <!-- Price -->
+                            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                                   <Label styleClass="product-price" />
+                                   <Label styleClass="price-label" text="each" />
+               </children>
+                            </VBox>
+            
+                            <!-- Quantity Controls -->
+                            <VBox alignment="CENTER" spacing="8.0">
+               <children>
+                                   <Label styleClass="quantity-label" text="Quantity" />
+                                   <HBox alignment="CENTER" spacing="5.0" styleClass="quantity-container">
+                                      <children>
+                                          <Button fx:id="decreaseBtn1" onAction="#decreaseQuantity" styleClass="quantity-btn" text="-" />
+                                          <TextField fx:id="quantityField1" alignment="CENTER" prefWidth="50.0" styleClass="quantity-field" text="2" />
+                                          <Button fx:id="increaseBtn1" onAction="#increaseQuantity" styleClass="quantity-btn" text="+" />
+                                      </children>
+                                   </HBox>
+               </children>
+                            </VBox>
+            
+                            <!-- Subtotal and Remove -->
+                            <VBox alignment="CENTER" spacing="10.0">
+               <children>
+                                   <Label styleClass="subtotal-price" />
+                                   <Button fx:id="removeBtn1" alignment="BOTTOM_LEFT" onAction="#removeItem" styleClass="remove-btn" text="×" />
+               </children>
+                            </VBox>
+            </children>
+                     </HBox>
+         
+                     <!-- Sample Cart Item 2 -->
+                     <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="cart-item">
+                         <padding>
+                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                         </padding>
+            <children>
+            
+                            <!-- Product Image -->
+                            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="product-image">
+                                <image>
+                                    <Image url="@../images/pen-set.png" />
+                                </image>
+                            </ImageView>
+            
+                            <!-- Product Info -->
+                            <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+               <children>
+                                   <Label styleClass="product-name" text="Professional Pen Set" />
+                                   <Label styleClass="product-description" text="Set of 3 high-quality ballpoint pens with smooth ink flow" />
+                                   <HBox spacing="15.0">
+                                      <children>
+                                          <Label styleClass="product-category" text="Category: Writing Tools" />
+                                          <Label styleClass="product-supplier" text="Supplier: Pen Masters Ltd." />
+                                      </children>
+                                   </HBox>
+               </children>
+                            </VBox>
+            
+                            <!-- Price -->
+                            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                                   <Label styleClass="product-price" />
+                                   <Label styleClass="price-label" text="each" />
+               </children>
+                            </VBox>
+            
+                            <!-- Quantity Controls -->
+                            <VBox alignment="CENTER" spacing="8.0">
+               <children>
+                                   <Label styleClass="quantity-label" text="Quantity" />
+                                   <HBox alignment="CENTER" spacing="5.0" styleClass="quantity-container">
+                                      <children>
+                                          <Button fx:id="decreaseBtn2" onAction="#decreaseQuantity" styleClass="quantity-btn" text="-" />
+                                          <TextField fx:id="quantityField2" alignment="CENTER" prefWidth="50.0" styleClass="quantity-field" text="1" />
+                                          <Button fx:id="increaseBtn2" onAction="#increaseQuantity" styleClass="quantity-btn" text="+" />
+                                      </children>
+                                   </HBox>
+               </children>
+                            </VBox>
+            
+                            <!-- Subtotal and Remove -->
+                            <VBox alignment="CENTER" spacing="10.0">
+               <children>
+                                   <Label styleClass="subtotal-price" />
+                                   <Button fx:id="removeBtn2" onAction="#removeItem" styleClass="remove-btn" text="×" />
+               </children>
+                            </VBox>
+            </children>
+                     </HBox>
+                 </children>
+      
+              </VBox>
+      </content>
+       </ScrollPane>
+   
+       <!-- Cart Summary Section -->
+       <VBox spacing="15.0" styleClass="cart-summary">
+           <VBox.margin>
+               <Insets top="25.0" />
+           </VBox.margin>
+      <children>
+      
+              <Separator />
+      
+              <HBox alignment="CENTER_RIGHT" spacing="20.0">
+         <children>
+                     <VBox alignment="CENTER_RIGHT" spacing="8.0">
+                        <children>
+                            <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                               <children>
+                                   <Label styleClass="total-label" text="Total:" />
+                                   <Label fx:id="totalLabel" styleClass="total-value" />
+                               </children>
+                            </HBox>
+                        </children>
+                     </VBox>
+         </children>
+              </HBox>
+      
+              <!-- Action Buttons -->
+              <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                  <VBox.margin>
+                      <Insets top="15.0" />
+                  </VBox.margin>
+         <children>
+         
+                     <Button onAction="#continueShopping" styleClass="continue-btn" text="Continue Shopping" />
+                     <Button fx:id="checkoutBtn" onAction="#proceedToCheckout" styleClass="checkout-btn" text="Proceed to Checkout" />
+         </children>
+              </HBox>
+      </children>
+       </VBox>
+   </children>
+
+    <stylesheets>
+        <URL value="@../styles/CartStyle.css" />
+    </stylesheets>
+</VBox>
