@@ -19,7 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;

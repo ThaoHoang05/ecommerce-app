@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="cart-item" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CartItemController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+
+        <!-- Product Image -->
+        <ImageView fx:id="productImage" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="product-image" />
+
+        <!-- Product Info -->
+        <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label fx:id="productName" styleClass="product-name" />
+                <Label fx:id="productDescription" styleClass="product-description" />
+                <HBox spacing="15.0">
+                    <children>
+                        <Label fx:id="productCategory" styleClass="product-category" />
+                        <Label fx:id="productSupplier" styleClass="product-supplier" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Price -->
+        <VBox alignment="CENTER" spacing="5.0">
+            <children>
+                <Label fx:id="productPrice" styleClass="product-price" />
+                <Label styleClass="price-label" text="each" />
+            </children>
+        </VBox>
+
+        <!-- Quantity Controls -->
+        <VBox alignment="CENTER" spacing="8.0">
+            <children>
+                <Label styleClass="quantity-label" text="Quantity" />
+                <HBox alignment="CENTER" spacing="5.0" styleClass="quantity-container">
+                    <children>
+                        <Button fx:id="decreaseBtn" onAction="#decreaseQuantity" styleClass="quantity-btn" text="-" />
+                        <TextField fx:id="quantityField" alignment="CENTER" prefWidth="50.0" styleClass="quantity-field" />
+                        <Button fx:id="increaseBtn" onAction="#increaseQuantity" styleClass="quantity-btn" text="+" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Subtotal and Remove -->
+        <VBox alignment="CENTER" spacing="10.0">
+            <children>
+                <Label fx:id="subtotalLabel" styleClass="subtotal-price" />
+                <Button fx:id="removeBtn" onAction="#removeItem" styleClass="remove-btn" text="×" />
+            </children>
+        </VBox>
+
+    </children>
+
+    <stylesheets>
+        <URL value="@../styles/CartStyle.css" />
+    </stylesheets>
+
+</HBox>
