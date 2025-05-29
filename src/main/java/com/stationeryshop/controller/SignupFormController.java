@@ -4,12 +4,18 @@ import com.stationeryshop.dao.UserDAO;
 import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class SignupFormController {
 
@@ -55,5 +61,17 @@ public class SignupFormController {
     @FXML
     void gotoLoginForm(ActionEvent event) {
         //Chuyen toi login form
+        try{
+            final String    LOGIN_PATH = "/fxml/Login.fxml";
+            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(LOGIN_PATH));
+            Parent root = fxmlloader.load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.show();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
