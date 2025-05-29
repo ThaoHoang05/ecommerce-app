@@ -88,8 +88,20 @@ public class MainViewController {
             e.printStackTrace();
         }
     }
-
-    public MainViewController(){
+    @FXML
+    void gotoCartForm(ActionEvent event) {
 
     }
+    @FXML // Cai gi day product form o dau vay ??
+    void gotoProductForm(ActionEvent event) {
+
+    }
+    @FXML
+    void gotoSupplierForm(ActionEvent event) {
+
+    }@FXML
+    void gotoReportForm(ActionEvent event) {
+
+    }
+
 }
