@@ -16,7 +16,6 @@ public class TestMainView extends Application {
         try{
         final String MAINVIEW_PATH = "/fxml/MainView.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
-        MainViewController
         Parent root = loader.load();
         primaryStage.setTitle("Stationery Shop");
         primaryStage.setScene(new Scene(root));
