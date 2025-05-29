@@ -147,7 +147,7 @@
                   <Separator prefWidth="200.0" />
                </children>
             </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+            <VBox fx:id="onlyForCustomer" layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#a14b23">
                      <font>
@@ -220,7 +220,7 @@
                   <Separator prefWidth="200.0" />
                </children>
             </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+            <VBox fx:id="onlyForStaff" layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#a14b23">
                      <font>

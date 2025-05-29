@@ -81,6 +81,7 @@ public class SignupFormController {
             final String MAINVIEW_PATH = "/fxml/MainView.fxml";
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
             Parent root = fxmlloader.load();
+            MainViewController controller = fxmlloader.getController();
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Stationery Shop");

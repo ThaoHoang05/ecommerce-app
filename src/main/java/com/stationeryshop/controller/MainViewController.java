@@ -14,11 +14,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainViewController {
+    @FXML
+    private VBox onlyForStaff;
+
+    @FXML
+    private VBox onlyForCustomer;
 
     @FXML
     private HBox inventoryTab;
@@ -125,8 +131,23 @@ public class MainViewController {
         }
     }
 
-    public MainViewController(){
+    @FXML
+    public void initialize(){
+            if(Session.isLoggedIn()){
+                String role = Session.getCurrentRole();
+                if("admin".equals(role)){
+                    onlyForCustomer.setManaged(false);
+                    onlyForCustomer.setVisible(false);
 
-    }
-
+                }else if("customer".equals(role)){
+                    onlyForStaff.setManaged(false);
+                    onlyForStaff.setVisible(false);
+                }
+                if(role != null){
+                    customerName.setText(Session.getCurrentUsername());
+                    AccountHbox.setVisible(true);
+                    LoginHbox.setVisible(false);
+                }
+            }
+        }
 }
