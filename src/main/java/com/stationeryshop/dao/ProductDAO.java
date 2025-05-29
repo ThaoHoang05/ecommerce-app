@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class ProductDAO {
-    private static DBConnection db;
+    private DBConnection db;
 
     public ProductDAO() {
         Properties props = new Properties();
@@ -25,6 +25,10 @@ public class ProductDAO {
         }
         String useradmin = props.getProperty("db.admin");
         String pwdadmin = props.getProperty("db.adminpwd");
+        if (useradmin == null || pwdadmin == null) {
+            JOptionPane.showMessageDialog(null, "Database credentials not found in properties file", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         this.db = new DBConnection(useradmin, pwdadmin);
     }
 

@@ -1,41 +1,132 @@
 package com.stationeryshop.controller;
 
+import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainViewController {
 
     @FXML
-    private Button signupBtn;
+    private HBox inventoryTab;
+
+    @FXML
+    private ImageView customerAvatar;
 
     @FXML
     private Button loginBtn;
 
     @FXML
+    private StackPane ContentArea;
+
+    @FXML
+    private TextField searchitemField;
+
+    @FXML
+    private Label customerName;
+
+    @FXML
+    private Button signupBtn;
+
+    @FXML
+    private HBox reportTab;
+
+    @FXML
     private HBox AccountHbox;
+
 
     @FXML
     private Region spacer;
 
     @FXML
-    private HBox LoginHbox;
+
+    private HBox supplierTab;
 
     @FXML
-    private ImageView customerAva;
+    private Button AIChatbotBtn;
 
+    @FXML
+
+    private HBox cartTab;
+
+    @FXML
+    private HBox LoginHbox;
+  
+  
+    @FXML
+    void gotoCartForm(ActionEvent event) {
+    
+    }
+
+
+    @FXML
+    void gotoProductForm(ActionEvent event) {
+
+    }
+
+    @FXML
+    void gotoSupplierForm(ActionEvent event) {
+      
+    }
+
+    @FXML
+    void gotoReportForm(ActionEvent event) {
+
+    }
+
+    @FXML
+    void gotoAIChatbot(ActionEvent event) {
+
+    }
 
     @FXML
     void gotoLoginForm(ActionEvent event) {
 
-    }
+        try{
+            final String    LOGIN_PATH = "/fxml/Login.fxml";
+            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(LOGIN_PATH));
+            Parent root = fxmlloader.load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.show();
 
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void gotoSignupForm(ActionEvent event) {
+        try{
+            final String SIGNUP_PATH = "/fxml/Signup.fxml";
+            FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(SIGNUP_PATH));
+            Parent root = fxmlloader.load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Signup");
+            stage.show();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public MainViewController(){
 
     }
+
 }
