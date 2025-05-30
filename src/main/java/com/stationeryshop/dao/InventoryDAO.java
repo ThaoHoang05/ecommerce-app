@@ -97,11 +97,12 @@ public class InventoryDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String sql = "SELECT i.*, p.product_name FROM inventory i " +
-                     "JOIN products p ON i.product_id = p.product_id " +
-                     "WHERE quantity_on_hand <= ?";
+                "JOIN products p ON i.product_id = p.product_id " +
+                "WHERE quantity_on_hand <= ?";
         try {
             conn = db.connect();
-            if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+            if (conn == null)
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, threshold);
             rs = stmt.executeQuery();
@@ -111,10 +112,10 @@ public class InventoryDAO {
                 product.setProductName(rs.getString("product_name"));
 
                 InventoryItem item = new InventoryItem(
-                    rs.getInt("inventory_id"),
-                    product,
-                    rs.getInt("quantity_on_hand"),
-                    rs.getDate("last_stocked_date").toLocalDate()
+                        rs.getInt("inventory_id"),
+                        product,
+                        rs.getInt("quantity_on_hand"),
+                        rs.getDate("last_stocked_date").toLocalDate()
                 );
                 list.add(item);
             }

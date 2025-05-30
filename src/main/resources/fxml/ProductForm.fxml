@@ -44,7 +44,7 @@
         </top>
 
 <center>
-<TabPane tabClosingPolicy="UNAVAILABLE">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE">
     <tabs>
         <!-- Tab Sản phẩm -->
         <Tab text="Sản phẩm">
@@ -178,9 +178,9 @@
                        </HBox>
                        <TableView fx:id="categoryTable" prefHeight="400.0" prefWidth="600.0">
                            <columns>
-                               <TableColumn fx:id="catIdColumn" prefWidth="60.0" text="ID" />
-                               <TableColumn fx:id="catNameColumn" prefWidth="200.0" text="Tên danh mục" />
-                               <TableColumn fx:id="catDescColumn" prefWidth="300.0" text="Mô tả" />
+                               <TableColumn fx:id="catIdColumn" prefWidth="130.0" resizable="false" text="ID" />
+                               <TableColumn fx:id="catNameColumn" prefWidth="369.0" resizable="false" text="Tên danh mục" />
+                               <TableColumn fx:id="catDescColumn" prefWidth="659.0" resizable="false" text="Mô tả" />
                            </columns>
                        </TableView>
                    </children>
@@ -202,10 +202,10 @@
                        </Label>
                        <TableView fx:id="inventoryTable" prefHeight="400.0" prefWidth="800.0">
                            <columns>
-                               <TableColumn fx:id="invIdColumn" prefWidth="60.0" text="ID" />
-                               <TableColumn fx:id="invProductColumn" prefWidth="200.0" text="Sản phẩm" />
-                               <TableColumn fx:id="invQuantityColumn" prefWidth="100.0" text="Tồn kho" />
-                               <TableColumn fx:id="invLastStockedColumn" prefWidth="145.0" text="Ngày nhập" />
+                               <TableColumn fx:id="invIdColumn" prefWidth="95.0" resizable="false" text="ID" />
+                               <TableColumn fx:id="invProductColumn" prefWidth="466.0" resizable="false" text="Sản phẩm" />
+                               <TableColumn fx:id="invQuantityColumn" prefWidth="188.0" resizable="false" text="Tồn kho" />
+                               <TableColumn fx:id="invLastStockedColumn" prefWidth="410.0" resizable="false" text="Ngày nhập" />
                            </columns>
                        </TableView>
                    </children>
