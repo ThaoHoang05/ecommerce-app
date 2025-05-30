@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.InventoryCategoryController">
+    <children>
+        <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="QUẢN LÝ DANH MỤC">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <HBox spacing="10.0">
+            <children>
+                <TextField fx:id="categoryIdField" disable="true" promptText="ID" />
+                <TextField fx:id="categoryNameField" promptText="Tên danh mục" />
+                <TextField fx:id="categoryDescField" promptText="Mô tả" />
+                <Button fx:id="addCategoryBtn" onAction="#handleAddCategory" style="-fx-background-color: #228b22; -fx-text-fill: white;" text="Thêm" />
+                <Button fx:id="updateCategoryBtn" onAction="#handleUpdateCategory" style="-fx-background-color: #f39c12; -fx-text-fill: white;" text="Sửa" />
+                <Button fx:id="deleteCategoryBtn" onAction="#handleDeleteCategory" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Xóa" />
+            </children>
+        </HBox>
+        <TableView fx:id="categoryTable" prefHeight="400.0" prefWidth="600.0">
+            <columns>
+                <TableColumn fx:id="catIdColumn" prefWidth="130.0" resizable="false" text="ID" />
+                <TableColumn fx:id="catNameColumn" prefWidth="369.0" resizable="false" text="Tên danh mục" />
+                <TableColumn fx:id="catDescColumn" prefWidth="659.0" resizable="false" text="Mô tả" />
+            </columns>
+        </TableView>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

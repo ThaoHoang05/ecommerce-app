@@ -18,7 +18,7 @@ public class SupplierDAO {
     // Khởi tạo với username và password cho DBConnection
     public SupplierDAO() {
         String role = Session.getCurrentRole();
-        if(role.equals("admin")) {
+        if("admin".equals(role)) {
             User user = Session.getCurrentUser();
             String username = user.getUsername();
             String password = user.getPwd_hash();
