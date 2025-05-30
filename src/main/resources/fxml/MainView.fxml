@@ -32,7 +32,7 @@
             <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
             <StackPane prefHeight="60.0" prefWidth="293.0">
                <children>
-                  <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                  <HBox fx:id="LoginHbox" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -49,11 +49,11 @@
                         </Button>
                      </children>
                   </HBox>
-                  <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="round-layout" stylesheets="@../styles/style.css" visible="false">
+                  <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" stylesheets="@../styles/style.css">
                      <children>
-                        <Label fx:id="customerName" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                        <Label fx:id="customerName" alignment="CENTER" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
                            <font>
-                              <Font name="Berlin Sans FB" size="18.0" />
+                              <Font name="Berlin Sans FB" size="22.0" />
                            </font>
                         </Label>
                         <ImageView fx:id="customerAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -72,9 +72,9 @@
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="200.0" prefWidth="250.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="733.0" prefWidth="260.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+            <VBox prefHeight="250.0" prefWidth="250.0" spacing="5.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="177.0" text="Explore" textFill="#a14b23">
                      <font>
@@ -108,10 +108,10 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/LandSales.png" />
+                              <Image url="@../images/Teaser.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Sales">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="All Products">
                            <font>
                               <Font name="Berlin Sans FB" size="20.0" />
                            </font>
@@ -157,7 +157,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                  <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="40.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -177,7 +177,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoHistoryForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -197,30 +197,10 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/RatingCircled.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Loyalty Points">
-                           <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
                   <Separator prefWidth="200.0" />
                </children>
             </VBox>
-            <VBox fx:id="onlyForStaff" layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+            <VBox fx:id="onlyForStaff" layoutX="10.0" layoutY="10.0" prefHeight="250.0" prefWidth="250.0" spacing="5.0">
                <children>
                   <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#a14b23">
                      <font>
