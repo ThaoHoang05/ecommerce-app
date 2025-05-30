@@ -89,13 +89,13 @@ public class InventoryProductController {
 
     private ObservableList<Product> productList;
 
-    private ProductDAO product;
+    private ProductDAO product = new ProductDAO();
 
-    private InventoryDAO inventory;
+    private InventoryDAO inventory = new InventoryDAO();
 
-    private SupplierDAO supplier;
+    private SupplierDAO supplier = new SupplierDAO();
 
-    private CategoryDAO category;
+    private CategoryDAO category = new CategoryDAO();
 
     private String imageUrl;
 
@@ -128,6 +128,9 @@ public class InventoryProductController {
         inventory.updateStock(Integer.parseInt(productIdField.getText()), Integer.parseInt(stockQuantityField.getText()));
         //supplier.addSupplier(new Supplier(Integer.parseInt(productIdField.getText()),unitField.getText()));
         //can update them supplierDAO lai de tim kiem theo ten supplier
+        if(supplier.getSuppliersByName(productNameField.getText()).size() == 0){
+            //them supplier de hien ra cua so supplier form roi tat
+        }
     }
 
     @FXML
@@ -135,7 +138,7 @@ public class InventoryProductController {
         Category choose = categoryComboBox.getSelectionModel().getSelectedItem();
         product.updateProduct(new Product(Integer.parseInt(productIdField.getText()),productNameField.getText(), descriptionArea.getText(),Double.parseDouble(priceField.getText()),imageUrl, choose));
         inventory.updateStock(Integer.parseInt(productIdField.getText()), Integer.parseInt(stockQuantityField.getText()));
-        //update ca nha san xua ma supplier dang thieu
+        //update ca nha san xuat ma supplier dang thieu
     }
 
     @FXML
@@ -154,12 +157,13 @@ public class InventoryProductController {
     }
 
     private void setProductTable(){
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stockQuantity"));
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
         productList = FXCollections.observableArrayList(product.getAllProductsWithCategory());
         productTable.setItems(productList);
     }

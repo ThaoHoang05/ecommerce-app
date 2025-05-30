@@ -99,4 +99,10 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    // ✅ Thêm để fix lỗi:
+    public String getCategoryName() {
+        return category != null ? category.getCategoryName() : "";
+    }
+
 }

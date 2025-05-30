@@ -29,7 +29,7 @@ public class InventoryController {
 
     private ObservableList<InventoryItem> inventoryList;
 
-    private InventoryDAO inventory;
+    private InventoryDAO inventory = new InventoryDAO();
 
     public void initialize(){
         //setTable

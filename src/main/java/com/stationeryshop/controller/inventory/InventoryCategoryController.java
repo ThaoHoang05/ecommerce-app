@@ -46,7 +46,7 @@ public class InventoryCategoryController {
 
     private ObservableList<Category> categoryList;
 
-    private CategoryDAO category = new CategoryDAO();
+    static private CategoryDAO category = new CategoryDAO();
 
     @FXML
     void handleAddCategory(ActionEvent event) {
@@ -79,9 +79,9 @@ public class InventoryCategoryController {
         setupTable();
     }
     private void setupTable(){
-        catIdColumn.setCellValueFactory(new PropertyValueFactory<>("catId"));
-        catNameColumn.setCellValueFactory(new PropertyValueFactory<>("catName"));
-        catDescColumn.setCellValueFactory(new PropertyValueFactory<>("catDesc"));
+        catIdColumn.setCellValueFactory(new PropertyValueFactory<>("categoryId"));
+        catNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+        catDescColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         categoryList = getCategoryList();
         categoryTable.setItems(categoryList);
     }

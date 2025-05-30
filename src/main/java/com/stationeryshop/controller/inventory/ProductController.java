@@ -16,8 +16,6 @@ public class ProductController {
     @FXML
     private Button searchBtn;
 
-    private
-
     @FXML
     void handleSearch(ActionEvent event) {
 
@@ -27,4 +25,5 @@ public class ProductController {
     void handleRefresh(ActionEvent event) {
 
     }
+
 }
