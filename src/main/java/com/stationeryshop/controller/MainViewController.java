@@ -11,12 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class MainViewController {
@@ -79,8 +81,20 @@ public class MainViewController {
 
 
     @FXML
-    void gotoProductForm(ActionEvent event) {
-
+    void gotoProductForm(MouseEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("admin".equals(role)) {
+            final String  PRODUCT_PATH = "/fxml/ProductForm.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
+            Parent root = loader.load();
+            Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            ProductController controller = loader.getController();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @FXML
