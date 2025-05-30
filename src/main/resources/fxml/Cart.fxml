@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox prefHeight="815.0" prefWidth="1203.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CartController">
+    <padding>
+        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+    </padding>
+    <children>
+
+        <!-- Header Section -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="cart-header">
+            <VBox.margin>
+                <Insets bottom="25.0" />
+            </VBox.margin>
+            <children>
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/AddShoppingCart.png" />
+                    </image>
+                </ImageView>
+
+                <VBox>
+                    <children>
+                        <Label styleClass="cart-title" text="SHOPPING CART" />
+                        <Label fx:id="itemCountLabel" styleClass="cart-subtitle" text="Check out!!" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Cart Items Container -->
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="cart-scroll-pane" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox fx:id="cartItemsContainer" spacing="15.0" styleClass="cart-items-container" />
+            </content>
+        </ScrollPane>
+
+        <!-- Cart Summary Section -->
+        <VBox spacing="15.0" styleClass="cart-summary">
+            <VBox.margin>
+                <Insets top="25.0" />
+            </VBox.margin>
+            <children>
+                <Separator />
+                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                    <children>
+                        <VBox alignment="CENTER_RIGHT" spacing="8.0">
+                            <children>
+                                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                                    <children>
+                                        <Label styleClass="total-label" text="Total:" />
+                                        <Label fx:id="totalLabel" styleClass="total-value" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Action Buttons -->
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                    <children>
+                        <Button onAction="#continueShopping" styleClass="continue-btn" text="Continue Shopping" />
+                        <Button fx:id="checkoutBtn" onAction="#proceedToCheckout" styleClass="checkout-btn" text="Proceed to Checkout" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+
+    <stylesheets>
+        <URL value="@../styles/CartStyle.css" />
+    </stylesheets>
+</VBox>

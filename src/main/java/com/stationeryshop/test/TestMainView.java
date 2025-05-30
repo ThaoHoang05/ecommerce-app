@@ -6,14 +6,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
+
+
 public class TestMainView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-        primaryStage.setTitle("Stationery");
-        primaryStage.setScene(new Scene(root, 1315, 890));
+      
+        try{
+        final String MAINVIEW_PATH = "/fxml/MainView.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(MAINVIEW_PATH));
+        Parent root = loader.load();
+        primaryStage.setTitle("Stationery Shop");
+        primaryStage.setScene(new Scene(root));
+
         primaryStage.show();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

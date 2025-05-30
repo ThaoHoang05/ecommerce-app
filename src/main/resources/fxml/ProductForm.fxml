@@ -10,165 +10,216 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.ProductController">
-    <top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.ProductController">
+        <top>
         <VBox BorderPane.alignment="CENTER">
-            <children>
-                <!-- Header -->
-                <HBox alignment="CENTER" prefHeight="60.0" style="-fx-background-color: #2c3e50;">
-                    <children>
-                        <Label text="INVENTORY" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="24.0" />
-                            </font>
-                        </Label>
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </HBox>
-
-                <!-- Search Bar -->
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #ecf0f1;">
-                    <children>
-                        <Label text="Search Product:">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font></Label>
-                        <TextField fx:id="searchField" prefWidth="300.0" promptText="Nhập tên sản phẩm..." />
-                        <Button fx:id="searchBtn" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Search" />
-                        <Button fx:id="refreshBtn" onAction="#handleRefresh" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" text="Refresh" />
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
-                    </padding>
-                </HBox>
-            </children>
+        <children>
+<!-- Header -->
+<HBox alignment="CENTER" prefHeight="60.0" style="-fx-background-color: #ecf0f0;">
+    <children>
+        <Label text="INVENTORY" textFill="#a14b23">
+            <font>
+                <Font name="Georgia Bold" size="30.0" />
+            </font>
+        </Label>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</HBox>
+        <!-- Search Bar -->
+<HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #ecf0f1;">
+<children>
+    <Label text="Search Product:" />
+    <TextField fx:id="searchField" prefWidth="300.0" promptText="Nhập tên sản phẩm..." />
+    <Button fx:id="searchBtn" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Search" />
+    <Button fx:id="refreshBtn" onAction="#handleRefresh" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" text="Refresh" />
+</children>
+<padding>
+    <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+</padding>
+</HBox>
+        </children>
         </VBox>
-    </top>
+        </top>
 
-    <center>
-        <BorderPane prefHeight="600.0" prefWidth="1200.0">
-            <left>
-                <!-- Form thông tin sản phẩm -->
-                <VBox prefWidth="400.0" spacing="10.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 0 1 0 0;">
-                    <children>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="THÔNG TIN SẢN PHẨM">
-                            <font>
-                                <Font name="System Bold" size="16.0" />
-                            </font>
-                        </Label>
-
-                        <!-- Ảnh sản phẩm -->
-                        <VBox alignment="CENTER" spacing="8.0">
-                            <children>
-                                <Label text="Ảnh sản phẩm:" />
-                                <ImageView fx:id="productImageView" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: #dee2e6; -fx-border-width: 1;" />
-                                <Button fx:id="selectImageButton" onAction="#handleSelectImage" style="-fx-background-color: #6c757d; -fx-text-fill: white;" text="Chọn ảnh" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="ID Sản phẩm:" />
-                                <TextField fx:id="productIdField" disable="true" style="-fx-background-color: #e9ecef;" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Tên sản phẩm:" />
-                                <TextField fx:id="productNameField" promptText="Nhập tên sản phẩm" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Danh mục:" />
-                                <ComboBox fx:id="categoryComboBox" prefWidth="200.0" promptText="Chọn danh mục" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Giá bán (VNĐ):" />
-                                <TextField fx:id="priceField" promptText="0" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Số lượng tồn kho:" />
-                                <TextField fx:id="stockQuantityField" promptText="0" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Nhà cung cấp" />
-                                <TextField fx:id="unitField" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Mô tả:" />
-                                <TextArea fx:id="descriptionArea" prefRowCount="3" promptText="Nhập mô tả sản phẩm" wrapText="true" />
-                            </children>
-                        </VBox>
-
-                        <!-- Buttons ở cuối -->
-                        <VBox spacing="10.0">
-                            <children>
-                                <HBox alignment="CENTER" spacing="10.0">
-                                    <children>
-                                        <Button fx:id="updateProductBtn" onAction="#handleUpdateProduct" prefWidth="120.0" style="-fx-background-color: #f39c12; -fx-text-fill: white;" text="Update" />
-                              <Pane prefHeight="39.0" prefWidth="14.0" />
-                                        <Button fx:id="deleteProductBtn" onAction="#handleDeleteProduct" prefWidth="120.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Delete" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                </VBox>
-            </left>
-
-            <center>
-                <!-- Bảng danh sách sản phẩm -->
-                <VBox spacing="10.0">
-                    <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                            <children>
-                                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="DANH SÁCH SẢN PHẨM">
-                                    <font>
-                                        <Font name="System Bold" size="20.0" />
-                                    </font>
-                                </Label>
-                                <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="addProductBtn" onAction="#handleAddProduct" prefWidth="120.0" style="-fx-background-color: #228b22; -fx-text-fill: white;" text="Add New" />
-                            </children>
-                        </HBox>
-
-                        <TableView fx:id="productTable" onSort="#handleSortTable" prefHeight="760.0" prefWidth="760.0">
-                            <columns>
-                                <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
-                                <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Tên sản phẩm" />
-                                <TableColumn fx:id="categoryColumn" prefWidth="120.0" text="Danh mục" />
-                                <TableColumn fx:id="priceColumn" prefWidth="90.0" text="Giá" />
-                                <TableColumn fx:id="stockColumn" prefWidth="90.0" text="Tồn kho" />
-                                <TableColumn fx:id="supplierColumn" prefWidth="80.0" text="NCC" />
-                                <TableColumn fx:id="descriptionColumn" prefWidth="120.0" text="Mô tả" />
-                            </columns>
-                        </TableView>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                </VBox>
-            </center>
+<center>
+<TabPane tabClosingPolicy="UNAVAILABLE">
+    <tabs>
+        <!-- Tab Sản phẩm -->
+        <Tab text="Sản phẩm">
+           <content>
+               <BorderPane prefHeight="600.0" prefWidth="1200.0">
+                   <left>
+                        <ScrollPane prefViewportHeight="923.0" prefViewportWidth="400.0">
+                           <content>
+                             <!-- Form thông tin sản phẩm -->
+                             <VBox prefWidth="400.0" spacing="10.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 0 1 0 0;">
+                                 <children>
+                                     <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="THÔNG TIN SẢN PHẨM">
+                                         <font>
+                                             <Font name="System Bold" size="16.0" />
+                                         </font>
+                                     </Label>
+                                     <!-- Ảnh sản phẩm -->
+                                     <VBox alignment="CENTER" spacing="8.0">
+                                         <children>
+                                             <Label text="Ảnh sản phẩm:" />
+                                             <ImageView fx:id="productImageView" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: #dee2e6; -fx-border-width: 1;" />
+                                             <Button fx:id="selectImageButton" onAction="#handleSelectImage" style="-fx-background-color: #6c757d; -fx-text-fill: white;" text="Chọn ảnh" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="ID Sản phẩm:" />
+                                             <TextField fx:id="productIdField" disable="true" style="-fx-background-color: #e9ecef;" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Tên sản phẩm:" />
+                                             <TextField fx:id="productNameField" promptText="Nhập tên sản phẩm" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Danh mục:" />
+                                             <ComboBox fx:id="categoryComboBox" prefWidth="200.0" promptText="Chọn danh mục" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Giá bán (VNĐ):" />
+                                             <TextField fx:id="priceField" promptText="0" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Số lượng tồn kho:" />
+                                             <TextField fx:id="stockQuantityField" promptText="0" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Nhà cung cấp" />
+                                             <TextField fx:id="unitField" />
+                                         </children>
+                                     </VBox>
+                                     <VBox spacing="8.0">
+                                         <children>
+                                             <Label text="Mô tả:" />
+                                             <TextArea fx:id="descriptionArea" prefRowCount="3" promptText="Nhập mô tả sản phẩm" wrapText="true" />
+                                         </children>
+                                     </VBox>
+                                     <!-- Buttons ở cuối -->
+                                     <VBox spacing="10.0">
+                                         <children>
+                                             <HBox alignment="CENTER" spacing="10.0">
+                                                 <children>
+                                                     <Button fx:id="addProductBtn" onAction="#handleAddProduct" prefWidth="120.0" style="-fx-background-color: #228b22; -fx-text-fill: white;" text="Add New" />
+                                                     <Button fx:id="updateProductBtn" onAction="#handleUpdateProduct" prefWidth="120.0" style="-fx-background-color: #f39c12; -fx-text-fill: white;" text="Update" />
+                                                     <Button fx:id="deleteProductBtn" onAction="#handleDeleteProduct" prefWidth="120.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Delete" />
+                                                 </children>
+                                             </HBox>
+                                         </children>
+                                     </VBox>
+                                 </children>
+                                 <padding>
+                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </padding>
+                             </VBox>
+                           </content>
+                        </ScrollPane>
+                   </left>
+                   <center>
+                       <!-- Bảng danh sách sản phẩm -->
+                       <VBox spacing="10.0">
+                           <children>
+                               <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="DANH SÁCH SẢN PHẨM">
+                                   <font>
+                                       <Font name="System Bold" size="20.0" />
+                                   </font>
+                               </Label>
+                               <TableView fx:id="productTable" onSort="#handleSortTable" prefHeight="760.0" prefWidth="760.0">
+                                   <columns>
+                                       <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
+                                       <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Tên sản phẩm" />
+                                       <TableColumn fx:id="categoryColumn" prefWidth="120.0" text="Danh mục" />
+                                       <TableColumn fx:id="priceColumn" prefWidth="90.0" text="Giá" />
+                                       <TableColumn fx:id="stockColumn" prefWidth="90.0" text="Tồn kho" />
+                                       <TableColumn fx:id="supplierColumn" prefWidth="80.0" text="NCC" />
+                                       <TableColumn fx:id="descriptionColumn" prefWidth="120.0" text="Mô tả" />
+                                   </columns>
+                               </TableView>
+                           </children>
+                           <padding>
+                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                       </VBox>
+                   </center>
+               </BorderPane>
+           </content>
+        </Tab>
+        <!-- Tab quản lý danh mục (tùy chọn) -->
+        <Tab text="Danh mục">
+           <content>
+               <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #f8f9fa;">
+                   <children>
+                       <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="QUẢN LÝ DANH MỤC">
+                           <font>
+                               <Font name="System Bold" size="18.0" />
+                           </font>
+                       </Label>
+                       <HBox spacing="10.0">
+                           <children>
+                               <TextField fx:id="categoryIdField" disable="true" promptText="ID" style="-fx-background-color: #e9ecef;" />
+                               <TextField fx:id="categoryNameField" promptText="Tên danh mục" />
+                               <TextField fx:id="categoryDescField" promptText="Mô tả" />
+                               <Button fx:id="addCategoryBtn" onAction="#handleAddCategory" style="-fx-background-color: #228b22; -fx-text-fill: white;" text="Thêm" />
+                               <Button fx:id="updateCategoryBtn" onAction="#handleUpdateCategory" style="-fx-background-color: #f39c12; -fx-text-fill: white;" text="Sửa" />
+                               <Button fx:id="deleteCategoryBtn" onAction="#handleDeleteCategory" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Xóa" />
+                           </children>
+                       </HBox>
+                       <TableView fx:id="categoryTable" prefHeight="400.0" prefWidth="600.0">
+                           <columns>
+                               <TableColumn fx:id="catIdColumn" prefWidth="60.0" text="ID" />
+                               <TableColumn fx:id="catNameColumn" prefWidth="200.0" text="Tên danh mục" />
+                               <TableColumn fx:id="catDescColumn" prefWidth="300.0" text="Mô tả" />
+                           </columns>
+                       </TableView>
+                   </children>
+                   <padding>
+                       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                   </padding>
+               </VBox>
+           </content>
+        </Tab>
+        <!-- Tab quản lý tồn kho (tùy chọn) -->
+        <Tab text="Tồn kho">
+           <content>
+               <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #f8f9fa;">
+                   <children>
+                       <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="QUẢN LÝ TỒN KHO">
+                           <font>
+                               <Font name="System Bold" size="18.0" />
+                           </font>
+                       </Label>
+                       <TableView fx:id="inventoryTable" prefHeight="400.0" prefWidth="800.0">
+                           <columns>
+                               <TableColumn fx:id="invIdColumn" prefWidth="60.0" text="ID" />
+                               <TableColumn fx:id="invProductColumn" prefWidth="200.0" text="Sản phẩm" />
+                               <TableColumn fx:id="invQuantityColumn" prefWidth="100.0" text="Tồn kho" />
+                               <TableColumn fx:id="invLastStockedColumn" prefWidth="145.0" text="Ngày nhập" />
+                           </columns>
+                       </TableView>
+                   </children>
+                   <padding>
+                       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                   </padding>
+               </VBox>
+           </content>
+        </Tab>
+    </tabs>
+</TabPane>
+</center>
         </BorderPane>
-    </center>
-</BorderPane>
