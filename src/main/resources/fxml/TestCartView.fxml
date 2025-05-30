@@ -14,20 +14,20 @@
         <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
     </padding>
    <children>
-   
+
        <!-- Header Section -->
        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="cart-header">
            <VBox.margin>
                <Insets bottom="25.0" />
            </VBox.margin>
       <children>
-      
+
               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                       <Image url="@../images/AddShoppingCart.png" />
                   </image>
               </ImageView>
-      
+
               <VBox>
          <children>
                      <Label styleClass="cart-title" text="SHOPPING CART" />
@@ -36,27 +36,27 @@
               </VBox>
       </children>
        </HBox>
-   
+
        <!-- Cart Items Container -->
        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="cart-scroll-pane" VBox.vgrow="ALWAYS">
       <content>
               <VBox fx:id="cartItemsContainer" spacing="15.0" styleClass="cart-items-container">
                  <children>
-         
+
                      <!-- Sample Cart Item 1 -->
                      <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="cart-item">
                          <padding>
                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                          </padding>
             <children>
-            
+
                             <!-- Product Image -->
                             <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="product-image">
                                 <image>
                                     <Image url="@../images/notebook.png" />
                                 </image>
                             </ImageView>
-            
+
                             <!-- Product Info -->
                             <VBox spacing="8.0" HBox.hgrow="ALWAYS">
                <children>
@@ -70,7 +70,7 @@
                                    </HBox>
                </children>
                             </VBox>
-            
+
                             <!-- Price -->
                             <VBox alignment="CENTER" spacing="5.0">
                <children>
@@ -78,7 +78,7 @@
                                    <Label styleClass="price-label" text="each" />
                </children>
                             </VBox>
-            
+
                             <!-- Quantity Controls -->
                             <VBox alignment="CENTER" spacing="8.0">
                <children>
@@ -92,7 +92,7 @@
                                    </HBox>
                </children>
                             </VBox>
-            
+
                             <!-- Subtotal and Remove -->
                             <VBox alignment="CENTER" spacing="10.0">
                <children>
@@ -102,21 +102,21 @@
                             </VBox>
             </children>
                      </HBox>
-         
+
                      <!-- Sample Cart Item 2 -->
                      <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="cart-item">
                          <padding>
                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                          </padding>
             <children>
-            
+
                             <!-- Product Image -->
                             <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="product-image">
                                 <image>
                                     <Image url="@../images/pen-set.png" />
                                 </image>
                             </ImageView>
-            
+
                             <!-- Product Info -->
                             <VBox spacing="8.0" HBox.hgrow="ALWAYS">
                <children>
@@ -130,7 +130,7 @@
                                    </HBox>
                </children>
                             </VBox>
-            
+
                             <!-- Price -->
                             <VBox alignment="CENTER" spacing="5.0">
                <children>
@@ -138,7 +138,7 @@
                                    <Label styleClass="price-label" text="each" />
                </children>
                             </VBox>
-            
+
                             <!-- Quantity Controls -->
                             <VBox alignment="CENTER" spacing="8.0">
                <children>
@@ -152,7 +152,7 @@
                                    </HBox>
                </children>
                             </VBox>
-            
+
                             <!-- Subtotal and Remove -->
                             <VBox alignment="CENTER" spacing="10.0">
                <children>
@@ -163,20 +163,20 @@
             </children>
                      </HBox>
                  </children>
-      
+
               </VBox>
       </content>
        </ScrollPane>
-   
+
        <!-- Cart Summary Section -->
        <VBox spacing="15.0" styleClass="cart-summary">
            <VBox.margin>
                <Insets top="25.0" />
            </VBox.margin>
       <children>
-      
+
               <Separator />
-      
+
               <HBox alignment="CENTER_RIGHT" spacing="20.0">
          <children>
                      <VBox alignment="CENTER_RIGHT" spacing="8.0">
@@ -191,14 +191,14 @@
                      </VBox>
          </children>
               </HBox>
-      
+
               <!-- Action Buttons -->
               <HBox alignment="CENTER_RIGHT" spacing="15.0">
                   <VBox.margin>
                       <Insets top="15.0" />
                   </VBox.margin>
          <children>
-         
+
                      <Button onAction="#continueShopping" styleClass="continue-btn" text="Continue Shopping" />
                      <Button fx:id="checkoutBtn" onAction="#proceedToCheckout" styleClass="checkout-btn" text="Proceed to Checkout" />
          </children>
