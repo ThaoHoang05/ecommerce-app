@@ -1,0 +1,168 @@
+/* Root container */
+.root {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Header Section */
+.header-section {
+    -fx-background-color: #ffffff;
+    -fx-padding: 30 30 20 30;
+}
+
+.page-title {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.welcome-text {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 16px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Search and Filter Controls */
+.search-field {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-pref-width: 280;
+}
+
+.sort-label {
+    -fx-text-fill: #495057;
+    -fx-font-weight: bold;
+}
+
+.sort-combo {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-pref-width: 150;
+}
+
+.refresh-button {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Center Container */
+.center-container {
+    -fx-padding: 0 30 30 30;
+    -fx-background-color: #f8f9fa;
+}
+
+/* Orders Container */
+.orders-container {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, #00000020, 10, 0, 0, 2);
+    -fx-padding: 25;
+}
+
+.section-title {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.order-count-badge {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #1976d2;
+    -fx-padding: 8 16;
+    -fx-background-radius: 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.section-separator {
+    -fx-background-color: #e9ecef;
+}
+
+/* Orders ScrollPane */
+.orders-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.orders-vbox {
+    -fx-padding: 5;
+}
+
+/* Empty State */
+.empty-state {
+    -fx-padding: 60 20;
+}
+
+.empty-icon {
+    -fx-font-size: 48px;
+}
+
+.empty-title {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6c757d;
+}
+
+.empty-description {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 14px;
+    -fx-text-fill: #adb5bd;
+    -fx-text-alignment: center;
+}
+
+/* Statistics Cards */
+.stats-card {
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, #00000030, 15, 0, 0, 5);
+}
+
+.total-orders-card {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #667eea 0%, #764ba2 100%);
+}
+
+.total-spent-card {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #f093fb 0%, #f5576c 100%);
+}
+
+.average-order-card {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4facfe 0%, #00f2fe 100%);
+}
+
+.stats-card-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-weight: bold;
+}
+
+.stats-card-value {
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.stats-card-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(255,255,255,0.8);
+}
+
+.stats-card total-orders-card {
+}
