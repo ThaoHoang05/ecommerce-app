@@ -26,7 +26,15 @@ public class Product {
         this.updatedAt = updatedAt;
         this.category = category;
     }
-
+    public Product(int productId,String productName, String description, double price,
+                   String imageUrl, Category category){
+        this.category = category;
+        this.productId = productId;
+        this.productName = productName;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
     // Getters and Setters
     public int getProductId() {
         return productId;

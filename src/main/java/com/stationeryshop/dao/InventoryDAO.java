@@ -132,4 +132,25 @@ public class InventoryDAO {
         }
         return list;
     }
+    public void deleteStock(int productId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "DELETE FROM inventory WHERE product_id = ?";
+        try{
+            conn = db.connect();
+            if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, productId);
+            stmt.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
