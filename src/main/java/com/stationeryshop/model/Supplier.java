@@ -23,7 +23,6 @@ public class Supplier {
         this.phone = phone;
         this.address = address;
     }
-
     // Getters and Setters
     public int getSupplierId() { return supplierId; }
     public void setSupplierId(int supplierId) { this.supplierId = supplierId; }

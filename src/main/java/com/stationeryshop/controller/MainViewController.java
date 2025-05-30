@@ -1,5 +1,6 @@
 package com.stationeryshop.controller;
 
+import com.stationeryshop.controller.inventory.ProductController;
 import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
