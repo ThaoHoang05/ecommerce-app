@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.MainViewController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0" spacing="20.0" style="-fx-background: linear-gradient(to right, #FF6B35, #FF8E53); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);" BorderPane.alignment="CENTER_LEFT">
+            <children>
+                <Label alignment="CENTER" prefHeight="67.0" prefWidth="250.0" text="Stationery" textFill="WHITE">
+                    <font>
+                        <Font name="Edwardian Script ITC" size="48.0" />
+                    </font>
+                    <effect>
+                        <DropShadow color="#00000050" offsetY="2.0" radius="3.0" />
+                    </effect>
+                </Label>
+                <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="36.0" prefWidth="2.0" style="-fx-background-color: rgba(255,255,255,0.3);" />
+                <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="45.0" prefWidth="320.0" spacing="8.0" style="-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1);">
+                    <children>
+                        <TextField fx:id="searchitemField" prefHeight="35.0" prefWidth="260.0" promptText="Search products..." style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #333; -fx-prompt-text-fill: #999;">
+                            <font>
+                                <Font name="Georgia" size="14.0" />
+                            </font>
+                        </TextField>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/Search.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                    <padding>
+                        <Insets left="15.0" right="15.0" />
+                    </padding>
+                </HBox>
+                <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" HBox.hgrow="ALWAYS" />
+                <StackPane prefHeight="60.0" prefWidth="300.0">
+                    <children>
+                        <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" visible="false">
+                            <children>
+                                <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="Log In">
+                                    <font>
+                                        <Font name="Georgia" size="16.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="signupBtn" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: linear-gradient(to bottom, #FF6348, #FF5722); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="Sign Up">
+                                    <font>
+                                        <Font name="Georgia" size="16.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <VBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <HBox alignment="CENTER" onMouseClicked="#toggleAccountDropdown" prefHeight="50.0" prefWidth="200.0" spacing="10.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 15; -fx-padding: 5;">
+                                    <children>
+                                        <Label fx:id="customerName" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Customer Name" textFill="WHITE">
+                                            <font>
+                                                <Font name="Berlin Sans FB" size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <ImageView fx:id="customerAvatar" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/Customer.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label fx:id="accountDropdownArrow" text="▼" textFill="WHITE">
+                                            <font>
+                                                <Font size="12.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <VBox fx:id="accountDropdown" prefWidth="200.0" spacing="2.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3); -fx-padding: 5;" visible="false">
+                                    <children>
+                                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#handleLogout" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Log Out">
+                                            <font>
+                                                <Font name="Georgia" size="14.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </StackPane>
+            </children>
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefHeight="733.0" prefWidth="260.0" style="-fx-background: linear-gradient(to bottom, #FFF5F5, #FFEBEB);" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="250.0" prefWidth="250.0" spacing="8.0">
+                    <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Explore" textFill="#D63031">
+                            <font>
+                                <Font name="Georgia Bold Italic" size="26.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                            <effect>
+                                <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                            </effect>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/ThumbsUp.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Teaser.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="All Products" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <VBox fx:id="categoriesContainer" prefWidth="240.0" spacing="2.0">
+                            <children>
+                                <HBox fx:id="categoriesTab" alignment="CENTER" onMouseClicked="#toggleCategoriesDropdown" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                                    <children>
+                                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/Sorting.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label prefHeight="49.0" prefWidth="150.0" text="Categories" textFill="#E55039">
+                                            <font>
+                                                <Font name="Berlin Sans FB" size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <Label fx:id="categoriesDropdownArrow" text="▼" textFill="#E55039">
+                                            <font>
+                                                <Font size="12.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets left="15.0" />
+                                    </padding>
+                                </HBox>
+                                <VBox fx:id="categoriesDropdown" prefWidth="230.0" spacing="3.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2); -fx-padding: 8;">
+                                    <children>
+                                        <!-- Categories will be dynamically added here -->
+                                        <Button fx:id="categoryBtn1" mnemonicParsing="false" prefHeight="35.0" prefWidth="210.0" style="-fx-background-color: transparent; -fx-text-fill: #E55039; -fx-alignment: center-left; -fx-cursor: hand; -fx-padding: 5 15;" text="Writing Supplies">
+                                            <font>
+                                                <Font name="Georgia" size="14.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="categoryBtn2" mnemonicParsing="false" prefHeight="35.0" prefWidth="210.0" style="-fx-background-color: transparent; -fx-text-fill: #E55039; -fx-alignment: center-left; -fx-cursor: hand; -fx-padding: 5 15;" text="Office Supplies">
+                                            <font>
+                                                <Font name="Georgia" size="14.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="categoryBtn3" mnemonicParsing="false" prefHeight="35.0" prefWidth="210.0" style="-fx-background-color: transparent; -fx-text-fill: #E55039; -fx-alignment: center-left; -fx-cursor: hand; -fx-padding: 5 15;" text="Art Supplies">
+                                            <font>
+                                                <Font name="Georgia" size="14.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                        <Separator prefWidth="200.0" style="-fx-background-color: rgba(255,107,53,0.3);" />
+                    </children>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </VBox>
+                <VBox fx:id="onlyForCustomer" prefHeight="200.0" prefWidth="250.0" spacing="8.0">
+                    <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#D63031">
+                            <font>
+                                <Font name="Georgia Bold Italic" size="26.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                            <effect>
+                                <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                            </effect>
+                        </Label>
+                        <HBox fx:id="cartTab" alignment="CENTER" onMouseClicked="#gotoCartForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/AddShoppingCart.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Cart" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" onMouseClicked="#gotoHistoryForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Clock.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="History" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <Separator prefWidth="200.0" style="-fx-background-color: rgba(255,107,53,0.3);" />
+                    </children>
+                </VBox>
+                <VBox fx:id="onlyForStaff" prefHeight="280.0" prefWidth="250.0" spacing="8.0">
+                    <children>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#D63031">
+                            <font>
+                                <Font name="Georgia Bold Italic" size="26.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                            <effect>
+                                <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                            </effect>
+                        </Label>
+                        <HBox fx:id="inventoryTab" alignment="CENTER" onMouseClicked="#gotoProductForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Product.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Inventory" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <HBox fx:id="supplierTab" alignment="CENTER" onMouseClicked="#gotoSupplierForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/Supplier.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Suppliers" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <HBox fx:id="reportTab" alignment="CENTER" onMouseClicked="#gotoReportForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" style="-fx-cursor: hand; -fx-background-color: rgba(255,107,53,0.1); -fx-background-radius: 12; -fx-border-color: rgba(255,107,53,0.3); -fx-border-radius: 12; -fx-border-width: 1;">
+                            <children>
+                                <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/HealthGraph.png" />
+                                    </image>
+                                </ImageView>
+                                <Label prefHeight="49.0" prefWidth="177.0" text="Report" textFill="#E55039">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets left="15.0" />
+                            </padding>
+                        </HBox>
+                        <Separator prefWidth="200.0" style="-fx-background-color: rgba(255,107,53,0.3);" />
+                    </children>
+                </VBox>
+                <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="250.0" spacing="8.0">
+                    <children>
+                        <Separator prefWidth="200.0" style="-fx-background-color: rgba(255,107,53,0.3);" />
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: rgba(255,107,53,0.05); -fx-background-radius: 15; -fx-padding: 10;">
+                            <children>
+                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/WeChat.png" />
+                                    </image>
+                                </ImageView>
+                                <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to bottom, #FF6B35, #FF8E53); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="AI Chatbot">
+                                    <font>
+                                        <Font name="Berlin Sans FB" size="18.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #FAFAFA;" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>
