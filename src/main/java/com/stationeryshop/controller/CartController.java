@@ -312,7 +312,7 @@ public class CartController {
         // This depends on your navigation system
         try {
             // Example navigation - adjust path according to your FXML structure
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProductCatalog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
             Parent root = loader.load();
             // Navigation logic here - this depends on your application structure
             // You might want to use Scene switching or hide/show panels

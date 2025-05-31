@@ -76,10 +76,26 @@ public class MainViewController {
   
   
     @FXML
-    void gotoCartForm(ActionEvent event) {
+    void gotoCartForm(MouseEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("customer".equals(role)) {
+            final String CAR_PATH = "/fxml/Cart.fxml";
+            Parent root = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"You are not a customer");
+        }
     
     }
 
+    @FXML
+    void gotoHistoryForm(ActionEvent event) {
+
+    }
 
     @FXML
     void gotoProductForm(MouseEvent event) throws IOException {
