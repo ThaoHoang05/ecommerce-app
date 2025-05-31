@@ -15,7 +15,8 @@ import java.util.Properties;
 
 /**
  * Data Access Object for generating reports related to sales and invoices.
- * Provides methods to retrieve data for different report types.
+ * Provides methods to retrieve data for different report types including
+ * daily/weekly/monthly revenue reports and top-selling products analysis.
  */
 public class ReportDAO {
     private DBConnection db;
@@ -38,6 +39,384 @@ public class ReportDAO {
     
     public ReportDAO(String useradmin, String pwdadmin) {
         this.db = new DBConnection(useradmin, pwdadmin);
+    }
+    
+    /**
+     * Gets daily revenue for a specific date.
+     * 
+     * @param date The date to get revenue for
+     * @return BigDecimal representing total revenue for the day
+     * @throws SQLException if a database error occurs
+     */
+    public BigDecimal getDailyRevenue(LocalDate date) throws SQLException {
+        BigDecimal revenue = BigDecimal.ZERO;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS daily_revenue " +
+                     "FROM invoices " +
+                     "WHERE DATE(invoice_date) = ? " +
+                     "AND payment_status = 'PAID'";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(date));
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                revenue = rs.getBigDecimal("daily_revenue");
+                if (revenue == null) {
+                    revenue = BigDecimal.ZERO;
+                }
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return revenue;
+    }
+    
+    /**
+     * Gets weekly revenue between two dates.
+     * 
+     * @param startDate Start date of the week
+     * @param endDate End date of the week
+     * @return BigDecimal representing total revenue for the week
+     * @throws SQLException if a database error occurs
+     */
+    public BigDecimal getWeeklyRevenue(LocalDate startDate, LocalDate endDate) throws SQLException {
+        BigDecimal revenue = BigDecimal.ZERO;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS weekly_revenue " +
+                     "FROM invoices " +
+                     "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
+                     "AND payment_status = 'PAID'";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                revenue = rs.getBigDecimal("weekly_revenue");
+                if (revenue == null) {
+                    revenue = BigDecimal.ZERO;
+                }
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return revenue;
+    }
+    
+    /**
+     * Gets monthly revenue for a specific month and year.
+     * 
+     * @param month Month (1-12)
+     * @param year Year
+     * @return BigDecimal representing total revenue for the month
+     * @throws SQLException if a database error occurs
+     */
+    public BigDecimal getMonthlyRevenue(int month, int year) throws SQLException {
+        BigDecimal revenue = BigDecimal.ZERO;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS monthly_revenue " +
+                     "FROM invoices " +
+                     "WHERE EXTRACT(MONTH FROM invoice_date) = ? " +
+                     "AND EXTRACT(YEAR FROM invoice_date) = ? " +
+                     "AND payment_status = 'PAID'";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                revenue = rs.getBigDecimal("monthly_revenue");
+                if (revenue == null) {
+                    revenue = BigDecimal.ZERO;
+                }
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return revenue;
+    }
+    
+    /**
+     * Gets revenue for a specific date range.
+     * 
+     * @param startDate Start date
+     * @param endDate End date
+     * @return BigDecimal representing total revenue for the date range
+     * @throws SQLException if a database error occurs
+     */
+    public BigDecimal getRevenueByDateRange(LocalDate startDate, LocalDate endDate) throws SQLException {
+        BigDecimal revenue = BigDecimal.ZERO;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS range_revenue " +
+                     "FROM invoices " +
+                     "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
+                     "AND payment_status = 'PAID'";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                revenue = rs.getBigDecimal("range_revenue");
+                if (revenue == null) {
+                    revenue = BigDecimal.ZERO;
+                }
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return revenue;
+    }
+    
+    /**
+     * Gets top selling products by quantity in a date range.
+     * 
+     * @param startDate Start date
+     * @param endDate End date
+     * @param limit Maximum number of products to return
+     * @return List of maps containing product sales data
+     * @throws SQLException if a database error occurs
+     */
+    public List<Map<String, Object>> getTopSellingProducts(LocalDate startDate, LocalDate endDate, int limit) throws SQLException {
+        List<Map<String, Object>> topProducts = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT " +
+                     "    p.product_id, " +
+                     "    p.product_name, " +
+                     "    p.product_code, " +
+                     "    SUM(id.quantity) AS total_quantity, " +
+                     "    SUM(id.line_total) AS total_revenue, " +
+                     "    AVG(id.unit_price) AS avg_price " +
+                     "FROM invoice_details id " +
+                     "JOIN products p ON id.product_id = p.product_id " +
+                     "JOIN invoices i ON id.invoice_id = i.invoice_id " +
+                     "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
+                     "AND i.payment_status = 'PAID' " +
+                     "GROUP BY p.product_id, p.product_name, p.product_code " +
+                     "ORDER BY total_quantity DESC " +
+                     "LIMIT ?";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            stmt.setInt(3, limit);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Map<String, Object> product = new HashMap<>();
+                product.put("productId", rs.getInt("product_id"));
+                product.put("productName", rs.getString("product_name"));
+                product.put("productCode", rs.getString("product_code"));
+                product.put("totalQuantity", rs.getInt("total_quantity"));
+                product.put("totalRevenue", rs.getBigDecimal("total_revenue"));
+                product.put("averagePrice", rs.getBigDecimal("avg_price"));
+                
+                topProducts.add(product);
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return topProducts;
+    }
+    
+    /**
+     * Gets top selling products by revenue in a date range.
+     * 
+     * @param startDate Start date
+     * @param endDate End date
+     * @param limit Maximum number of products to return
+     * @return List of maps containing product sales data ordered by revenue
+     * @throws SQLException if a database error occurs
+     */
+    public List<Map<String, Object>> getTopSellingProductsByRevenue(LocalDate startDate, LocalDate endDate, int limit) throws SQLException {
+        List<Map<String, Object>> topProducts = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT " +
+                     "    p.product_id, " +
+                     "    p.product_name, " +
+                     "    p.product_code, " +
+                     "    SUM(id.quantity) AS total_quantity, " +
+                     "    SUM(id.line_total) AS total_revenue, " +
+                     "    AVG(id.unit_price) AS avg_price " +
+                     "FROM invoice_details id " +
+                     "JOIN products p ON id.product_id = p.product_id " +
+                     "JOIN invoices i ON id.invoice_id = i.invoice_id " +
+                     "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
+                     "AND i.payment_status = 'PAID' " +
+                     "GROUP BY p.product_id, p.product_name, p.product_code " +
+                     "ORDER BY total_revenue DESC " +
+                     "LIMIT ?";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            stmt.setInt(3, limit);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Map<String, Object> product = new HashMap<>();
+                product.put("productId", rs.getInt("product_id"));
+                product.put("productName", rs.getString("product_name"));
+                product.put("productCode", rs.getString("product_code"));
+                product.put("totalQuantity", rs.getInt("total_quantity"));
+                product.put("totalRevenue", rs.getBigDecimal("total_revenue"));
+                product.put("averagePrice", rs.getBigDecimal("avg_price"));
+                
+                topProducts.add(product);
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return topProducts;
+    }
+    
+    /**
+     * Gets sales report by staff member in a date range.
+     * 
+     * @param startDate Start date
+     * @param endDate End date
+     * @return List of maps containing staff sales data
+     * @throws SQLException if a database error occurs
+     */
+    public List<Map<String, Object>> getStaffSalesReport(LocalDate startDate, LocalDate endDate) throws SQLException {
+        List<Map<String, Object>> staffSales = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT " +
+                     "    u.user_id, " +
+                     "    u.full_name, " +
+                     "    u.username, " +
+                     "    COUNT(i.invoice_id) AS total_invoices, " +
+                     "    SUM(i.total_amount) AS total_revenue, " +
+                     "    AVG(i.total_amount) AS avg_invoice " +
+                     "FROM users u " +
+                     "LEFT JOIN invoices i ON u.user_id = i.created_by " +
+                     "    AND DATE(i.invoice_date) BETWEEN ? AND ? " +
+                     "    AND i.payment_status = 'PAID' " +
+                     "WHERE u.role IN ('STAFF', 'MANAGER') " +
+                     "GROUP BY u.user_id, u.full_name, u.username " +
+                     "ORDER BY total_revenue DESC NULLS LAST";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Map<String, Object> staff = new HashMap<>();
+                staff.put("userId", rs.getInt("user_id"));
+                staff.put("fullName", rs.getString("full_name"));
+                staff.put("username", rs.getString("username"));
+                staff.put("totalInvoices", rs.getInt("total_invoices"));
+                staff.put("totalRevenue", rs.getBigDecimal("total_revenue"));
+                staff.put("averageInvoice", rs.getBigDecimal("avg_invoice"));
+                
+                staffSales.add(staff);
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return staffSales;
+    }
+    
+    /**
+     * Gets inventory report showing current stock levels.
+     * 
+     * @return List of maps containing inventory data
+     * @throws SQLException if a database error occurs
+     */
+    public List<Map<String, Object>> getInventoryReport() throws SQLException {
+        List<Map<String, Object>> inventory = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        String sql = "SELECT " +
+                     "    p.product_id, " +
+                     "    p.product_name, " +
+                     "    p.product_code, " +
+                     "    p.stock_quantity, " +
+                     "    p.unit_price, " +
+                     "    p.stock_quantity * p.unit_price AS stock_value, " +
+                     "    c.category_name, " +
+                     "    CASE " +
+                     "        WHEN p.stock_quantity <= 10 THEN 'LOW' " +
+                     "        WHEN p.stock_quantity <= 50 THEN 'MEDIUM' " +
+                     "        ELSE 'HIGH' " +
+                     "    END AS stock_level " +
+                     "FROM products p " +
+                     "LEFT JOIN categories c ON p.category_id = c.category_id " +
+                     "WHERE p.is_active = true " +
+                     "ORDER BY p.stock_quantity ASC, p.product_name";
+        
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("productId", rs.getInt("product_id"));
+                item.put("productName", rs.getString("product_name"));
+                item.put("productCode", rs.getString("product_code"));
+                item.put("stockQuantity", rs.getInt("stock_quantity"));
+                item.put("unitPrice", rs.getBigDecimal("unit_price"));
+                item.put("stockValue", rs.getBigDecimal("stock_value"));
+                item.put("categoryName", rs.getString("category_name"));
+                item.put("stockLevel", rs.getString("stock_level"));
+                
+                inventory.add(item);
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return inventory;
     }
     
     /**
@@ -89,295 +468,15 @@ public class ReportDAO {
                 
                 invoices.add(invoice);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeResources(rs, stmt, conn);
         }
         
         return invoices;
     }
     
     /**
-     * Gets invoice summary information for a specific date.
-     * 
-     * @param date The date to get summary information for
-     * @return Map containing total invoice count and total revenue
-     * @throws SQLException if a database error occurs
-     */
-    public Map<String, Object> getInvoiceSummaryByDate(LocalDate date) throws SQLException {
-        Map<String, Object> summary = new HashMap<>();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        String sql = "SELECT " +
-                "COUNT(invoice_id) AS total_invoices, " +
-                "SUM(total_amount) AS total_revenue " +
-                "FROM invoices " +
-                "WHERE DATE(invoice_date) = ?";
-        
-        try {
-            conn = db.connect();
-            stmt = conn.prepareStatement(sql);
-            stmt.setDate(1, Date.valueOf(date));
-            rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                summary.put("totalInvoices", rs.getInt("total_invoices"));
-                summary.put("totalRevenue", rs.getBigDecimal("total_revenue"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return summary;
-    }
-    
-    /**
-     * Retrieves the details of a specific invoice.
-     * 
-     * @param invoiceId The ID of the invoice to retrieve details for
-     * @return List of invoice line items as maps
-     * @throws SQLException if a database error occurs
-     */
-    public List<Map<String, Object>> getInvoiceDetails(int invoiceId) throws SQLException {
-        List<Map<String, Object>> details = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        String sql = "SELECT " +
-                "id.invoice_detail_id, " +
-                "id.invoice_id, " +
-                "id.product_id, " +
-                "p.product_name, " +
-                "p.product_code, " +
-                "id.quantity, " +
-                "id.unit_price, " +
-                "id.discount, " +
-                "id.line_total " +
-                "FROM invoice_details id " +
-                "JOIN products p ON id.product_id = p.product_id " +
-                "WHERE id.invoice_id = ? " +
-                "ORDER BY id.invoice_detail_id";
-        
-        try {
-            conn = db.connect();
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, invoiceId);
-            rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                Map<String, Object> detail = new HashMap<>();
-                detail.put("invoiceDetailId", rs.getInt("invoice_detail_id"));
-                detail.put("invoiceId", rs.getInt("invoice_id"));
-                detail.put("productId", rs.getInt("product_id"));
-                detail.put("productName", rs.getString("product_name"));
-                detail.put("productCode", rs.getString("product_code"));
-                detail.put("quantity", rs.getInt("quantity"));
-                detail.put("unitPrice", rs.getBigDecimal("unit_price"));
-                detail.put("discount", rs.getBigDecimal("discount"));
-                detail.put("lineTotal", rs.getBigDecimal("line_total"));
-                
-                details.add(detail);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return details;
-    }
-    
-    /**
-     * Retrieves invoices for a specific date filtered by payment status.
-     * 
-     * @param date The date to get invoices for
-     * @param paymentStatus The payment status to filter by
-     * @return List of invoices matching the criteria
-     * @throws SQLException if a database error occurs
-     */
-    public List<Map<String, Object>> getInvoicesByDateAndPaymentStatus(LocalDate date, String paymentStatus) throws SQLException {
-        List<Map<String, Object>> invoices = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        String sql = "SELECT " +
-                "i.invoice_id, " +
-                "i.invoice_date, " +
-                "i.total_amount, " +
-                "i.payment_status, " +
-                "c.customer_name, " +
-                "u.full_name AS staff_name " +
-                "FROM invoices i " +
-                "LEFT JOIN customers c ON i.customer_id = c.customer_id " +
-                "LEFT JOIN users u ON i.created_by = u.user_id " +
-                "WHERE DATE(i.invoice_date) = ? " +
-                "AND i.payment_status = ? " +
-                "ORDER BY i.invoice_date DESC";
-        
-        try {
-            conn = db.connect();
-            stmt = conn.prepareStatement(sql);
-            stmt.setDate(1, Date.valueOf(date));
-            stmt.setString(2, paymentStatus);
-            rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                Map<String, Object> invoice = new HashMap<>();
-                invoice.put("invoiceId", rs.getInt("invoice_id"));
-                invoice.put("invoiceDate", rs.getTimestamp("invoice_date"));
-                invoice.put("totalAmount", rs.getBigDecimal("total_amount"));
-                invoice.put("paymentStatus", rs.getString("payment_status"));
-                invoice.put("customerName", rs.getString("customer_name"));
-                invoice.put("staffName", rs.getString("staff_name"));
-                
-                invoices.add(invoice);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return invoices;
-    }
-    
-    /**
-     * Retrieves invoices for a specific date created by a specific staff member.
-     * 
-     * @param date The date to get invoices for
-     * @param userId The ID of the staff member
-     * @return List of invoices matching the criteria
-     * @throws SQLException if a database error occurs
-     */
-    public List<Map<String, Object>> getInvoicesByDateAndStaff(LocalDate date, int userId) throws SQLException {
-        List<Map<String, Object>> invoices = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        String sql = "SELECT " +
-                "i.invoice_id, " +
-                "i.invoice_date, " +
-                "i.total_amount, " +
-                "i.payment_status, " +
-                "c.customer_name, " +
-                "u.full_name AS staff_name " +
-                "FROM invoices i " +
-                "LEFT JOIN customers c ON i.customer_id = c.customer_id " +
-                "LEFT JOIN users u ON i.created_by = u.user_id " +
-                "WHERE DATE(i.invoice_date) = ? " +
-                "AND i.created_by = ? " +
-                "ORDER BY i.invoice_date DESC";
-        
-        try {
-            conn = db.connect();
-            stmt = conn.prepareStatement(sql);
-            stmt.setDate(1, Date.valueOf(date));
-            stmt.setInt(2, userId);
-            rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                Map<String, Object> invoice = new HashMap<>();
-                invoice.put("invoiceId", rs.getInt("invoice_id"));
-                invoice.put("invoiceDate", rs.getTimestamp("invoice_date"));
-                invoice.put("totalAmount", rs.getBigDecimal("total_amount"));
-                invoice.put("paymentStatus", rs.getString("payment_status"));
-                invoice.put("customerName", rs.getString("customer_name"));
-                invoice.put("staffName", rs.getString("staff_name"));
-                
-                invoices.add(invoice);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return invoices;
-    }
-    
-    /**
-     * Gets the number of unique customers who made purchases on a specific date.
-     * 
-     * @param date The date to check
-     * @return Number of unique customers
-     * @throws SQLException if a database error occurs
-     */
-    public int getUniqueCustomerCountByDate(LocalDate date) throws SQLException {
-        int uniqueCustomers = 0;
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        String sql = "SELECT " +
-                "COUNT(DISTINCT customer_id) AS unique_customers " +
-                "FROM invoices " +
-                "WHERE DATE(invoice_date) = ? " +
-                "AND customer_id IS NOT NULL";
-        
-        try {
-            conn = db.connect();
-            stmt = conn.prepareStatement(sql);
-            stmt.setDate(1, Date.valueOf(date));
-            rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                uniqueCustomers = rs.getInt("unique_customers");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return uniqueCustomers;
-    }
-    
-    /**
-     * Gets total revenue for a given time period (daily, weekly, monthly).
+     * Gets total revenue for a given time period with summary statistics.
      * 
      * @param startDate The start date of the period
      * @param endDate The end date of the period
@@ -396,7 +495,8 @@ public class ReportDAO {
                 "AVG(total_amount) AS average_invoice, " +
                 "COUNT(DISTINCT customer_id) AS unique_customers " +
                 "FROM invoices " +
-                "WHERE DATE(invoice_date) BETWEEN ? AND ?";
+                "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
+                "AND payment_status = 'PAID'";
         
         try {
             conn = db.connect();
@@ -411,16 +511,8 @@ public class ReportDAO {
                 summary.put("averageInvoice", rs.getBigDecimal("average_invoice"));
                 summary.put("uniqueCustomers", rs.getInt("unique_customers"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeResources(rs, stmt, conn);
         }
         
         return summary;
@@ -446,6 +538,7 @@ public class ReportDAO {
                 "SUM(total_amount) AS daily_revenue " +
                 "FROM invoices " +
                 "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
+                "AND payment_status = 'PAID' " +
                 "GROUP BY DATE(invoice_date) " +
                 "ORDER BY DATE(invoice_date)";
         
@@ -464,25 +557,36 @@ public class ReportDAO {
                 
                 dailyRevenue.add(dayData);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeResources(rs, stmt, conn);
         }
         
         return dailyRevenue;
     }
     
     /**
+     * Helper method to close database resources safely.
+     * 
+     * @param rs ResultSet to close
+     * @param stmt Statement to close
+     * @param conn Connection to close
+     */
+    private void closeResources(ResultSet rs, Statement stmt, Connection conn) {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * Closes the database connection when done with this DAO.
      */
     public void close() {
-        db.closeConnect();
+        if (db != null) {
+            db.closeConnect();
+        }
     }
 }
