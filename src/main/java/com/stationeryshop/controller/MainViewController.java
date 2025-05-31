@@ -115,8 +115,18 @@ public class MainViewController {
     }
 
     @FXML
-    void gotoSupplierForm(ActionEvent event) {
-      
+    void gotoSupplierForm(ActionEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("admin".equals(role)) {
+            final String  REPORT_PATH = "/fxml/Report.fxml";
+            Parent root = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }else{
+            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @FXML
@@ -125,7 +135,10 @@ public class MainViewController {
         if("admin".equals(role)) {
             final String  REPORT_PATH = "/fxml/Report.fxml";
             Parent root = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
-
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }

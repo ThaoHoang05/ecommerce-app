@@ -100,7 +100,7 @@ public class Product {
         this.category = category;
     }
 
-    // ✅ Thêm để fix lỗi:
+    //
     public String getCategoryName() {
         return category != null ? category.getCategoryName() : "";
     }

@@ -37,7 +37,7 @@ public class InventoryController {
     }
     private void setTableInventory(){
         invLastStockedColumn.setCellValueFactory(new PropertyValueFactory<>("lastStocked"));
-        invQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        invQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
         invProductColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
         invIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         //inventoryList = FXCollections.observableArrayList(inventory.getLowStockItems(Integer.parseInt()));

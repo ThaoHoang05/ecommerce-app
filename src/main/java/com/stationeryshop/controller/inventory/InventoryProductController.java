@@ -158,7 +158,7 @@ public class InventoryProductController {
 
     private void setProductTable(){
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
-        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stockQuantity"));
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
         supplierColumn.setCellValueFactory(new PropertyValueFactory<>("supplier"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
