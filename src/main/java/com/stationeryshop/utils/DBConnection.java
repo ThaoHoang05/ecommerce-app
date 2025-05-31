@@ -1,4 +1,3 @@
-
 package com.stationeryshop.utils;
 
 import java.io.FileInputStream;
@@ -6,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -54,10 +51,11 @@ public class DBConnection {
     }
     public void closeConnect(){
         try{
-            stmt.close();
-            conn.close();
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
         }catch(Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }
