@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -53,11 +51,10 @@ public class DBConnection {
     }
     public void closeConnect(){
         try{
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
+            stmt.close();
+            conn.close();
         }catch(Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 }
