@@ -32,17 +32,17 @@
             <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
             <StackPane prefHeight="60.0" prefWidth="293.0">
                <children>
-                  <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                  <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="70.0" prefWidth="150.0" spacing="15.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <children>
-                        <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Log In" textFill="#f2f0f0">
+                        <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Log In" textFill="#f2f0f0">
                            <font>
                               <Font name="Georgia" size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="signupBtn" layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Sign Up" textFill="#f2f0f0">
+                        <Button fx:id="signupBtn" layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Sign Up" textFill="#f2f0f0">
                            <font>
                               <Font name="Georgia" size="20.0" />
                            </font>
@@ -51,12 +51,12 @@
                   </HBox>
                   <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="round-layout" stylesheets="@../styles/style.css" visible="false">
                      <children>
-                        <Label fx:id="customerName" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                        <Label fx:id="customerName" prefHeight="40.0" prefWidth="177.0" text="Customer Name">
                            <font>
-                              <Font name="Berlin Sans FB" size="18.0" />
+                              <Font name="Berlin Sans FB" size="14.0" />
                            </font>
                         </Label>
-                        <ImageView fx:id="customerAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="customerAvatar" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Customer.png" />
                            </image>
@@ -304,7 +304,7 @@
                               <Image url="@../images/WeChat.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="39.0" prefWidth="168.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
+                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
                            <font>
                               <Font name="Berlin Sans FB" size="20.0" />
                            </font>
