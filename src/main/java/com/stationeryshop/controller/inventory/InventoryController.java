@@ -40,6 +40,8 @@ public class InventoryController {
         invQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
         invProductColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
         invIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //inventoryList = FXCollections.observableArrayList(inventory.getLowStockItems(Integer.parseInt()));
+        inventoryList = inventory.getAllInventoryItems();
+        inventoryTable.setItems(inventoryList);
+
     }
 }

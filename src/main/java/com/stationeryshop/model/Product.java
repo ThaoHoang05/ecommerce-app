@@ -100,7 +100,6 @@ public class Product {
         this.category = category;
     }
 
-    //
     public String getCategoryName() {
         return category != null ? category.getCategoryName() : "";
     }

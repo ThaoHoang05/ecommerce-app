@@ -4,6 +4,7 @@ import com.stationeryshop.model.InventoryItem;
 import com.stationeryshop.model.Product;
 
 import com.stationeryshop.utils.DBConnection;
+import javafx.beans.Observable;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -12,6 +13,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class InventoryDAO {
 
@@ -138,8 +142,8 @@ public class InventoryDAO {
      * Bao gồm: ID sản phẩm, tên sản phẩm, số lượng tồn kho, ngày cập nhật cuối
      * @return Danh sách các InventoryItem
      */
-    public List<InventoryItem> getAllInventoryItems() {
-        List<InventoryItem> list = new ArrayList<>();
+    public ObservableList<InventoryItem> getAllInventoryItems() {
+        ObservableList<InventoryItem> list = FXCollections.observableArrayList();
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;

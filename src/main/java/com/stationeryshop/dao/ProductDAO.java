@@ -36,7 +36,7 @@ public class ProductDAO {
         this.db = new DBConnection(useradmin, pwdadmin);
     }
 
-    public void addProduct(Product product) {
+    public boolean addProduct(Product product) {
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "INSERT INTO products (product_name, description, price, category_id, image_url, created_at, updated_at) " +
@@ -57,6 +57,7 @@ public class ProductDAO {
             stmt.setTimestamp(7, Timestamp.valueOf(product.getUpdatedAt()));
             stmt.executeUpdate();
             System.out.println("Add product success");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -67,9 +68,10 @@ public class ProductDAO {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
-    public void updateProduct(Product product) {
+    public boolean updateProduct(Product product) {
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "UPDATE products SET product_name = ?, description = ?, price = ?, category_id = ?, image_url = ?, updated_at = ? " +
@@ -90,6 +92,7 @@ public class ProductDAO {
             stmt.setInt(7, product.getProductId());
             stmt.executeUpdate();
             System.out.println("Update product success");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -100,9 +103,10 @@ public class ProductDAO {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
-    public void deleteProduct(int productId) {
+    public boolean deleteProduct(int productId) {
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "DELETE FROM products WHERE product_id = ?";
@@ -113,6 +117,7 @@ public class ProductDAO {
             stmt.setInt(1, productId);
             stmt.executeUpdate();
             System.out.println("Delete product success");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -123,6 +128,7 @@ public class ProductDAO {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public Product getProductById(int productId) {
