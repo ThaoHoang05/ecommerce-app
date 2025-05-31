@@ -73,8 +73,40 @@ public class MainViewController {
 
     @FXML
     private HBox LoginHbox;
-  
-  
+
+    @FXML
+    private Button logoutBtn;
+
+    @FXML
+    private VBox accountVbox;
+
+    @FXML
+    private Label accountDropdownArrow;
+
+    @FXML
+    private HBox searchHbox;
+
+    @FXML
+    private VBox accountDropdown;
+
+    @FXML
+    private HBox allProductsTab;
+
+    @FXML
+    private HBox categoriesTab;
+
+    @FXML
+    private Button categoryBtn3;
+
+    @FXML
+    private Button categoryBtn2;
+
+    @FXML
+    private Button categoryBtn1;
+
+    @FXML
+    private HBox bestSellersTab;
+
     @FXML
     void gotoCartForm(ActionEvent event) {
     
@@ -109,8 +141,28 @@ public class MainViewController {
     }
 
     @FXML
+    void gotoHistoryForm(MouseEvent mouseEvent) {
+    }
+
+    @FXML
     void gotoAIChatbot(ActionEvent event) {
 
+    }
+
+    @FXML
+    void toggleLogoutDropdown(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void gotoShopViewForm(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void toggleCategoriesDropdown(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void handleLogout(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -165,4 +217,5 @@ public class MainViewController {
                 }
             }
         }
+
 }
