@@ -27,7 +27,7 @@
                <HBox alignment="CENTER_LEFT" spacing="15.0">
       <children>
                       <TextField fx:id="txtSearch" onKeyReleased="#handleSearch" promptText="Tìm kiếm theo tên, email hoặc số điện thoại..." style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 14px; -fx-pref-width: 350;" />
-                  <Button fx:id="supplierSearchBtn" onAction="#handleSearchSupplier" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Search">
+                  <Button fx:id="supplierSearchBtn" onAction="#handleSearchSupplier" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Search">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -92,14 +92,6 @@
                              <VBox spacing="20.0" style="-fx-padding: 5;">
                                 <children>
             
-                                    <!-- Supplier ID (Read-only) -->
-                                    <VBox spacing="8.0">
-               <children>
-                                           <Label style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-size: 15px;" text="Suppier's ID" />
-                                           <TextField fx:id="txtSupplierId" editable="false" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 14px; -fx-text-fill: #6c757d;" />
-               </children>
-                                    </VBox>
-            
                                     <!-- Supplier Name -->
                                     <VBox spacing="8.0">
                <children>
@@ -150,8 +142,8 @@
                       <!-- Action Buttons -->
                       <HBox alignment="CENTER" spacing="50.0">
          <children>
-                             <Button fx:id="editBtn" onAction="#handleEditSupplier" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-font-size: 17px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa" />
-                             <Button fx:id="deleteBtn" onAction="#handleDeleteSupplier" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-size: 17px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa" />
+                             <Button fx:id="editBtn" onAction="#handleEditSupplier" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-font-size: 17px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Update" />
+                             <Button fx:id="deleteBtn" onAction="#handleDeleteSupplier" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-size: 17px; -fx-font-weight: bold; -fx-padding: 12 24; -fx-background-radius: 8; -fx-cursor: hand;" text="Delete" />
          </children>
                       </HBox>
       
