@@ -10,13 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -108,15 +106,19 @@ public class MainViewController {
     private HBox bestSellersTab;
 
     @FXML
+    private AnchorPane mainPane;
+
+    @FXML
     void gotoCartForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("customer".equals(role)) {
             final String CAR_PATH = "/fxml/Cart.fxml";
-            Parent root = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            Pane cartPane = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
+            AnchorPane.setTopAnchor(cartPane, 0.0);
+            AnchorPane.setBottomAnchor(cartPane, 0.0);
+            AnchorPane.setLeftAnchor(cartPane, 0.0);
+            AnchorPane.setRightAnchor(cartPane, 0.0);
+            mainPane.getChildren().addAll(cartPane);
         }
         else{
             JOptionPane.showMessageDialog(null,"You are not a customer");
@@ -135,27 +137,29 @@ public class MainViewController {
         if("admin".equals(role)) {
             final String  PRODUCT_PATH = "/fxml/ProductForm.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
-            Parent root = loader.load();
-            Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            ProductController controller = loader.getController();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            Pane productPane = loader.load();
+            AnchorPane.setTopAnchor(productPane, 0.0);
+            AnchorPane.setBottomAnchor(productPane, 0.0);
+            AnchorPane.setLeftAnchor(productPane, 0.0);
+            AnchorPane.setRightAnchor(productPane, 0.0);
+            mainPane.getChildren().addAll(productPane);
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 
     @FXML
-    void gotoSupplierForm(ActionEvent event) throws IOException {
+    void gotoSupplierForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
-            final String  REPORT_PATH = "/fxml/Report.fxml";
-            Parent root = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
-            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            final String  REPORT_PATH = "/fxml/Supplier.fxml";
+            BorderPane supplierPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
+            AnchorPane.setTopAnchor(supplierPane, 0.0);
+            AnchorPane.setBottomAnchor(supplierPane, 0.0);
+            AnchorPane.setLeftAnchor(supplierPane, 0.0);
+            AnchorPane.setRightAnchor(supplierPane, 0.0);
+            mainPane.getChildren().addAll(supplierPane);
+
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -166,11 +170,12 @@ public class MainViewController {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
             final String  REPORT_PATH = "/fxml/Report.fxml";
-            Parent root = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
-            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            ScrollPane reportPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
+            AnchorPane.setTopAnchor(reportPane, 0.0);
+            AnchorPane.setBottomAnchor(reportPane, 0.0);
+            AnchorPane.setLeftAnchor(reportPane, 0.0);
+            AnchorPane.setRightAnchor(reportPane, 0.0);
+            mainPane.getChildren().addAll(reportPane);
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
