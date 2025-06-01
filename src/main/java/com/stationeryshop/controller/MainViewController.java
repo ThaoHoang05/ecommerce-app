@@ -117,7 +117,7 @@ public class MainViewController {
     void gotoProductForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
-            final String  PRODUCT_PATH = "/fxml/ProductForm.fxml";
+            final String  PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
             Parent root = loader.load();
             Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
