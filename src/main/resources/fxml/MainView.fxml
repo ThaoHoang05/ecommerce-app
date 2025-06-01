@@ -35,7 +35,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <VBox fx:id="accountDropdown" alignment="TOP_CENTER" prefHeight="49.0" prefWidth="266.0" spacing="2.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3); -fx-padding: 5;">
+                  <VBox fx:id="accountDropdown" alignment="TOP_CENTER" prefHeight="41.0" prefWidth="312.0" spacing="2.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3); -fx-padding: 5;">
                      <children>
                         <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#handleLogout" prefHeight="20.0" prefWidth="145.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Log Out">
                            <font>
