@@ -55,7 +55,7 @@
                   <Font name="Georgia Bold" size="50.0" />
                </font>
             </Label>
-            <Region fx:id="spacer" prefHeight="109.0" prefWidth="0.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
+            <Region fx:id="spacer" prefHeight="109.0" prefWidth="0.0" style="-fx-background-color: light gray; -fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="109.0" prefWidth="327.0" spacing="15.0">
                <children>
                   <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="Log In">
@@ -314,7 +314,7 @@
                               <Image url="@../images/WeChat.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to bottom, #FF6B35, #FF8E53); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: regular; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="AI Chatbot">
+                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to bottom, #FF6B35, #FF8E53); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: normal; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="AI Chatbot">
                            <font>
                               <Font name="Berlin Sans FB" size="18.0" />
                            </font>
@@ -330,6 +330,6 @@
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
