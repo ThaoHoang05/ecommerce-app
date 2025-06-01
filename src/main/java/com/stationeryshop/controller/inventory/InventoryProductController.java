@@ -15,12 +15,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import com.stationeryshop.model.Product;
 import com.stationeryshop.model.Category;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.util.List;
 
 public class InventoryProductController {
 
@@ -46,7 +48,7 @@ public class InventoryProductController {
     private Button deleteProductBtn;
 
     @FXML
-    private TableColumn<Product, Integer> stockColumn; // Fixed: Changed from InventoryItem to Product
+    private TableColumn<Product, Integer> stockColumn;
 
     @FXML
     private Button updateProductBtn;
@@ -76,7 +78,7 @@ public class InventoryProductController {
     private TableColumn<Product, String> supplierColumn;
 
     @FXML
-    private TableColumn<Product, Double> priceColumn; // Fixed: Changed from Float to Double
+    private TableColumn<Product, Double> priceColumn;
 
     @FXML
     private TableColumn<Product, Integer> idColumn;
@@ -269,6 +271,9 @@ public class InventoryProductController {
         // Load categories into ComboBox
         loadCategories();
 
+        // Set up category ComboBox display
+        setupCategoryComboBox();
+
         // Add table selection listener
         productTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -277,6 +282,58 @@ public class InventoryProductController {
                     }
                 }
         );
+    }
+
+    private void setupCategoryComboBox() {
+        // Set up StringConverter for proper display of Category objects
+        categoryComboBox.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category category) {
+                if (category == null) {
+                    return null;
+                } else {
+                    return category.getCategoryName();
+                }
+            }
+
+            @Override
+            public Category fromString(String string) {
+                // This is used when the user types in the ComboBox (if editable)
+                // For now, return null as we're using selection only
+                return null;
+            }
+        });
+
+        // Set up cell factory for proper display in the dropdown
+        categoryComboBox.setCellFactory(new Callback<ListView<Category>, ListCell<Category>>() {
+            @Override
+            public ListCell<Category> call(ListView<Category> param) {
+                return new ListCell<Category>() {
+                    @Override
+                    protected void updateItem(Category item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                        } else {
+                            setText(item.getCategoryName());
+                        }
+                    }
+                };
+            }
+        });
+
+        // Set up button cell for the ComboBox display
+        categoryComboBox.setButtonCell(new ListCell<Category>() {
+            @Override
+            protected void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Chọn danh mục...");
+                } else {
+                    setText(item.getCategoryName());
+                }
+            }
+        });
     }
 
     private void setProductTable() {
@@ -290,10 +347,15 @@ public class InventoryProductController {
         // Custom cell value factory for stock column
         stockColumn.setCellValueFactory(cellData -> {
             Product product = cellData.getValue();
-            InventoryItem inventoryItem = inventory.getInventoryByProductId(product.getProductId());
-            return new javafx.beans.property.SimpleIntegerProperty(
-                    inventoryItem != null ? inventoryItem.getQuantityOnHand() : 0
-            ).asObject();
+            try {
+                InventoryItem inventoryItem = inventory.getInventoryByProductId(product.getProductId());
+                return new javafx.beans.property.SimpleIntegerProperty(
+                        inventoryItem != null ? inventoryItem.getQuantityOnHand() : 0
+                ).asObject();
+            } catch (Exception e) {
+                System.out.println("Error loading inventory for product " + product.getProductId() + ": " + e.getMessage());
+                return new javafx.beans.property.SimpleIntegerProperty(0).asObject();
+            }
         });
 
         // Custom cell value factory for supplier column
@@ -301,7 +363,12 @@ public class InventoryProductController {
             Product product = cellData.getValue();
             // This assumes you have a method to get supplier by product
             // You might need to modify this based on your actual data structure
-            return new javafx.beans.property.SimpleStringProperty("N/A"); // Placeholder
+            try {
+                // TODO: Implement actual supplier lookup logic
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            } catch (Exception e) {
+                return new javafx.beans.property.SimpleStringProperty("Error");
+            }
         });
 
         refreshProductTable();
@@ -309,52 +376,84 @@ public class InventoryProductController {
 
     private void loadCategories() {
         try {
-            ObservableList<Category> categories = FXCollections.observableArrayList(
-                    category.getAllCategories()
-            );
-            categoryComboBox.setItems(categories);
+            List<Category> categoryList = category.getAllCategories();
+            if (categoryList != null && !categoryList.isEmpty()) {
+                ObservableList<Category> categories = FXCollections.observableArrayList(categoryList);
+                categoryComboBox.setItems(categories);
+            } else {
+                showErrorAlert("Cảnh báo", "Không có danh mục nào trong hệ thống. Vui lòng thêm danh mục trước!");
+            }
         } catch (Exception e) {
             showErrorAlert("Lỗi", "Không thể tải danh sách danh mục: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void refreshProductTable() {
         try {
-            productList = FXCollections.observableArrayList(product.getAllProductsWithCategory());
-            productTable.setItems(productList);
+            List<Product> products = product.getAllProductsWithCategory();
+            if (products != null) {
+                productList = FXCollections.observableArrayList(products);
+                productTable.setItems(productList);
+            }
         } catch (Exception e) {
             showErrorAlert("Lỗi", "Không thể tải danh sách sản phẩm: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void populateFormWithProduct(Product selectedProduct) {
-        productIdField.setText(String.valueOf(selectedProduct.getProductId()));
-        productNameField.setText(selectedProduct.getProductName());
-        descriptionArea.setText(selectedProduct.getDescription());
-        priceField.setText(String.valueOf(selectedProduct.getPrice()));
-
-        // Set category
-        categoryComboBox.getSelectionModel().select(selectedProduct.getCategory());
-
-        // Load image if exists
-        if (selectedProduct.getImageUrl() != null && !selectedProduct.getImageUrl().isEmpty()) {
-            try {
-                Image image = new Image(selectedProduct.getImageUrl());
-                productImageView.setImage(image);
-                imageUrl = selectedProduct.getImageUrl();
-            } catch (Exception e) {
-                System.out.println("Không thể tải hình ảnh: " + e.getMessage());
-            }
-        }
-
-        // Load stock quantity
         try {
-            InventoryItem inventoryItem = inventory.getInventoryByProductId(selectedProduct.getProductId());
-            if (inventoryItem != null) {
-                stockQuantityField.setText(String.valueOf(inventoryItem.getQuantityOnHand()));
+            productIdField.setText(String.valueOf(selectedProduct.getProductId()));
+            productNameField.setText(selectedProduct.getProductName());
+            descriptionArea.setText(selectedProduct.getDescription());
+            priceField.setText(String.valueOf(selectedProduct.getPrice()));
+
+            // Set category in ComboBox
+            Category productCategory = selectedProduct.getCategory();
+            if (productCategory != null) {
+                // Find the matching category in the ComboBox items
+                ObservableList<Category> categories = categoryComboBox.getItems();
+                for (Category cat : categories) {
+                    if (cat.getCategoryId() == productCategory.getCategoryId()) {
+                        categoryComboBox.getSelectionModel().select(cat);
+                        break;
+                    }
+                }
+            } else {
+                categoryComboBox.getSelectionModel().clearSelection();
+            }
+
+            // Load image if exists
+            if (selectedProduct.getImageUrl() != null && !selectedProduct.getImageUrl().isEmpty()) {
+                try {
+                    Image image = new Image(selectedProduct.getImageUrl());
+                    productImageView.setImage(image);
+                    imageUrl = selectedProduct.getImageUrl();
+                } catch (Exception e) {
+                    System.out.println("Không thể tải hình ảnh: " + e.getMessage());
+                    productImageView.setImage(null);
+                    imageUrl = null;
+                }
+            } else {
+                productImageView.setImage(null);
+                imageUrl = null;
+            }
+
+            // Load stock quantity
+            try {
+                InventoryItem inventoryItem = inventory.getInventoryByProductId(selectedProduct.getProductId());
+                if (inventoryItem != null) {
+                    stockQuantityField.setText(String.valueOf(inventoryItem.getQuantityOnHand()));
+                } else {
+                    stockQuantityField.setText("0");
+                }
+            } catch (Exception e) {
+                System.out.println("Không thể tải thông tin tồn kho: " + e.getMessage());
+                stockQuantityField.setText("0");
             }
         } catch (Exception e) {
-            System.out.println("Không thể tải thông tin tồn kho: " + e.getMessage());
+            showErrorAlert("Lỗi", "Có lỗi xảy ra khi tải thông tin sản phẩm: " + e.getMessage());
         }
     }
 
@@ -373,6 +472,10 @@ public class InventoryProductController {
         }
         if (stockQuantityField.getText().trim().isEmpty()) {
             showErrorAlert("Lỗi", "Vui lòng nhập số lượng tồn kho!");
+            return false;
+        }
+        if (categoryComboBox.getSelectionModel().getSelectedItem() == null) {
+            showErrorAlert("Lỗi", "Vui lòng chọn danh mục sản phẩm!");
             return false;
         }
         return true;
