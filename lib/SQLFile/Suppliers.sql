@@ -1,4 +1,3 @@
--- Active: 1743070445196@@127.0.0.1@5432@stationeryshop
 
 CREATE TABLE suppliers (
     supplier_id SERIAL PRIMARY KEY,
