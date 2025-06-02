@@ -1,0 +1,291 @@
+.cart-header {
+    -fx-background-color: linear-gradient(to right, #ff6b6b, #ff8e53);
+    -fx-background-radius: 12px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.cart-title {
+    -fx-font-family: "Arial Black", Arial, sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-letter-spacing: 1px;
+}
+
+.cart-subtitle {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-style: italic;
+}
+
+/* Scroll Pane */
+.cart-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.cart-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.cart-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8px;
+}
+
+.cart-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 4px;
+}
+
+.cart-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff6b6b;
+    -fx-background-radius: 4px;
+}
+
+/* Cart Items Container */
+.cart-items-container {
+    -fx-padding: 10px 0px;
+}
+
+/* Individual Cart Item */
+.cart-item {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 15, 0, 0, 3);
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+}
+
+.cart-item:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 20, 0, 0, 5);
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
+}
+
+/* Product Image */
+.product-image {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+/* Product Info */
+.product-name {
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.product-description {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+    -fx-wrap-text: true;
+    -fx-max-width: 350px;
+}
+
+.product-category, .product-supplier {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #34495e;
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+}
+
+.product-category {
+    -fx-background-color: #e8f5e8;
+    -fx-text-fill: #27ae60;
+}
+
+.product-supplier {
+    -fx-background-color: #e8f4fd;
+    -fx-text-fill: #3498db;
+}
+
+/* Price Section */
+.product-price {
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+}
+
+.price-label {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 11px;
+    -fx-text-fill: #95a5a6;
+}
+
+/* Quantity Controls */
+.quantity-label {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #34495e;
+    -fx-font-weight: bold;
+}
+
+.quantity-container {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8px;
+    -fx-padding: 2px;
+}
+
+.quantity-btn {
+    -fx-background-color: #ff6b6b;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    -fx-cursor: hand;
+}
+
+.quantity-btn:hover {
+    -fx-background-color: #ff5252;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.quantity-btn:pressed {
+    -fx-background-color: #e53935;
+}
+
+.quantity-field {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-pref-height: 30px;
+}
+
+.quantity-field:focused {
+    -fx-border-color: #ff6b6b;
+    -fx-border-width: 2px;
+}
+
+/* Subtotal and Remove */
+.subtotal-price {
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.remove-btn {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 35px;
+    -fx-pref-height: 35px;
+    -fx-cursor: hand;
+}
+
+.remove-btn:hover {
+    -fx-background-color: #c0392b;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.remove-btn:pressed {
+    -fx-background-color: #a93226;
+}
+
+/* Cart Summary */
+.cart-summary {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);
+}
+
+.summary-label {
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: #34495e;
+}
+
+.summary-value {
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-min-width: 80px;
+}
+
+.total-label {
+    -fx-font-family: "Arial Black", Arial, sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.total-value {
+    -fx-font-family: "Arial Black", Arial, sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+    -fx-min-width: 100px;
+}
+
+/* Action Buttons */
+.continue-btn {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25px;
+    -fx-padding: 12px 25px;
+    -fx-cursor: hand;
+}
+
+.continue-btn:hover {
+    -fx-background-color: #7f8c8d;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.checkout-btn {
+    -fx-background-color: linear-gradient(to right, #ff6b6b, #ff8e53);
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Bold", Arial, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25px;
+    -fx-padding: 15px 35px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,107,107,0.3), 10, 0, 0, 3);
+}
+
+.checkout-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,107,107,0.4), 15, 0, 0, 5);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.checkout-btn:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Responsive adjustments */
+.cart-item .product-description {
+    -fx-pref-width: 300px;
+}
+
+/* Animation effects */
+.cart-item, .quantity-btn, .remove-btn, .continue-btn, .checkout-btn {
+    -fx-transition: all 0.2s ease-in-out;
+}

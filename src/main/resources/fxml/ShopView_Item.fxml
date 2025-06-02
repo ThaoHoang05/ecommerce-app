@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" maxWidth="271.0" minWidth="220.0" prefHeight="448.0" prefWidth="271.0" spacing="8.0" style="-fx-background-color: #ffffff; -fx-border-color: #e1e8ed; -fx-border-width: 1; -fx-border-radius: 12px; -fx-background-radius: 12px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.ShopView_ItemController">
+    <children>
+        <!-- Product Image Container -->
+        <StackPane prefHeight="180.0" prefWidth="220.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px 12px 0 0;">
+            <children>
+                <ImageView fx:id="productImage" fitHeight="160.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
+
+                <!-- Category Badge -->
+                <Label fx:id="categoryLbl" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 4px 8px; -fx-background-radius: 12px;" StackPane.alignment="TOP_RIGHT">
+                    <StackPane.margin>
+                        <Insets right="10.0" top="10.0" />
+                    </StackPane.margin>
+                </Label>
+            </children>
+        </StackPane>
+
+        <!-- Product Information -->
+        <VBox alignment="TOP_CENTER" spacing="8.0" style="-fx-padding: 12px;">
+            <children>
+                <!-- Product Name -->
+                <Label fx:id="productNameLbl" alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-wrap-text: true; -fx-text-alignment: center;" text="Product Name Here" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+
+                <!-- Supplier Information -->
+                <HBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" text="by" />
+                        <Label fx:id="productSupplierLbl" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #e67e22;" text="Supplier Name" />
+                    </children>
+                </HBox>
+
+                <!-- Price Section -->
+                <VBox alignment="CENTER" spacing="2.0">
+                    <children>
+                        <HBox alignment="CENTER" spacing="8.0">
+                            <children>
+                                <Label fx:id="productPriceLbl" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;" text="₫">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            <HBox alignment="CENTER" spacing="10.0">
+               <children>
+      
+                                  <!-- Stock Quantity -->
+                      <Label fx:id="productQuantityLabel" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+                  <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;" text="Remaining" />
+               </children>
+            </HBox>
+            </children>
+        </VBox>
+
+        <!-- Action Buttons -->
+        <VBox spacing="8.0" style="-fx-padding: 0 12px 12px 12px;">
+            <children>
+                <!-- Add to Cart Button -->
+                <Button fx:id="addToCartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="Add to Cart" />
+
+                <!-- View Details Button -->
+                <Button fx:id="viewDetailsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #FF6B35; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8px; -fx-border-color: #FF6B35; -fx-border-width: 1px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="View Details" />
+            </children>
+        </VBox>
+    </children>
+
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+   <opaqueInsets>
+      <Insets bottom="10.0" top="10.0" />
+   </opaqueInsets>
+</VBox>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="151.0" prefWidth="865.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #e9ecef; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, #00000015, 8, 0, 0, 2); -fx-cursor: hand;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.History_Order_ItemController">
+   <children>
+   
+       <!-- Order Status Icon -->
+       <VBox alignment="CENTER" spacing="5.0">
+      <children>
+              <HBox alignment="CENTER" style="-fx-background-color: #28a745; -fx-background-radius: 50; -fx-pref-width: 50; -fx-pref-height: 50; -fx-min-width: 50; -fx-min-height: 50; -fx-max-width: 50; -fx-max-height: 50;">
+                 <children>
+                     <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="✓" />
+                 </children>
+              </HBox>
+              <Label style="-fx-font-size: 10px; -fx-text-fill: #28a745; -fx-font-weight: bold;" text="HOÀN THÀNH" />
+      </children>
+       </VBox>
+   
+       <!-- Order Information -->
+       <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+      <children>
+      
+              <!-- Order Header -->
+              <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="593.0" spacing="15.0">
+         <children>
+                     <Label fx:id="orderID_Lbl" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="#ID" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label style="-fx-background-color: #e3f2fd; -fx-text-fill: #1976d2; -fx-padding: 4 10; -fx-background-radius: 10; -fx-font-size: 12px; -fx-font-weight: bold;" text="Online Order" />
+         </children>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+              </HBox>
+      
+              <!-- Order Summary -->
+              <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="563.0" spacing="20.0">
+         <children>
+                     <VBox prefHeight="53.0" prefWidth="137.0" spacing="4.0">
+                        <children>
+                            <Label style="-fx-font-size: 14px; -fx-text-fill: #6c757d; -fx-font-weight: bold;" text="Total" />
+                            <Label fx:id="lblTotalAmount" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;" text="Sotien" />
+                        </children>
+                     </VBox>
+         
+                     <Separator orientation="VERTICAL" style="-fx-background-color: #e9ecef;" />
+         
+                     <VBox spacing="4.0">
+            <children>
+                            <Label style="-fx-font-size: 14px; -fx-text-fill: #6c757d; -fx-font-weight: bold;" text="Date" />
+                            <Label fx:id="orderDateLbl" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #495057;" text="xx/yy/zz" />
+            </children>
+                     </VBox>
+         
+                     <Region prefHeight="68.0" prefWidth="268.0" HBox.hgrow="ALWAYS" />
+         </children>
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+              </HBox>
+      </children>
+   
+       </VBox>
+   
+       <!-- Action Button -->
+       <VBox alignment="CENTER" spacing="10.0">
+      <children>
+              <Button fx:id="viewDetailsBtn" onAction="#handleViewDetails" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 15 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-pref-width: 120;" text="📋  Details" />
+      </children>
+       </VBox>
+   </children>
+
+</HBox>

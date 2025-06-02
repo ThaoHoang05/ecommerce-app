@@ -1,10 +1,5 @@
 package com.stationeryshop.dao;
 
-import com.stationeryshop.model.Supplier;
-import com.stationeryshop.model.User;
-import com.stationeryshop.utils.DBConnection;
-import com.stationeryshop.utils.Session;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,17 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stationeryshop.model.Supplier;
+import com.stationeryshop.model.User;
+import com.stationeryshop.utils.DBConnection;
+import com.stationeryshop.utils.Session;
+
 public class SupplierDAO {
     private DBConnection dbConnection;
 
     // Khởi tạo với username và password cho DBConnection
     public SupplierDAO() {
-        String role = Session.getCurrentRole();
-        if(role.equals("admin")) {
-            User user = Session.getCurrentUser();
-            String username = user.getUsername();
-            String password = user.getPwd_hash();
-        this.dbConnection = new DBConnection(username, password);}
+        dbConnection = new DBConnection();
     }
 
     // Thêm nhà cung cấp
@@ -134,7 +129,7 @@ public class SupplierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(rs, stmt, conn);
+            closeResources(stmt, conn, rs);
         }
         return suppliers;
     }
@@ -173,6 +168,43 @@ public class SupplierDAO {
             closeResources(rs, stmt, conn);
         }
         return null;
+    }
+
+    // Tìm nhà cung cấp theo tên
+    public List<Supplier> getSuppliersByName(String supplierName) {
+        List<Supplier> suppliers = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnection.connect();
+            if (conn == null) {
+                throw new SQLException("Không thể kết nối tới cơ sở dữ liệu");
+            }
+
+            String sql = "SELECT * FROM suppliers WHERE supplier_name LIKE ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%" + supplierName + "%");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Supplier supplier = new Supplier();
+                supplier.setSupplierId(rs.getInt("supplier_id"));
+                supplier.setSupplierName(rs.getString("supplier_name"));
+                supplier.setContactPerson(rs.getString("contact_person"));
+                supplier.setEmail(rs.getString("email"));
+                supplier.setPhone(rs.getString("phone"));
+                supplier.setAddress(rs.getString("address"));
+                supplier.setCreatedAt(rs.getTimestamp("created_at"));
+                supplier.setUpdatedAt(rs.getTimestamp("updated_at"));
+                suppliers.add(supplier);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        return suppliers;
     }
 
     // Đóng tài nguyên

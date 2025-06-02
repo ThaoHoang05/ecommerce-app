@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane prefHeight="768" prefWidth="1366" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.ProductController">
+
+    <top>
+        <VBox prefHeight="80.0" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Header -->
+                <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1200.0" style="-fx-background-color: #ecf0f0;" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label text="INVENTORY MANAGEMENT" textFill="#a14b23">
+                            <font>
+                                <Font name="Georgia Bold" size="28.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane prefHeight="700.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <!-- Tab Sản phẩm -->
+                <Tab text="Sản phẩm">
+                    <content>
+                        <fx:include source="InventoryProductTab.fxml" />
+                    </content>
+                </Tab>
+                <!-- Tab quản lý danh mục -->
+                <Tab text="Danh mục">
+                    <content>
+                        <fx:include source="InventoryCategoryTab.fxml" />
+                    </content>
+                </Tab>
+                <!-- Tab quản lý tồn kho -->
+                <Tab text="Tồn kho">
+                    <content>
+                        <fx:include source="InventoryTab.fxml" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+
+    <padding>
+        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+    </padding>
+</BorderPane>
