@@ -1,14 +1,14 @@
 package com.stationeryshop.controller.inventory;
 
 import com.stationeryshop.dao.InventoryDAO;
-import com.stationeryshop.dao.ProductDAO;
 import com.stationeryshop.model.InventoryItem;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.time.LocalDate;
+
 
 public class InventoryController {
 
@@ -16,7 +16,7 @@ public class InventoryController {
     private TableView<InventoryItem> inventoryTable;
 
     @FXML
-    private TableColumn<InventoryItem, LocalDate> invLastStockedColumn;
+    private TableColumn<InventoryItem, String> invLastStockedColumn;
 
     @FXML
     private TableColumn<InventoryItem, Integer> invQuantityColumn;
@@ -29,46 +29,17 @@ public class InventoryController {
 
     private ObservableList<InventoryItem> inventoryList;
 
-    private ProductDAO productDAO;
-    private InventoryDAO inventoryDAO = new InventoryDAO();
+    private InventoryDAO inventory = new InventoryDAO();
 
     public void initialize(){
-        // Set up table columns
+        //setTable
         setTableInventory();
-        // Load data into table
-        loadInventoryData();
     }
-
     private void setTableInventory(){
-        // Set up cell value factories for each column
-        invIdColumn.setCellValueFactory(new PropertyValueFactory<>("inventoryId"));
-        invProductColumn.setCellValueFactory(cellData -> {
-            // Get product name from the product object
-            String productName = cellData.getValue().getProduct().getProductName();
-            return new javafx.beans.property.SimpleStringProperty(productName);
-        });
-        invQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
-        invLastStockedColumn.setCellValueFactory(new PropertyValueFactory<>("lastStockedDate"));
-    }
-
-    private void loadInventoryData(){
-        // Load inventory data from database
-        inventoryList = inventoryDAO.getAllInventoryItems();
-        inventoryTable.setItems(inventoryList);
-    }
-
-    // Method to refresh the table data
-    public void refreshTable(){
-        loadInventoryData();
-    }
-
-    // Method to get selected inventory item
-    public InventoryItem getSelectedInventoryItem(){
-        return inventoryTable.getSelectionModel().getSelectedItem();
-    }
-
-    // Method to update table after data changes
-    public void updateTable(){
-        inventoryTable.refresh();
+        invLastStockedColumn.setCellValueFactory(new PropertyValueFactory<>("lastStocked"));
+        invQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        invProductColumn.setCellValueFactory(new PropertyValueFactory<>("product"));
+        invIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //inventoryList = FXCollections.observableArrayList(inventory.getLowStockItems(Integer.parseInt()));
     }
 }
