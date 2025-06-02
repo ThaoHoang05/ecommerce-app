@@ -10,10 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane prefHeight="600" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.InventoryProductController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.InventoryProductController">
     <left>
         <!-- Form thông tin sản phẩm -->
-        <VBox prefWidth="350.0" spacing="6.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 0 1 0 0;">
+        <ScrollPane fitToHeight="true" prefWidth="350.0">
+        <VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="350.0" spacing="5.0" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 0 1 0 0;">
             <children>
                 <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="THÔNG TIN SẢN PHẨM">
                     <font>
@@ -87,12 +88,24 @@
                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
             </padding>
         </VBox>
+        </ScrollPane>
     </left>
 
     <center>
         <!-- Bảng danh sách sản phẩm -->
-        <VBox spacing="4.0">
+        <VBox spacing="15.0">
             <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1200.0" spacing="8.0" style="-fx-background-color: #ecf0f1;">
+               <children>
+                  <Label text="Search Product:" />
+                  <TextField fx:id="searchField" prefWidth="250.0" promptText="Nhập tên sản phẩm..." />
+                  <Button fx:id="searchBtn" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Search" />
+                  <Button fx:id="refreshBtn" onAction="#handleRefresh" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" text="Refresh" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="12.0" right="12.0" top="8.0" />
+               </padding>
+            </HBox>
                 <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="DANH SÁCH SẢN PHẨM">
                     <font>
                         <Font name="System Bold" size="18.0" />

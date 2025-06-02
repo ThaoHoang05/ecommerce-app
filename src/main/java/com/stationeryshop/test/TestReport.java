@@ -8,16 +8,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TestProductForm extends Application {
+public class TestReport extends Application {
     public void start(Stage primaryStage) throws IOException {
-        final String PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
-        Parent root = fxmlLoader.load();
-        primaryStage.setTitle("Product Form");
+        final String REPORT_PATH = "/fxml/Report.fxml";
+        Parent root = FXMLLoader.load(getClass().getResource(REPORT_PATH));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Test Report");
         primaryStage.show();
-
     }
     public static void main(String[] args) {
         launch(args);
