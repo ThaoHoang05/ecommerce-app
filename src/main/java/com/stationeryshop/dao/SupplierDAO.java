@@ -17,7 +17,12 @@ public class SupplierDAO {
 
     // Khởi tạo với username và password cho DBConnection
     public SupplierDAO() {
-        dbConnection = new DBConnection();
+        String role = Session.getCurrentRole();
+        if("admin".equals(role)) {
+            User user = Session.getCurrentUser();
+            String username = user.getUsername();
+            String password = user.getPwd_hash();
+        this.dbConnection = new DBConnection(username, password);}
     }
 
     // Thêm nhà cung cấp
@@ -129,7 +134,7 @@ public class SupplierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(stmt, conn, rs);
+            closeResources(rs, stmt, conn);
         }
         return suppliers;
     }

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class TestProductForm extends Application {
     public void start(Stage primaryStage) throws IOException {
-        final String PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
+        final String PRODUCT_PATH = "/fxml/ProductForm.fxml";
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Product Form");
