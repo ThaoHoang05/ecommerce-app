@@ -1,15 +1,15 @@
-INSERT INTO categories (category_name, description)
-VALUES 
-  ('Bút viết', 'Các loại bút như bút bi, bút chì, bút máy'),
-  ('Giấy và sổ', 'Giấy in, giấy A4, sổ tay, sổ ghi chú'),
-  ('Dụng cụ văn phòng', 'Kéo, bấm kim, đồ bấm ghim, dao rọc giấy'),
-  ('Lưu trữ hồ sơ', 'Bìa hồ sơ, kẹp file, hộp tài liệu'),
-  ('Văn phòng phẩm khác', 'Các loại văn phòng phẩm khác'),
-  ('Máy tính và phụ kiện', 'Máy tính bỏ túi, pin, sạc điện thoại'),
-  ('Dụng cụ học tập', 'Thước kẻ, com-pa, bảng nhỏ, bút dạ quang'),
-  ('Băng keo và keo dán', 'Băng keo trong, băng keo nâu, keo dán'),
-  ('Nhãn và tem', 'Nhãn dán, tem thư, nhãn in'),
-  ('Dụng cụ nghệ thuật', 'Bút màu, cọ vẽ, giấy vẽ, màu nước');
+INSERT INTO categories (category_id, category_name, description)
+VALUES
+    (1, 'Bút viết', 'Các loại bút như bút bi, bút chì, bút máy'),
+    (2, 'Giấy và sổ', 'Giấy in, giấy A4, sổ tay, sổ ghi chú'),
+    (3, 'Dụng cụ văn phòng', 'Kéo, bấm kim, đồ bấm ghim, dao rọc giấy'),
+    (4, 'Lưu trữ hồ sơ', 'Bìa hồ sơ, kẹp file, hộp tài liệu'),
+    (5, 'Văn phòng phẩm khác', 'Các loại văn phòng phẩm khác'),
+    (6, 'Máy tính và phụ kiện', 'Máy tính bỏ túi, pin, sạc điện thoại'),
+    (7, 'Dụng cụ học tập', 'Thước kẻ, com-pa, bảng nhỏ, bút dạ quang'),
+    (8, 'Băng keo và keo dán', 'Băng keo trong, băng keo nâu, keo dán'),
+    (9, 'Nhãn và tem', 'Nhãn dán, tem thư, nhãn in'),
+    (10, 'Dụng cụ nghệ thuật', 'Bút màu, cọ vẽ, giấy vẽ, màu nước');
 
 INSERT INTO products (product_name, description, price, category_id, image_url)
 VALUES
