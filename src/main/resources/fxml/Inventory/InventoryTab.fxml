@@ -8,8 +8,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.InventoryController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.inventory.InventoryController">
     <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="1200.0" spacing="8.0" style="-fx-background-color: #ecf0f1;">
+         <children>
+            <Label text="Search Product:" />
+            <TextField fx:id="searchField" prefWidth="250.0" promptText="Nhập tên sản phẩm..." />
+            <Button fx:id="searchBtn" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Search" />
+            <Button fx:id="refreshBtn" onAction="#handleRefresh" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" text="Refresh" />
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="12.0" right="12.0" top="8.0" />
+         </padding>
+      </HBox>
         <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="QUẢN LÝ TỒN KHO">
             <font>
                 <Font name="System Bold" size="18.0" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.net.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
@@ -11,47 +12,13 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.MainViewController">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="20.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" prefHeight="88.0" prefWidth="1315.0" spacing="20.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <Label alignment="CENTER" prefHeight="67.0" prefWidth="250.0" text="Stationery" textFill="#ff5060">
-               <font>
-                  <Font name="Edwardian Script ITC" size="48.0" />
-               </font>
-            </Label>
-            <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="36.0" prefWidth="6.0" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="41.0" prefWidth="308.0" spacing="5.0" styleClass="round-layout" stylesheets="@../styles/style.css">
+            <VBox fx:id="accountVbox" onMouseExited="#hideLogoutDropdown">
                <children>
-                  <TextField fx:id="searchitemField" prefHeight="39.0" prefWidth="240.0" promptText="Search" styleClass="transparent" stylesheets="@../styles/style.css" />
-                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Search.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <Region fx:id="spacer" prefHeight="60.0" prefWidth="442.0" style="-fx-background-color: light gray;" HBox.hgrow="ALWAYS" />
-            <StackPane prefHeight="60.0" prefWidth="293.0">
-               <children>
-                  <HBox fx:id="LoginHbox" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
+                  <HBox fx:id="AccountHbox" alignment="CENTER" onMouseEntered="#toggleLogoutDropdown" prefHeight="50.0" prefWidth="328.0" style="-fx-background-color: rgba(255,107,53,0.05);" stylesheets="@../styles/style.css">
                      <children>
-                        <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Log In" textFill="#f2f0f0">
-                           <font>
-                              <Font name="Georgia" size="20.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="signupBtn" layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="45.0" prefWidth="100.0" style="-fx-background-color: FF6347;" text="Sign Up" textFill="#f2f0f0">
-                           <font>
-                              <Font name="Georgia" size="20.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="AccountHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" stylesheets="@../styles/style.css">
-                     <children>
-                        <Label fx:id="customerName" alignment="CENTER" prefHeight="49.0" prefWidth="177.0" text="Customer Name">
+                        <Label fx:id="customerName" alignment="CENTER" prefHeight="49.0" prefWidth="187.0" text="Customer Name" textFill="#dd1818">
                            <font>
                               <Font name="Berlin Sans FB" size="22.0" />
                            </font>
@@ -61,10 +28,48 @@
                               <Image url="@../images/Customer.png" />
                            </image>
                         </ImageView>
+                        <Label fx:id="accountDropdownArrow" text="▼" textFill="#cd3131">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
+                  <VBox fx:id="accountDropdown" alignment="TOP_CENTER" prefHeight="41.0" prefWidth="312.0" spacing="2.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3); -fx-padding: 5;">
+                     <children>
+                        <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#handleLogout" prefHeight="20.0" prefWidth="145.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Log Out">
+                           <font>
+                              <Font name="Georgia" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
                </children>
-            </StackPane>
+               <padding>
+                  <Insets bottom="5.0" top="10.0" />
+               </padding>
+            </VBox>
+            <Region prefHeight="109.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Label alignment="CENTER" prefHeight="67.0" prefWidth="598.0" text="Stationery" textFill="#d63031">
+               <font>
+                  <Font name="Georgia Bold" size="50.0" />
+               </font>
+            </Label>
+            <Region fx:id="spacer" prefHeight="109.0" prefWidth="0.0" style="-fx-background-color: light gray; -fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="LoginHbox" alignment="CENTER" prefHeight="109.0" prefWidth="327.0" spacing="15.0">
+               <children>
+                  <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#gotoLoginForm" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #FF4757, #FF3742); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="Log In">
+                     <font>
+                        <Font name="Georgia" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="signupBtn" mnemonicParsing="false" onAction="#gotoSignupForm" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #FF6348, #FF5722); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="Sign Up">
+                     <font>
+                        <Font name="Georgia" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets />
@@ -72,68 +77,31 @@
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="733.0" prefWidth="260.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="691.0" prefWidth="318.0" spacing="10.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="250.0" prefWidth="250.0" spacing="5.0">
+            <VBox prefHeight="250.0" prefWidth="250.0" spacing="10.0">
                <children>
-                  <Label prefHeight="49.0" prefWidth="177.0" text="Explore" textFill="#a14b23">
+                  <Label prefHeight="49.0" prefWidth="177.0" text="Explore" textFill="#D63031">
+                     <effect>
+                        <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                     </effect>
                      <font>
-                        <Font name="Georgia Bold Italic" size="24.0" />
+                        <Font name="Georgia Bold Italic" size="30.0" />
                      </font>
                      <padding>
                         <Insets left="20.0" />
                      </padding>
                   </Label>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@../styles/style.css">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/ThumbsUp.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers">
-                           <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/Teaser.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="All Products">
-                           <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="59.0" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                  <HBox fx:id="categoriesTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#toggleCategoriesDropdown" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/Sorting.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Categories">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Categories" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -144,14 +112,62 @@
                         <Insets left="10.0" />
                      </padding>
                   </HBox>
-                  <Separator prefWidth="200.0" />
+                  <HBox fx:id="allProductsTab" alignment="CENTER" layoutX="10.0" layoutY="59.0" onMouseClicked="#gotoShopViewForm" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Teaser.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="All Products" textFill="#e55039">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox fx:id="bestSellersTab" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@../styles/style.css">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ThumbsUp.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="49.0" prefWidth="177.0" text="Best Sellers" textFill="#e55039">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
             </VBox>
-            <VBox fx:id="onlyForCustomer" layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="5.0">
+            <VBox fx:id="onlyForCustomer" layoutX="10.0" layoutY="10.0" prefHeight="234.0" prefWidth="250.0" spacing="10.0">
                <children>
-                  <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#a14b23">
+                  <Label prefHeight="49.0" prefWidth="177.0" text="Customer" textFill="#D63031">
+                     <effect>
+                        <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                     </effect>
                      <font>
-                        <Font name="Georgia Bold Italic" size="24.0" />
+                        <Font name="Georgia Bold Italic" size="30.0" />
                      </font>
                      <padding>
                         <Insets left="20.0" />
@@ -164,9 +180,9 @@
                               <Image url="@../images/AddShoppingCart.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Cart" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -184,9 +200,9 @@
                               <Image url="@../images/Clock.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="History">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="History" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -199,12 +215,21 @@
                   </HBox>
                   <Separator prefWidth="200.0" />
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
             </VBox>
-            <VBox fx:id="onlyForStaff" layoutX="10.0" layoutY="10.0" prefHeight="250.0" prefWidth="250.0" spacing="5.0">
+            <VBox fx:id="onlyForStaff" layoutX="10.0" layoutY="10.0" prefHeight="250.0" prefWidth="250.0" spacing="10.0">
                <children>
-                  <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#a14b23">
+                  <Label prefHeight="49.0" prefWidth="177.0" text="Admin" textFill="#D63031">
+                     <effect>
+                        <DropShadow color="#00000030" offsetY="1.0" radius="2.0" />
+                     </effect>
                      <font>
-                        <Font name="Georgia Bold Italic" size="24.0" />
+                        <Font name="Georgia Bold Italic" size="30.0" />
                      </font>
                      <padding>
                         <Insets left="20.0" />
@@ -217,9 +242,9 @@
                               <Image url="@../images/Product.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Inventory">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Inventory" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -237,9 +262,9 @@
                               <Image url="@../images/Supplier.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Suppliers">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Suppliers" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -257,9 +282,9 @@
                               <Image url="@../images/HealthGraph.png" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report">
+                        <Label prefHeight="49.0" prefWidth="177.0" stylesheets="@../styles/style.css" text="Report" textFill="#e55039">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
                      </children>
@@ -272,37 +297,39 @@
                   </HBox>
                   <Separator prefWidth="200.0" />
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
             </VBox>
             <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="438.0" prefHeight="110.0" prefWidth="250.0" spacing="5.0">
+            <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="438.0" prefHeight="110.0" prefWidth="250.0" spacing="8.0">
                <children>
-                  <Separator prefWidth="200.0" />
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="15.0" style="-fx-background-color: rgba(255,107,53,0.05); -fx-background-radius: 15; -fx-padding: 10;">
                      <children>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/WeChat.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="39.0" prefWidth="168.0" style="-fx-background-color: FF6347;" text="AI Chatbot" textFill="#eee9e9">
+                        <Button fx:id="AIChatbotBtn" mnemonicParsing="false" onAction="#gotoAIChatbot" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: linear-gradient(to bottom, #FF6B35, #FF8E53); -fx-background-radius: 25; -fx-text-fill: white; -fx-font-weight: normal; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2); -fx-cursor: hand;" text="AI Chatbot">
                            <font>
-                              <Font name="Berlin Sans FB" size="20.0" />
+                              <Font name="Berlin Sans FB" size="18.0" />
                            </font>
                         </Button>
                      </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
                   </HBox>
                </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
             </VBox>
          </children>
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="ContentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

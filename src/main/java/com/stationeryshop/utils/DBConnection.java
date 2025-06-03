@@ -30,6 +30,17 @@ public class DBConnection {
         this.username = username;
         this.password = password;
     }
+    public DBConnection() {
+        Properties prop = new Properties();
+        try{
+            FileInputStream fix = new FileInputStream("src/main/resources/db.properties");
+            prop.load(fix);
+            this.username = prop.getProperty("db.admin");
+            this.password = prop.getProperty("db.adminpwd");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public Connection connect(){
         Properties props = new Properties();
         try{

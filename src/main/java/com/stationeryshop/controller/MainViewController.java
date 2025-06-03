@@ -10,13 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -73,44 +71,148 @@ public class MainViewController {
 
     @FXML
     private HBox LoginHbox;
-  
-  
+
     @FXML
-    void gotoCartForm(ActionEvent event) {
+    private Button logoutBtn;
+
+    @FXML
+    private VBox accountVbox;
+
+    @FXML
+    private Label accountDropdownArrow;
+
+    @FXML
+    private HBox searchHbox;
+
+    @FXML
+    private VBox accountDropdown;
+
+    @FXML
+    private HBox allProductsTab;
+
+    @FXML
+    private HBox categoriesTab;
+
+    @FXML
+    private Button categoryBtn3;
+
+    @FXML
+    private Button categoryBtn2;
+
+    @FXML
+    private Button categoryBtn1;
+
+    @FXML
+    private HBox bestSellersTab;
+
+    @FXML
+    private AnchorPane mainPane;
+
+    @FXML
+    void gotoCartForm(MouseEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("customer".equals(role)) {
+            final String CAR_PATH = "/fxml/Cart.fxml";
+            Pane cartPane = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
+            AnchorPane.setTopAnchor(cartPane, 0.0);
+            AnchorPane.setBottomAnchor(cartPane, 0.0);
+            AnchorPane.setLeftAnchor(cartPane, 0.0);
+            AnchorPane.setRightAnchor(cartPane, 0.0);
+            mainPane.getChildren().addAll(cartPane);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"You are not a customer");
+        }
     
     }
 
+    @FXML
+    void gotoHistoryForm(ActionEvent event) {
+
+    }
 
     @FXML
     void gotoProductForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
-            final String  PRODUCT_PATH = "/fxml/ProductForm.fxml";
+            final String  PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
-            Parent root = loader.load();
-            Stage primaryStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            ProductController controller = loader.getController();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            Pane productPane = loader.load();
+            AnchorPane.setTopAnchor(productPane, 0.0);
+            AnchorPane.setBottomAnchor(productPane, 0.0);
+            AnchorPane.setLeftAnchor(productPane, 0.0);
+            AnchorPane.setRightAnchor(productPane, 0.0);
+            mainPane.getChildren().addAll(productPane);
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 
     @FXML
-    void gotoSupplierForm(ActionEvent event) {
-      
+    void gotoSupplierForm(MouseEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("admin".equals(role)) {
+            final String  REPORT_PATH = "/fxml/Supplier.fxml";
+            BorderPane supplierPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
+            AnchorPane.setTopAnchor(supplierPane, 0.0);
+            AnchorPane.setBottomAnchor(supplierPane, 0.0);
+            AnchorPane.setLeftAnchor(supplierPane, 0.0);
+            AnchorPane.setRightAnchor(supplierPane, 0.0);
+            mainPane.getChildren().addAll(supplierPane);
+
+        }else{
+            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @FXML
-    void gotoReportForm(ActionEvent event) {
+    void gotoReportForm(MouseEvent event) throws IOException {
+        String role = Session.getCurrentRole();
+        if("admin".equals(role)) {
+            final String  REPORT_PATH = "/fxml/Report.fxml";
+            ScrollPane reportPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
+            AnchorPane.setTopAnchor(reportPane, 0.0);
+            AnchorPane.setBottomAnchor(reportPane, 0.0);
+            AnchorPane.setLeftAnchor(reportPane, 0.0);
+            AnchorPane.setRightAnchor(reportPane, 0.0);
+            mainPane.getChildren().addAll(reportPane);
+        }else{
+            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    @FXML
+    void gotoHistoryForm(MouseEvent mouseEvent) {
     }
 
     @FXML
     void gotoAIChatbot(ActionEvent event) {
 
+    }
+
+    @FXML
+    void toggleLogoutDropdown(MouseEvent mouseEvent) {
+        accountDropdown.setVisible(true);
+    }
+
+    @FXML
+    void hideLogoutDropdown(MouseEvent event) {
+        accountDropdown.setVisible(false);
+    }
+
+    @FXML
+    void gotoShopViewForm(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void toggleCategoriesDropdown(MouseEvent mouseEvent) {
+    }
+
+    @FXML
+    void handleLogout(ActionEvent actionEvent) {
+        Session.setCurrentUser(null);
+        System.out.println(Session.getCurrentRole());
+        refreshMainView();
     }
 
     @FXML
@@ -148,6 +250,7 @@ public class MainViewController {
 
     @FXML
     public void initialize(){
+
             if(Session.isLoggedIn()){
                 String role = Session.getCurrentRole();
                 if("admin".equals(role)){
@@ -162,7 +265,22 @@ public class MainViewController {
                     customerName.setText(Session.getCurrentUsername());
                     AccountHbox.setVisible(true);
                     LoginHbox.setVisible(false);
+                }else{
+                    AccountHbox.setVisible(false);
+                    LoginHbox.setVisible(true);
+                    accountDropdown.setVisible(false);
                 }
+                accountDropdown.setVisible(false);
             }
+        }
+        void refreshMainView(){
+            onlyForCustomer.setManaged(true);
+            onlyForCustomer.setVisible(true);
+            accountDropdown.setVisible(false);
+            onlyForStaff.setManaged(true);
+            onlyForStaff.setVisible(true);
+            AccountHbox.setVisible(false);
+            LoginHbox.setVisible(true);
+            mainPane.setVisible(false);
         }
 }

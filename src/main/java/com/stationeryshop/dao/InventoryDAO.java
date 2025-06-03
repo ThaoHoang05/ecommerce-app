@@ -4,6 +4,7 @@ import com.stationeryshop.model.InventoryItem;
 import com.stationeryshop.model.Product;
 
 import com.stationeryshop.utils.DBConnection;
+import javafx.beans.Observable;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -12,6 +13,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class InventoryDAO {
 
@@ -138,8 +142,8 @@ public class InventoryDAO {
      * Bao gồm: ID sản phẩm, tên sản phẩm, số lượng tồn kho, ngày cập nhật cuối
      * @return Danh sách các InventoryItem
      */
-    public List<InventoryItem> getAllInventoryItems() {
-        List<InventoryItem> list = new ArrayList<>();
+    public ObservableList<InventoryItem> getAllInventoryItems() {
+        ObservableList<InventoryItem> list = FXCollections.observableArrayList();
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -188,6 +192,61 @@ public class InventoryDAO {
             }
         }
         return list;
+    }
+    /**
+    * Lấy thông tin inventory theo product ID
+    * @param productId ID của sản phẩm cần tìm
+    * @return InventoryItem hoặc null nếu không tìm thấy
+    */
+    public InventoryItem getInventoryByProductId(int productId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT i.inventory_id, i.product_id, i.quantity_on_hand, i.last_stocked_date, " +
+                 "p.product_name, p.description, p.price " +
+                 "FROM inventory i " +
+                 "JOIN products p ON i.product_id = p.product_id " +
+                 "WHERE i.product_id = ?";
+        try {
+            conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, productId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Tạo Product object với thông tin cần thiết
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getDouble("price"));
+
+                // Tạo InventoryItem với đầy đủ thông tin
+                return new InventoryItem(
+                    rs.getInt("inventory_id"),
+                    product,
+                    rs.getInt("quantity_on_hand"),
+                    rs.getDate("last_stocked_date") != null ? 
+                        rs.getDate("last_stocked_date").toLocalDate() : LocalDate.now()
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error retrieving inventory data: " + e.getMessage(), 
+                "Database Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**
