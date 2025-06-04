@@ -1,27 +1,44 @@
 package com.stationeryshop.dao;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.stationeryshop.model.Supplier;
 import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
 import com.stationeryshop.utils.Session;
 
+import javax.swing.*;
+
 public class SupplierDAO {
     private DBConnection dbConnection;
 
     // Khởi tạo với username và password cho DBConnection
     public SupplierDAO() {
-        dbConnection = new DBConnection();
+        Properties props = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
+            props.load(fis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String useradmin = props.getProperty("db.admin");
+        String pwdadmin = props.getProperty("db.adminpwd");
+        if (useradmin == null || pwdadmin == null) {
+            JOptionPane.showMessageDialog(null, "Database credentials not found in properties file", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.dbConnection = new DBConnection(useradmin, pwdadmin);
     }
 
     // Thêm nhà cung cấp
-    public boolean addSupplier(Supplier supplier) {
+    public boolean addSupplier(Supplier supplier) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -43,12 +60,13 @@ public class SupplierDAO {
             e.printStackTrace();
             return false;
         } finally {
-            closeResources(stmt, conn);
+            stmt.close();
+            conn.close();
         }
     }
 
     // Cập nhật nhà cung cấp
-    public boolean updateSupplier(Supplier supplier) {
+    public boolean updateSupplier(Supplier supplier) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -71,12 +89,13 @@ public class SupplierDAO {
             e.printStackTrace();
             return false;
         } finally {
-            closeResources(stmt, conn);
+            stmt.close();
+            conn.close();
         }
     }
 
     // Xóa nhà cung cấp
-    public boolean deleteSupplier(int supplierId) {
+    public boolean deleteSupplier(int supplierId) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -94,12 +113,13 @@ public class SupplierDAO {
             e.printStackTrace();
             return false;
         } finally {
-            closeResources(stmt, conn);
+            stmt.close();
+            conn.close();
         }
     }
 
     // Lấy danh sách nhà cung cấp
-    public List<Supplier> getAllSuppliers() {
+    public List<Supplier> getAllSuppliers() throws SQLException {
         List<Supplier> suppliers = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -129,13 +149,15 @@ public class SupplierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(stmt, conn, rs);
+            rs.close();
+            stmt.close();
+            conn.close();
         }
         return suppliers;
     }
 
     // Tìm nhà cung cấp theo ID
-    public Supplier getSupplierById(int supplierId) {
+    public Supplier getSupplierById(int supplierId) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -165,13 +187,15 @@ public class SupplierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(rs, stmt, conn);
+            rs.close();
+            stmt.close();
+            conn.close();
         }
         return null;
     }
 
     // Tìm nhà cung cấp theo tên
-    public List<Supplier> getSuppliersByName(String supplierName) {
+    public List<Supplier> getSuppliersByName(String supplierName) throws SQLException {
         List<Supplier> suppliers = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -202,24 +226,11 @@ public class SupplierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(rs, stmt, conn);
+            rs.close();
+            stmt.close();
+            conn.close();
         }
         return suppliers;
     }
 
-    // Đóng tài nguyên
-    private void closeResources(AutoCloseable... resources) {
-        for (AutoCloseable resource : resources) {
-            if (resource != null) {
-                try {
-                    resource.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (resources.length > 0 && resources[resources.length - 1] instanceof Connection) {
-            dbConnection.closeConnect(); // Gọi phương thức closeConnect của DBConnection
-        }
-    }
 }
