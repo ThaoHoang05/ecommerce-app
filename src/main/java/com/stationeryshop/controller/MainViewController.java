@@ -193,6 +193,12 @@ public class MainViewController {
 
     @FXML
     void toggleLogoutDropdown(MouseEvent mouseEvent) {
+        accountDropdown.setVisible(true);
+    }
+
+    @FXML
+    void hideLogoutDropdown(MouseEvent event) {
+        accountDropdown.setVisible(false);
     }
 
     @FXML
@@ -205,6 +211,9 @@ public class MainViewController {
 
     @FXML
     void handleLogout(ActionEvent actionEvent) {
+        Session.setCurrentUser(null);
+        System.out.println(Session.getCurrentRole());
+        refreshMainView();
     }
 
     @FXML
@@ -260,8 +269,19 @@ public class MainViewController {
                 }else{
                     AccountHbox.setVisible(false);
                     LoginHbox.setVisible(true);
+                    accountDropdown.setVisible(false);
                 }
+                accountDropdown.setVisible(false);
             }
         }
-
+        void refreshMainView(){
+            onlyForCustomer.setManaged(true);
+            onlyForCustomer.setVisible(true);
+            accountDropdown.setVisible(false);
+            onlyForStaff.setManaged(true);
+            onlyForStaff.setVisible(true);
+            AccountHbox.setVisible(false);
+            LoginHbox.setVisible(true);
+            mainPane.setVisible(false);
+        }
 }
