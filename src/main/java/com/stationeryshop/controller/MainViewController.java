@@ -134,19 +134,20 @@ public class MainViewController {
     @FXML
     void gotoProductForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
-        if("admin".equals(role)) {
-            final String  PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
+        if ("admin".equals(role)) {
+            final String PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
-            Pane productPane = loader.load();
+            Parent productPane = loader.load();
             AnchorPane.setTopAnchor(productPane, 0.0);
             AnchorPane.setBottomAnchor(productPane, 0.0);
             AnchorPane.setLeftAnchor(productPane, 0.0);
             AnchorPane.setRightAnchor(productPane, 0.0);
-            mainPane.getChildren().addAll(productPane);
-        }else{
-            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
+            mainPane.getChildren().setAll(productPane);
+        } else {
+            JOptionPane.showMessageDialog(null, "You are not an admin", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     @FXML
     void gotoSupplierForm(MouseEvent event) throws IOException {
