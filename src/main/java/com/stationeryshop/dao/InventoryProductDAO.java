@@ -206,7 +206,7 @@ public class InventoryProductDAO {
                 "inventoryProduct ip " +
                 "JOIN categories c ON ip.category_id = c.category_id " +
                 "JOIN suppliers s ON ip.supplier_id = s.supplier_id " +
-                "ORDER BY ip.product_name";
+                "ORDER BY ip.product_name ";
 
         try {
             ps = conn.prepareStatement(sql);

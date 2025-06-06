@@ -54,12 +54,10 @@ public class MainViewController {
     @FXML
     private HBox AccountHbox;
 
-
     @FXML
     private Region spacer;
 
     @FXML
-
     private HBox supplierTab;
 
     @FXML
@@ -109,58 +107,63 @@ public class MainViewController {
     private AnchorPane mainPane;
 
     @FXML
+    private ScrollPane mainScrollPane;
+
+    @FXML
+    private VBox mainInitial;
+
+    // Method để clear nội dung cũ trước khi load nội dung mới
+    private void clearMainPane() {
+        mainPane.getChildren().clear();
+    }
+
+    // Method để load content vào mainPane
+    private void loadContentToMainPane(Node content) {
+        clearMainPane(); // Xóa nội dung cũ
+        AnchorPane.setTopAnchor(content, 0.0);
+        AnchorPane.setBottomAnchor(content, 0.0);
+        AnchorPane.setLeftAnchor(content, 0.0);
+        AnchorPane.setRightAnchor(content, 0.0);
+        mainPane.getChildren().add(content);
+    }
+
+    @FXML
     void gotoCartForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("customer".equals(role)) {
             final String CAR_PATH = "/fxml/Cart.fxml";
-            Pane cartPane = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
-            AnchorPane.setTopAnchor(cartPane, 0.0);
-            AnchorPane.setBottomAnchor(cartPane, 0.0);
-            AnchorPane.setLeftAnchor(cartPane, 0.0);
-            AnchorPane.setRightAnchor(cartPane, 0.0);
-            mainPane.getChildren().addAll(cartPane);
+            FXMLLoader loader= new FXMLLoader(getClass().getResource(CAR_PATH));
+            Pane cartPane = loader.load();
+            CartController cartController = loader.getController();
+            cartController.setParentContainer(mainPane);
+            loadContentToMainPane(cartPane);
+            cartController.syncWithSession();
         }
         else{
             JOptionPane.showMessageDialog(null,"You are not a customer");
         }
-    
-    }
-
-    @FXML
-    void gotoHistoryForm(ActionEvent event) {
-
     }
 
     @FXML
     void gotoProductForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
-        if ("admin".equals(role)) {
+        if("admin".equals(role)) {
             final String PRODUCT_PATH = "/fxml/Inventory/ProductForm.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_PATH));
-            Parent productPane = loader.load();
-            AnchorPane.setTopAnchor(productPane, 0.0);
-            AnchorPane.setBottomAnchor(productPane, 0.0);
-            AnchorPane.setLeftAnchor(productPane, 0.0);
-            AnchorPane.setRightAnchor(productPane, 0.0);
-            mainPane.getChildren().setAll(productPane);
-        } else {
-            JOptionPane.showMessageDialog(null, "You are not an admin", "Error", JOptionPane.ERROR_MESSAGE);
+            Pane productPane = loader.load();
+            loadContentToMainPane(productPane);
+        }else{
+            JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     @FXML
     void gotoSupplierForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
-            final String  REPORT_PATH = "/fxml/Supplier.fxml";
+            final String REPORT_PATH = "/fxml/Supplier.fxml";
             BorderPane supplierPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
-            AnchorPane.setTopAnchor(supplierPane, 0.0);
-            AnchorPane.setBottomAnchor(supplierPane, 0.0);
-            AnchorPane.setLeftAnchor(supplierPane, 0.0);
-            AnchorPane.setRightAnchor(supplierPane, 0.0);
-            mainPane.getChildren().addAll(supplierPane);
-
+            loadContentToMainPane(supplierPane);
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -170,25 +173,30 @@ public class MainViewController {
     void gotoReportForm(MouseEvent event) throws IOException {
         String role = Session.getCurrentRole();
         if("admin".equals(role)) {
-            final String  REPORT_PATH = "/fxml/Report.fxml";
+            final String REPORT_PATH = "/fxml/Report.fxml";
             ScrollPane reportPane = (new FXMLLoader(getClass().getResource(REPORT_PATH))).load();
-            AnchorPane.setTopAnchor(reportPane, 0.0);
-            AnchorPane.setBottomAnchor(reportPane, 0.0);
-            AnchorPane.setLeftAnchor(reportPane, 0.0);
-            AnchorPane.setRightAnchor(reportPane, 0.0);
-            mainPane.getChildren().addAll(reportPane);
+            loadContentToMainPane(reportPane);
         }else{
             JOptionPane.showMessageDialog(null,"You are not an admin","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 
     @FXML
-    void gotoHistoryForm(MouseEvent mouseEvent) {
+    void gotoHistoryForm(MouseEvent mouseEvent) throws IOException {
+        String role = Session.getCurrentRole();
+        if("customer".equals(role)) {
+            final String HISTORY_PATH = "/fxml/History.fxml";
+            Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
+            loadContentToMainPane(historyPane);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"You are not a customer");
+        }
     }
 
     @FXML
     void gotoAIChatbot(ActionEvent event) {
-
+        // Implementation for AI Chatbot
     }
 
     @FXML
@@ -202,11 +210,37 @@ public class MainViewController {
     }
 
     @FXML
-    void gotoShopViewForm(MouseEvent mouseEvent) {
+    void gotoShopViewForm(MouseEvent mouseEvent) throws IOException {
+        // Load lại trang main với categories
+            final String HISTORY_PATH = "/fxml/ShopView.fxml";
+            Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
+            loadContentToMainPane(historyPane);
     }
 
     @FXML
     void toggleCategoriesDropdown(MouseEvent mouseEvent) {
+        // Load categories view
+        loadCategoriesView();
+    }
+
+    // Method để load categories view
+    private void loadCategoriesView() {
+        try {
+            VBox categoryBox = categoryBox();
+            loadContentToMainPane(categoryBox);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method để load main view
+    private void loadMainView() {
+        try {
+            clearMainPane();
+            initialMain();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -218,16 +252,14 @@ public class MainViewController {
 
     @FXML
     void gotoLoginForm(ActionEvent event) {
-
         try{
-            final String    LOGIN_PATH = "/fxml/Login.fxml";
+            final String LOGIN_PATH = "/fxml/Login.fxml";
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource(LOGIN_PATH));
             Parent root = fxmlloader.load();
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
             stage.show();
-
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -243,45 +275,77 @@ public class MainViewController {
             stage.setScene(new Scene(root));
             stage.setTitle("Signup");
             stage.show();
-
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void initialize(){
-
-            if(Session.isLoggedIn()){
-                String role = Session.getCurrentRole();
-                if("admin".equals(role)){
-                    onlyForCustomer.setManaged(false);
-                    onlyForCustomer.setVisible(false);
-
-                }else if("customer".equals(role)){
-                    onlyForStaff.setManaged(false);
-                    onlyForStaff.setVisible(false);
-                }
-                if(role != null){
-                    customerName.setText(Session.getCurrentUsername());
-                    AccountHbox.setVisible(true);
-                    LoginHbox.setVisible(false);
-                }else{
-                    AccountHbox.setVisible(false);
-                    LoginHbox.setVisible(true);
-                    accountDropdown.setVisible(false);
-                }
+    public void initialize() {
+        loadMainView();
+        if(Session.isLoggedIn()){
+            String role = Session.getCurrentRole();
+            if("admin".equals(role)){
+                onlyForCustomer.setManaged(false);
+                onlyForCustomer.setVisible(false);
+            }else if("customer".equals(role)){
+                onlyForStaff.setManaged(false);
+                onlyForStaff.setVisible(false);
+            }
+            if(role != null){
+                customerName.setText(Session.getCurrentUsername());
+                AccountHbox.setVisible(true);
+                LoginHbox.setVisible(false);
+            }else{
+                AccountHbox.setVisible(false);
+                LoginHbox.setVisible(true);
                 accountDropdown.setVisible(false);
             }
-        }
-        void refreshMainView(){
-            onlyForCustomer.setManaged(true);
-            onlyForCustomer.setVisible(true);
             accountDropdown.setVisible(false);
-            onlyForStaff.setManaged(true);
-            onlyForStaff.setVisible(true);
-            AccountHbox.setVisible(false);
-            LoginHbox.setVisible(true);
-            mainPane.setVisible(false);
         }
+    }
+
+    void refreshMainView(){
+        onlyForCustomer.setManaged(true);
+        onlyForCustomer.setVisible(true);
+        accountDropdown.setVisible(false);
+        onlyForStaff.setManaged(true);
+        onlyForStaff.setVisible(true);
+        AccountHbox.setVisible(false);
+        LoginHbox.setVisible(true);
+
+        // Clear và load lại main view
+        clearMainPane();
+    }
+
+    void initialMain() {
+        try{
+            mainScrollPane = new ScrollPane();
+            mainInitial = new VBox();
+
+            // Thêm categoryBox vào VBox
+            mainInitial.getChildren().add(categoryBox());
+
+            // Đặt VBox làm nội dung của ScrollPane
+            mainScrollPane.setContent(mainInitial);
+            AnchorPane.setLeftAnchor(mainScrollPane, 0.0);
+            AnchorPane.setRightAnchor(mainScrollPane, 0.0);
+
+            mainPane.getChildren().add(mainScrollPane);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    VBox categoryBox() throws IOException{
+        final String CAT = "/fxml/Categories.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(CAT));
+        VBox category = loader.load();
+        return category;
+    }
+    @FXML
+    void returnInitialViewClicked(MouseEvent event) {
+        clearMainPane();
+        loadMainView();
+    }
 }

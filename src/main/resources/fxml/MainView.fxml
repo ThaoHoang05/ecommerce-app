@@ -50,7 +50,7 @@
                </padding>
             </VBox>
             <Region prefHeight="109.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Label alignment="CENTER" prefHeight="67.0" prefWidth="598.0" text="Stationery" textFill="#d63031">
+            <Label alignment="CENTER" onMouseClicked="#returnInitialViewClicked" prefHeight="67.0" prefWidth="598.0" text="Stationery" textFill="#d63031">
                <font>
                   <Font name="Georgia Bold" size="50.0" />
                </font>
