@@ -576,13 +576,11 @@ public class ReportDAO {
             e.printStackTrace();
         }
     }
-    
+
+    public void close() {
+    }
+
     /**
      * Closes the database connection when done with this DAO.
      */
-    public void close() {
-        if (db != null) {
-            db.closeConnect();
-        }
-    }
 }
