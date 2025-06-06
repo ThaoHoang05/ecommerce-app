@@ -34,7 +34,8 @@ public class CategoriesController {
                 System.out.println(category.getCategoryName());
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Categories_Item.fxml"));
                 VBox categoryItem = fxmlLoader.load();
-                Categories_ItemController controller = fxmlLoader.getController(); // Lấy controller từ FXML
+                Categories_ItemController controller = fxmlLoader.getController();
+                // Lấy controller từ FXML
                 controller.setData(category.getCategoryName());
                 categoriesPane.getChildren().add(categoryItem);
             }catch(Exception e) {

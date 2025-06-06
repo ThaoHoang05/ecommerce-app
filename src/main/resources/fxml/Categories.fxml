@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="687.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CategoriesController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CategoriesController">
     <children>
         <!-- Header Section -->
         <VBox spacing="10.0" style="-fx-background-color: #F8F9FA;">
@@ -27,7 +27,7 @@
         <!-- Categories Grid Section -->
         <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="120.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
          <content>
-            <HBox fx:id="categoriesPane" prefHeight="100.0" prefWidth="200.0" />
+            <HBox fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
          </content>
         </ScrollPane>
     </children>

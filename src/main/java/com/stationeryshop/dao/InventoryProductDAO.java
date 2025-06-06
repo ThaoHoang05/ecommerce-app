@@ -255,4 +255,45 @@ public class InventoryProductDAO {
 
         return inventoryList;
     }
+
+    public InventoryProduct getInventoryProductById(int productId) {
+        Connection conn = db.connect();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM inventoryProduct WHERE product_id = ?";
+        try{
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+            if(rs.next()) {
+                InventoryProduct inventoryProduct = new InventoryProduct();
+                // Set category information
+                inventoryProduct.setCategory(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name"),
+                        rs.getString("description")
+                );
+
+                // Set product information
+                inventoryProduct.setProduct(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url"),
+                        rs.getString("category_name")
+                );
+
+                // Set supplier information
+                inventoryProduct.setSupplier(rs.getString("supplier_name"));
+
+                // Set inventory item information
+                inventoryProduct.setInventoryItem(rs.getInt("product_id"));
+                return inventoryProduct;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

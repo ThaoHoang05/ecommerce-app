@@ -3,6 +3,7 @@ package com.stationeryshop.controller;
 import com.stationeryshop.dao.InvoiceDAO;
 import com.stationeryshop.dao.InventoryDAO;
 import com.stationeryshop.dao.ProductDAO;
+import com.stationeryshop.dao.UserDAO;
 import com.stationeryshop.model.*;
 
 import com.stationeryshop.utils.Session;
@@ -21,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -47,8 +49,8 @@ public class CartController {
     private List<Cart_ItemController> itemControllers;
 
     // Current user and customer for checkout
-    private User currentUser;
-    private Customer currentCustomer;
+    private User currentUser = Session.getCurrentUser();
+    private Customer currentCustomer = new UserDAO().getCustomerById(currentUser.getUser_id());
 
     // Inner class để lưu thông tin item trong giỏ hàng
     public static class CartItem {
@@ -89,7 +91,7 @@ public class CartController {
         }
     }
 
-    public CartController() {
+    public CartController() throws SQLException {
         this.cartItems = new HashMap<>();
         this.itemControllers = new ArrayList<>();
     }
@@ -246,17 +248,12 @@ public class CartController {
         if (isCartEmpty()) {
             return 0; // giỏ hàng trống
         }
-
-        Properties prop = new Properties();
         InvoiceDAO invoiceDAO;
         InventoryDAO inventoryDAO;
 
         try {
-            prop.load(getClass().getResourceAsStream("/config.properties"));
-            String admin = prop.getProperty("db.admin");
-            String adminpass = prop.getProperty("db.adminpwd");
-            invoiceDAO = new InvoiceDAO(admin, adminpass);
-            inventoryDAO = new InventoryDAO(admin, adminpass);
+            invoiceDAO = new InvoiceDAO();
+            inventoryDAO = new InventoryDAO();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

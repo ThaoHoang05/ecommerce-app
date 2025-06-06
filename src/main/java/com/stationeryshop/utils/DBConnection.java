@@ -63,12 +63,4 @@ public class DBConnection {
             throw new RuntimeException(e);
         }
     }
-    public void closeConnect(){
-        try{
-            stmt.close();
-            conn.close();
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-    }
 }
