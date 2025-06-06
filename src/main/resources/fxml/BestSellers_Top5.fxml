@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="687.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CategoriesController">
+<VBox prefHeight="400.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.BestSellers_Top5Controller">
     <children>
         <!-- Header Section -->
         <VBox spacing="10.0" style="-fx-background-color: #F8F9FA;">
@@ -20,21 +18,21 @@
                 <Insets bottom="20.0" left="50.0" right="30.0" top="30.0" />
             </padding>
             <children>
-                <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #E53E3E;" text="Categories" />
+                <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #E53E3E;" text="Best Sellers" />
             </children>
         </VBox>
 
-        <!-- Categories Grid Section -->
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="AS_NEEDED">
+        <!-- Best Sellers Products Section -->
+        <ScrollPane fitToWidth="true" hbarPolicy="AS_NEEDED" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
             <content>
                 <VBox spacing="20.0">
                     <padding>
                         <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
                     </padding>
                     <children>
-                        <!-- Categories Tags -->
-                        <FlowPane fx:id="categoriesFlowPane" hgap="15.0" prefWrapLength="800.0" style="-fx-background-color: transparent;" vgap="15.0">
-                        </FlowPane>
+                        <!-- Best Sellers Products Row -->
+                        <HBox fx:id="top5BestSellersHBox" alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: transparent;">
+                        </HBox>
                     </children>
                 </VBox>
             </content>

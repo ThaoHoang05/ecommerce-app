@@ -64,6 +64,7 @@ public class MainViewController {
     private Button AIChatbotBtn;
 
     @FXML
+
     private HBox cartTab;
 
     @FXML
