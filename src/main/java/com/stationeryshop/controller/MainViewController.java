@@ -132,8 +132,12 @@ public class MainViewController {
         String role = Session.getCurrentRole();
         if("customer".equals(role)) {
             final String CAR_PATH = "/fxml/Cart.fxml";
-            Pane cartPane = (new FXMLLoader(getClass().getResource(CAR_PATH))).load();
+            FXMLLoader loader= new FXMLLoader(getClass().getResource(CAR_PATH));
+            Pane cartPane = loader.load();
+            CartController cartController = loader.getController();
+            cartController.setParentContainer(mainPane);
             loadContentToMainPane(cartPane);
+            cartController.syncWithSession();
         }
         else{
             JOptionPane.showMessageDialog(null,"You are not a customer");
@@ -208,15 +212,9 @@ public class MainViewController {
     @FXML
     void gotoShopViewForm(MouseEvent mouseEvent) throws IOException {
         // Load lại trang main với categories
-        String role = Session.getCurrentRole();
-        if("customer".equals(role)) {
             final String HISTORY_PATH = "/fxml/ShopView.fxml";
             Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
             loadContentToMainPane(historyPane);
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"You are not a customer");
-        }
     }
 
     @FXML
@@ -342,8 +340,6 @@ public class MainViewController {
     VBox categoryBox() throws IOException{
         final String CAT = "/fxml/Categories.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(CAT));
-        CategoriesController controller = new CategoriesController();
-        loader.setController(controller);
         VBox category = loader.load();
         return category;
     }

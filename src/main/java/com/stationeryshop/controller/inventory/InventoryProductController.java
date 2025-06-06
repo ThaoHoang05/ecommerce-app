@@ -6,6 +6,7 @@ import com.stationeryshop.dao.SupplierDAO;
 import com.stationeryshop.model.Category;
 import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.model.Supplier;
+import com.stationeryshop.utils.ThreadUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

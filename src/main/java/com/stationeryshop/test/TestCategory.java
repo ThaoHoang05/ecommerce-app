@@ -12,8 +12,6 @@ public class TestCategory extends Application {
     public void start(Stage primaryStage) throws Exception {
         final String   CATEGORY = "/fxml/Categories.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(CATEGORY));
-        CategoriesController controller = new CategoriesController();
-        loader.setController(controller);
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Test Category");
