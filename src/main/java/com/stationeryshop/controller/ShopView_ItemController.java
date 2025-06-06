@@ -1,10 +1,14 @@
 package com.stationeryshop.controller;
 
+
+import com.stationeryshop.model.InventoryProduct;
+import com.stationeryshop.model.Product;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.awt.event.ActionEvent;
 
 public class ShopView_ItemController {
 
@@ -12,7 +16,7 @@ public class ShopView_ItemController {
     private Label categoryLbl;
 
     @FXML
-    private Button addToCartBtn;
+    private Button addToCartButton;
 
     @FXML
     private ImageView productImage;
@@ -24,7 +28,7 @@ public class ShopView_ItemController {
     private Label productPriceLbl;
 
     @FXML
-    private Button viewDetailsBtn;
+    private Button viewDetailsButton;
 
     @FXML
     private Label productSupplierLbl;
@@ -32,15 +36,28 @@ public class ShopView_ItemController {
     @FXML
     private Label productQuantityLabel;
 
+    InventoryProduct product ;
+
+    public ShopView_ItemController(InventoryProduct product) {
+        this.product = product;
+    }
+
     @FXML
-    void handleAddToCart(ActionEvent event) {
+    void addToCartOnPressed(ActionEvent event) {
+        int id = product.getProductId();
+        int quantity = product.getQuantity();
 
     }
 
     @FXML
-    void handlleViewDetails(ActionEvent event) {
-
+    void viewDetailsOnPressed(ActionEvent event) {
     }
-
+    public void setData(){
+        categoryLbl.setText(product.getCategoryName());
+        productNameLbl.setText(product.getProductName());
+        productPriceLbl.setText(String.valueOf(product.getProductPrice()));
+        productSupplierLbl.setText(product.getSupplierName());
+        productImage.setImage(new Image(product.getImageUrl()));
+        if(product.getQuantity() == 0 ) addToCartButton.setDisable(true);
+    }
 }
-

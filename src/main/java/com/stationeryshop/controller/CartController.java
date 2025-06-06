@@ -12,9 +12,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -74,6 +77,7 @@ public class CartController {
         this.cartItems = new HashMap<>();
         this.itemControllers = new ArrayList<>();
     }
+
 
     @FXML
     public void initialize() {
@@ -307,18 +311,15 @@ public class CartController {
     }
 
     @FXML
-    void continueShopping(ActionEvent event) {
+    void continueShopping(ActionEvent event) { // cai nay co van de sua lai de load paneanchor trong mainview thôi
         // Logic to navigate back to product catalog
         // This depends on your navigation system
         try {
             // Example navigation - adjust path according to your FXML structure
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ShopView.fxml"));
+            Pane shopViewPane = loader.load();
             // Navigation logic here - this depends on your application structure
             // You might want to use Scene switching or hide/show panels
-             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
 
         } catch (Exception e) {
             e.printStackTrace();

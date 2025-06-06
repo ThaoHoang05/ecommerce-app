@@ -121,9 +121,9 @@ public class InventoryProductController implements Initializable {
         setupTableColumns();
 
         // Load data
-        loadCategories();
-        loadSuppliers();
-        loadProducts();
+        loadCategories();       // luong 1
+        loadSuppliers();        //luong 2
+        loadProducts();         //luong 3
 
         // Setup table selection listener
         setupTableSelectionListener();
@@ -143,7 +143,7 @@ public class InventoryProductController implements Initializable {
 
         // Custom cell value factory for supplier names
         supplierColumn.setCellValueFactory(cellData -> {
-            List<String> suppliers = cellData.getValue().getSupplierName();
+            String suppliers = cellData.getValue().getSupplierName();
             String supplierNames = String.join(", ", suppliers);
             return new javafx.beans.property.SimpleStringProperty(supplierNames);
         });
@@ -237,10 +237,10 @@ public class InventoryProductController implements Initializable {
         categoryComboBox.setValue(selectedCategory);
 
         // Set supplier (first supplier if multiple)
-        List<String> supplierNames = product.getSupplierName();
+        String supplierNames = product.getSupplierName();
         if (!supplierNames.isEmpty()) {
             Supplier selectedSupplier = supplierComboBox.getItems().stream()
-                    .filter(sup -> sup.getSupplierName().equals(supplierNames.get(0)))
+                    .filter(sup -> sup.getSupplierName().equals(supplierNames))
                     .findFirst()
                     .orElse(null);
             supplierComboBox.setValue(selectedSupplier);

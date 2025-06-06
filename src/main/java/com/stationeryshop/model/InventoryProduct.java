@@ -12,7 +12,7 @@ public class InventoryProduct {
     // su dung composition
     private Category category;
     private Product product;
-    private List<Supplier> supplier;
+    private Supplier supplier;
     private InventoryItem inventoryItem;
 
     public void setCategory(int category_id,String category_name, String category_description) {
@@ -48,11 +48,11 @@ public class InventoryProduct {
     public String getCategoryName(){
         return this.category.getCategoryName();
     }
-    public List<String> getSupplierName(){
-        List<String> supplierName = new ArrayList<>();
-        for(Supplier supplier : this.supplier){
-            supplierName.add(supplier.getSupplierName());
-        }
+    public String getSupplierName(){
+        String supplierName = this.supplier.getSupplierName();
         return supplierName;
+    }
+    public String getImageUrl(){
+        return this.product.getImageUrl();
     }
 }

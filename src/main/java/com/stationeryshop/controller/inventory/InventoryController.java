@@ -41,14 +41,14 @@ public class InventoryController implements Initializable {
     private TableColumn<InventoryProduct, Integer> invIdColumn;
 
     private InventoryProductDAO inventoryProductDAO;
-    private ObservableList<InventoryProduct> inventoryData;
+    private static ObservableList<InventoryProduct> inventoryData;
     private FilteredList<InventoryProduct> filteredData;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Khởi tạo DAO
         inventoryProductDAO = new InventoryProductDAO();
-
+        inventoryData = inventoryProductDAO.getAllInventoryProduct();
         // Thiết lập các cột của TableView
         setupTableColumns();
 
@@ -119,9 +119,6 @@ public class InventoryController implements Initializable {
      */
     private void loadInventoryData() {
         try {
-            // Lấy dữ liệu từ DAO
-            inventoryData = inventoryProductDAO.getAllInventoryProduct();
-
             // Tạo FilteredList để hỗ trợ tìm kiếm
             filteredData = new FilteredList<>(inventoryData, p -> true);
 

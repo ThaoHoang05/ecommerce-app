@@ -1,5 +1,6 @@
 package com.stationeryshop.controller;
 
+import com.stationeryshop.model.InventoryProduct;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,6 +24,7 @@ public class ShopViewController {
 
     @FXML
     private FlowPane productsFlowPane;
+    public void initialize(){
 
+    }
 }
-

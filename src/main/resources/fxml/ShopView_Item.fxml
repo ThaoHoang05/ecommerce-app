@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxWidth="271.0" minWidth="220.0" prefHeight="448.0" prefWidth="271.0" spacing="8.0" style="-fx-background-color: #ffffff; -fx-border-color: #e1e8ed; -fx-border-width: 1; -fx-border-radius: 12px; -fx-background-radius: 12px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.ShopView_ItemController">
+<VBox alignment="TOP_CENTER" maxWidth="271.0" minWidth="220.0" prefHeight="448.0" prefWidth="271.0" spacing="8.0" style="-fx-background-color: #ffffff; -fx-border-color: #e1e8ed; -fx-border-width: 1; -fx-border-radius: 12px; -fx-background-radius: 12px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
         <!-- Product Image Container -->
         <StackPane prefHeight="180.0" prefWidth="220.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px 12px 0 0;">
@@ -71,10 +71,10 @@
         <VBox spacing="8.0" style="-fx-padding: 0 12px 12px 12px;">
             <children>
                 <!-- Add to Cart Button -->
-                <Button fx:id="addToCartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="Add to Cart" />
+                <Button fx:id="addToCartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addToCartOnPressed" style="-fx-background-color: #FF4500; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="Add to Cart" />
 
                 <!-- View Details Button -->
-                <Button fx:id="viewDetailsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #FF6B35; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8px; -fx-border-color: #FF6B35; -fx-border-width: 1px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="View Details" />
+                <Button fx:id="viewDetailsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#viewDetailsOnPressed" style="-fx-background-color: transparent; -fx-text-fill: #FF6B35; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8px; -fx-border-color: #FF6B35; -fx-border-width: 1px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="View Details" />
             </children>
         </VBox>
     </children>
