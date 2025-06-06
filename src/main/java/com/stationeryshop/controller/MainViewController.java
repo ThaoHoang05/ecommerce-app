@@ -325,6 +325,7 @@ public class MainViewController {
 
             // Thêm categoryBox vào VBox
             mainInitial.getChildren().add(categoryBox());
+            //mainInitial.getChildren().add(bestSellerBox());
 
             // Đặt VBox làm nội dung của ScrollPane
             mainScrollPane.setContent(mainInitial);
@@ -348,4 +349,10 @@ public class MainViewController {
         clearMainPane();
         loadMainView();
     }
+    //VBox bestSellerBox() throws IOException{
+    //    final String BESTSELLER_PATH = "/fxml/BestSellers_Top5.fxml";
+    //    FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
+    //    VBox best = loader.load();
+    //    return best;
+    //}
 }

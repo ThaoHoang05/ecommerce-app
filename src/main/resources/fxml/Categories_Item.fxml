@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox alignment="CENTER" maxHeight="69.0" minHeight="40.0" prefHeight="69.0" prefWidth="200.0" style="-fx-background-color: #FEF2F2; -fx-border-color: #E53E3E; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="category-item" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.Categories_ItemController">
+<VBox alignment="CENTER" maxHeight="69.0" minHeight="40.0" onMouseClicked="#clickToViewCategoryProduct" prefHeight="69.0" prefWidth="200.0" style="-fx-background-color: #FEF2F2; -fx-border-color: #E53E3E; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20;" styleClass="category-item" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.Categories_ItemController">
     <children>
         <!-- Category Name -->
         <Label fx:id="categoryNameLabel" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="160.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #DC2626;" text="Category Name" textAlignment="CENTER" wrapText="false" />
