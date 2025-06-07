@@ -100,8 +100,6 @@ public class CartController {
         this.parentContainer = parentContainer;
     }
 
-
-
     @FXML
     public void initialize() {
         Session.setCartController(this);
@@ -164,6 +162,9 @@ public class CartController {
                 cartItems.put(productId, newItem);
             }
 
+            // Cập nhật Session
+            Session.addToCart(productId, quantity);
+        
             refreshCartDisplay();
             return 1; // thành công
 
@@ -188,6 +189,8 @@ public class CartController {
         if (newQuantity <= 0) {
             // Xóa sản phẩm khỏi giỏ hàng nếu số lượng <= 0
             cartItems.remove(productId);
+            Session.removeFromCart(productId);
+            refreshCartDisplay();
             return 1;
         }
 
@@ -203,7 +206,28 @@ public class CartController {
             e.printStackTrace();
             return -1;
         }
+        try {
+            // Kiểm tra tồn kho
+            int stockInDB = inventoryDAO.getStockLevel(productId);
+            if (newQuantity > stockInDB) {
+                return 0; // vượt quá tồn kho
+            }
 
+            // Cập nhật số lượng
+            CartItem item = cartItems.get(productId);
+            item.setQuantity(newQuantity);
+
+            // Cập nhật Session
+            Session.updateCartQuantity(productId, newQuantity);
+            
+            // Refresh UI để cập nhật hiển thị
+            refreshCartDisplay();
+            
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
         // Kiểm tra tồn kho
         int stockInDB = inventoryDAO.getStockLevel(productId);
         if (newQuantity > stockInDB) {
@@ -227,11 +251,16 @@ public class CartController {
         int result;
         if (cartItems.containsKey(productId)) {
             cartItems.remove(productId);
-            result =  1;
-        }else result = 0;
+            result = 1;
+        } else {
+            result = 0;
+        }
+        
         if (result == 1) {
             // Cập nhật Session
             Session.removeFromCart(productId);
+            // Refresh UI
+            refreshCartDisplay();
         }
         return result;
     }
@@ -340,13 +369,26 @@ public class CartController {
     }
 
     @FXML
-    void continueShopping(ActionEvent event) throws IOException { // cai nay co van de sua lai de load paneanchor trong mainview thôi
+    void continueShopping(ActionEvent event) throws IOException {
         try {
             if (parentContainer != null) {
                 // Load ShopView FXML
                 final String SHOP_PATH = "/fxml/ShopView.fxml";
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(SHOP_PATH));
                 Pane shopViewPane = loader.load();
+
+                // Thay thế nội dung của parent container
+                parentContainer.getChildren().clear();
+                parentContainer.getChildren().add(shopViewPane);
+
+                // Nếu parent là AnchorPane, set anchor constraints
+                if (parentContainer instanceof javafx.scene.layout.AnchorPane) {
+                    javafx.scene.layout.AnchorPane.setTopAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setBottomAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setLeftAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setRightAnchor(shopViewPane, 0.0);
+                }
+
 
                 // Lấy ShopViewController để setup nếu cần
                 // ShopViewController shopController = loader.getController();
@@ -366,7 +408,6 @@ public class CartController {
                 // Hoặc nếu parent là khác loại Pane, có thể cần binding size
                 // shopViewPane.prefWidthProperty().bind(parentContainer.widthProperty());
                 // shopViewPane.prefHeightProperty().bind(parentContainer.heightProperty());
-
             } else {
                 showErrorAlert("Lỗi", "Không thể quay lại trang sản phẩm - Parent container chưa được thiết lập");
             }
@@ -395,7 +436,6 @@ public class CartController {
 
         if (confirmed) {
             // For now, create order with no discount
-            // You might want to add discount input dialog here
             double discountAmount = 0.0;
 
             // Use default user and customer - in real app, these should be set properly
@@ -471,6 +511,45 @@ public class CartController {
         }
     }
 
+    /**
+     * Update product quantity in cart (called from Cart_ItemController)
+     */
+    public void updateProductQuantity(int productId, int newQuantity) {
+        int result = handleUpdateQuantity(productId, newQuantity);
+
+        switch (result) {
+            case 1: // Success
+                // UI đã được refresh trong handleUpdateQuantity
+                System.out.println("Cập nhật số lượng thành công");
+                break;
+            case 0: // Out of stock or product not found
+                showErrorAlert("Không thể cập nhật", "Số lượng yêu cầu vượt quá tồn kho hoặc sản phẩm không tồn tại");
+                // Refresh để reset về giá trị cũ
+                refreshCartDisplay();
+                break;
+            case -1: // Error
+                showErrorAlert("Lỗi", "Có lỗi xảy ra khi cập nhật số lượng");
+                // Refresh để reset về giá trị cũ
+                refreshCartDisplay();
+                break;
+        }
+    }
+
+    /**
+     * Remove product from cart (called from Cart_ItemController)
+     */
+    public void removeProductFromCart(int productId) {
+        int result = handleRemoveFromCart(productId);
+
+        switch (result) {
+            case 1: // Success
+                showSuccessAlert("Thành công", "Đã xóa sản phẩm khỏi giỏ hàng");
+                break;
+            case 0: // Product not found
+                showErrorAlert("Lỗi", "Sản phẩm không tồn tại trong giỏ hàng");
+                break;
+        }
+    }
     /**
      * Lấy danh sách các item trong giỏ hàng
      *
@@ -619,9 +698,6 @@ public class CartController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
-
-    // Thêm các method này vào CartController.java
-
     /**
      * Đồng bộ dữ liệu từ Session vào CartController
      */
@@ -659,12 +735,26 @@ public class CartController {
         // Refresh UI
         refreshCartDisplay();
     }
-
     public void syncToSession() {
         Session.cart.clear();
 
         for (Map.Entry<Integer, CartItem> entry : cartItems.entrySet()) {
             Session.cart.put(entry.getKey(), entry.getValue().getQuantity());
         }
+    }
+
+
+    /**
+     * Get CartItem by product ID
+     */
+    public CartItem getCartItem(int productId) {
+        return cartItems.get(productId);
+    }
+
+    /**
+     * Check if product exists in cart
+     */
+    public boolean hasProduct(int productId) {
+        return cartItems.containsKey(productId);
     }
 }
