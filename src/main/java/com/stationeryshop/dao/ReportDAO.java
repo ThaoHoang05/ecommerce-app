@@ -213,7 +213,7 @@ public class ReportDAO {
         
         String sql = "SELECT " +
                      "    p.product_id, " +
-                     "    p.product_name, " +// product_code ???
+                     "    p.product_name, " +
                      "    SUM(id.quantity) AS total_quantity, " +
                      "    SUM(id.line_total) AS total_revenue, " +
                      "    AVG(id.unit_price) AS avg_price " +
@@ -375,7 +375,6 @@ public class ReportDAO {
         String sql = "SELECT " +
                      "    p.product_id, " +
                      "    p.product_name, " +
-                     "    p.product_code, " +
                      "    p.stock_quantity, " +
                      "    p.unit_price, " +
                      "    p.stock_quantity * p.unit_price AS stock_value, " +
@@ -399,7 +398,6 @@ public class ReportDAO {
                 Map<String, Object> item = new HashMap<>();
                 item.put("productId", rs.getInt("product_id"));
                 item.put("productName", rs.getString("product_name"));
-                item.put("productCode", rs.getString("product_code"));
                 item.put("stockQuantity", rs.getInt("stock_quantity"));
                 item.put("unitPrice", rs.getBigDecimal("unit_price"));
                 item.put("stockValue", rs.getBigDecimal("stock_value"));
