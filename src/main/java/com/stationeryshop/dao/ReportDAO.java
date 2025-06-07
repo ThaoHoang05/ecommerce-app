@@ -58,7 +58,7 @@ public class ReportDAO {
         String sql = "SELECT COALESCE(SUM(final_amount), 0) AS daily_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) = ? " +
-                     "AND status = 'PAID'";
+                     "AND status = 'completed'";
         
         try {
             conn = db.connect();
@@ -100,7 +100,7 @@ public class ReportDAO {
         String sql = "SELECT COALESCE(SUM(final_amount), 0) AS weekly_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                     "AND status = 'PAID'";
+                     "AND status = 'completed'";
         
         try {
             conn = db.connect();
@@ -144,7 +144,7 @@ public class ReportDAO {
                      "FROM invoices " +
                      "WHERE EXTRACT(MONTH FROM invoice_date) = ? " +
                      "AND EXTRACT(YEAR FROM invoice_date) = ? " +
-                     "AND status = 'PAID'";
+                     "AND status = 'completed'";
         
         try {
             conn = db.connect();
@@ -187,7 +187,7 @@ public class ReportDAO {
         String sql = "SELECT COALESCE(SUM(final_amount), 0) AS range_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                     "AND status = 'PAID'";
+                     "AND status = 'completed'";
         
         try {
             conn = db.connect();
@@ -238,7 +238,7 @@ public class ReportDAO {
                      "JOIN products p ON id.product_id = p.product_id " +
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "AND i.status = 'PAID' " +
+                     "AND i.status = 'completed' " +
                      "GROUP BY p.product_id, p.product_name " +
                      "ORDER BY total_quantity DESC " +
                      "LIMIT ?";
@@ -297,7 +297,7 @@ public class ReportDAO {
                      "JOIN products p ON id.product_id = p.product_id " +
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "AND i.status = 'PAID' " +
+                     "AND i.status = 'completed' " +
                      "GROUP BY p.product_id, p.product_name " +
                      "ORDER BY total_revenue DESC " +
                      "LIMIT ?";
@@ -355,7 +355,7 @@ public class ReportDAO {
                      "FROM users u " +
                      "LEFT JOIN invoices i ON u.user_id = i.user_id " +
                      "    AND DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "    AND i.status = 'PAID' " +
+                     "    AND i.status = 'completed' " +
                      "WHERE u.role IN ('STAFF', 'MANAGER') " +
                      "GROUP BY u.user_id, u.full_name, u.username " +
                      "ORDER BY total_revenue DESC NULLS LAST";
@@ -535,7 +535,7 @@ public class ReportDAO {
                 "COUNT(DISTINCT customer_id) AS unique_customers " +
                 "FROM invoices " +
                 "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                "AND status = 'PAID'";
+                "AND status = 'completed'";
         
         try {
             conn = db.connect();
@@ -581,7 +581,7 @@ public class ReportDAO {
                 "SUM(final_amount) AS daily_revenue " +
                 "FROM invoices " +
                 "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                "AND status = 'PAID' " +
+                "AND status = 'completed' " +
                 "GROUP BY DATE(invoice_date) " +
                 "ORDER BY DATE(invoice_date)";
         
