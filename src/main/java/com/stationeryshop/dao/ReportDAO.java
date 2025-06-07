@@ -213,8 +213,7 @@ public class ReportDAO {
         
         String sql = "SELECT " +
                      "    p.product_id, " +
-                     "    p.product_name, " +
-                     "    p.product_code, " +
+                     "    p.product_name, " +// product_code ???
                      "    SUM(id.quantity) AS total_quantity, " +
                      "    SUM(id.line_total) AS total_revenue, " +
                      "    AVG(id.unit_price) AS avg_price " +
@@ -223,7 +222,7 @@ public class ReportDAO {
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
                      "AND i.payment_status = 'PAID' " +
-                     "GROUP BY p.product_id, p.product_name, p.product_code " +
+                     "GROUP BY p.product_id, p.product_name " +
                      "ORDER BY total_quantity DESC " +
                      "LIMIT ?";
         
@@ -239,7 +238,6 @@ public class ReportDAO {
                 Map<String, Object> product = new HashMap<>();
                 product.put("productId", rs.getInt("product_id"));
                 product.put("productName", rs.getString("product_name"));
-                product.put("productCode", rs.getString("product_code"));
                 product.put("totalQuantity", rs.getInt("total_quantity"));
                 product.put("totalRevenue", rs.getBigDecimal("total_revenue"));
                 product.put("averagePrice", rs.getBigDecimal("avg_price"));
@@ -271,7 +269,6 @@ public class ReportDAO {
         String sql = "SELECT " +
                      "    p.product_id, " +
                      "    p.product_name, " +
-                     "    p.product_code, " +
                      "    SUM(id.quantity) AS total_quantity, " +
                      "    SUM(id.line_total) AS total_revenue, " +
                      "    AVG(id.unit_price) AS avg_price " +
@@ -280,7 +277,7 @@ public class ReportDAO {
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
                      "AND i.payment_status = 'PAID' " +
-                     "GROUP BY p.product_id, p.product_name, p.product_code " +
+                     "GROUP BY p.product_id, p.product_name" +
                      "ORDER BY total_revenue DESC " +
                      "LIMIT ?";
         
@@ -296,7 +293,6 @@ public class ReportDAO {
                 Map<String, Object> product = new HashMap<>();
                 product.put("productId", rs.getInt("product_id"));
                 product.put("productName", rs.getString("product_name"));
-                product.put("productCode", rs.getString("product_code"));
                 product.put("totalQuantity", rs.getInt("total_quantity"));
                 product.put("totalRevenue", rs.getBigDecimal("total_revenue"));
                 product.put("averagePrice", rs.getBigDecimal("avg_price"));
@@ -580,13 +576,11 @@ public class ReportDAO {
             e.printStackTrace();
         }
     }
-    
+
+    public void close() {
+    }
+
     /**
      * Closes the database connection when done with this DAO.
      */
-    public void close() {
-        if (db != null) {
-            db.closeConnect();
-        }
-    }
 }

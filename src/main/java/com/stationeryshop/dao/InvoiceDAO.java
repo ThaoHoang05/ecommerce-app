@@ -27,8 +27,10 @@ public class InvoiceDAO {
         catch(Exception e){
             e.printStackTrace();
         }
-        String useradmin = props.getProperty("db.adminuser");
+        String useradmin = props.getProperty("db.admin");
+        System.out.println(useradmin);
         String pwdadmin = props.getProperty("db.adminpwd");
+        System.out.println(pwdadmin);
         this.db = new DBConnection(useradmin, pwdadmin);
     }
     
@@ -37,7 +39,7 @@ public class InvoiceDAO {
         this.db = new DBConnection(useradmin, pwdadmin);
     }
     
-    public boolean saveInvoice(Invoice invoice) {
+    public boolean saveInvoice(Invoice invoice) {//save invoice co van de : ERROR: cannot insert a non-DEFAULT value into column "final_amount" Detail: Column "final_amount" is a generated column.
         Connection conn = null;
         PreparedStatement invoiceStmt = null;
         PreparedStatement detailStmt = null;
@@ -117,7 +119,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
     }
 
@@ -155,7 +156,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
 
         return invoice;
@@ -193,7 +193,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
 
         return list;
@@ -234,7 +233,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
 
         return list;
@@ -271,7 +269,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
         return false;
     }
@@ -306,7 +303,6 @@ public class InvoiceDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            db.closeConnect();
         }
         return false;
     }

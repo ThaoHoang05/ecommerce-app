@@ -9,44 +9,26 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import java.net.URL?>
 
-<VBox prefHeight="480.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.CategoriesController">
     <children>
         <!-- Header Section -->
-        <VBox styleClass="header-section">
-            <children>
-                <Label styleClass="page-title" text="Categories">
-                    <font>
-                        <Font name="System Bold" size="28.0" />
-                    </font>
-                </Label>
-            </children>
+        <VBox spacing="10.0" style="-fx-background-color: #F8F9FA;">
             <padding>
-                <Insets bottom="20.0" left="30.0" right="30.0" top="30.0" />
+                <Insets bottom="20.0" left="50.0" right="30.0" top="30.0" />
             </padding>
+            <children>
+                <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #E53E3E;" text="Categories" />
+            </children>
         </VBox>
 
-        <!-- Categories Grid -->
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
-            <content>
-                <VBox>
-                    <children>
-                        <GridPane fx:id="categoriesGrid" hgap="20.0" vgap="20.0">
-                            <padding>
-                                <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
-                            </padding>
-                        </GridPane>
-                    </children>
-                </VBox>
-            </content>
+        <!-- Categories Grid Section -->
+        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="120.0" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
+         <content>
+            <HBox fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+         </content>
         </ScrollPane>
     </children>
-
-    <stylesheets>
-        <URL value="@/styles/categories.css" />
-    </stylesheets>
 </VBox>
