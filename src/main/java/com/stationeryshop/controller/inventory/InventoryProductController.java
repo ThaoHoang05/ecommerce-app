@@ -1,30 +1,31 @@
 package com.stationeryshop.controller.inventory;
 
 import com.stationeryshop.dao.CategoryDAO;
-import com.stationeryshop.dao.InventoryDAO;
-import com.stationeryshop.dao.ProductDAO;
+import com.stationeryshop.dao.InventoryProductDAO;
 import com.stationeryshop.dao.SupplierDAO;
-import com.stationeryshop.model.InventoryItem;
+import com.stationeryshop.model.Category;
+import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.model.Supplier;
+import com.stationeryshop.utils.ThreadUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.event.ActionEvent;
-import javafx.util.Callback;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
-import com.stationeryshop.model.Product;
-import com.stationeryshop.model.Category;
-import javafx.stage.FileChooser;
-
 import java.io.File;
+import java.net.URL;
 import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class InventoryProductController {
+public class InventoryProductController implements Initializable {
 
     @FXML
     private TextField productNameField;
@@ -36,22 +37,31 @@ public class InventoryProductController {
     private TextField unitField;
 
     @FXML
+    private TextField searchField;
+
+    @FXML
     private Button selectImageButton;
 
     @FXML
-    private TableView<Product> productTable;
+    private Button searchBtn;
 
     @FXML
-    private TableColumn<Product, String> categoryColumn;
+    private TableView<InventoryProduct> productTable;
+
+    @FXML
+    private TableColumn<InventoryProduct, String> categoryColumn;
 
     @FXML
     private Button deleteProductBtn;
 
     @FXML
-    private TableColumn<Product, Integer> stockColumn;
+    private TableColumn<InventoryProduct, Integer> stockColumn;
 
     @FXML
     private Button updateProductBtn;
+
+    @FXML
+    private Button refreshBtn;
 
     @FXML
     private ImageView productImageView;
@@ -60,10 +70,13 @@ public class InventoryProductController {
     private ComboBox<Category> categoryComboBox;
 
     @FXML
+    private ComboBox<Supplier> supplierComboBox;
+
+    @FXML
     private TextArea descriptionArea;
 
     @FXML
-    private TableColumn<Product, String> nameColumn;
+    private TableColumn<InventoryProduct, String> nameColumn;
 
     @FXML
     private TextField productIdField;
@@ -75,425 +88,377 @@ public class InventoryProductController {
     private TextField stockQuantityField;
 
     @FXML
-    private TableColumn<Product, String> supplierColumn;
+    private TextField supplyPriceField;
 
     @FXML
-    private TableColumn<Product, Double> priceColumn;
+    private TableColumn<InventoryProduct, String> supplierColumn;
 
     @FXML
-    private TableColumn<Product, Integer> idColumn;
+    private TableColumn<InventoryProduct, Double> priceColumn;
 
     @FXML
-    private TableColumn<Product, String> descriptionColumn;
-
-    private ObservableList<Product> productList;
-
-    private ProductDAO product = new ProductDAO();
-    private InventoryDAO inventory = new InventoryDAO();
-    private SupplierDAO supplier = new SupplierDAO();
-    private CategoryDAO category = new CategoryDAO();
-
-    private String imageUrl;
+    private TableColumn<InventoryProduct, Integer> idColumn;
 
     @FXML
-    void handleSortTable(ActionEvent event) {
-        // Implementation for table sorting if needed
+    private TableColumn<InventoryProduct, String> descriptionColumn;
+
+    // DAO instances
+    private InventoryProductDAO inventoryProductDAO;
+    private CategoryDAO categoryDAO;
+    private SupplierDAO supplierDAO;
+
+    // Data
+    private ObservableList<InventoryProduct> productList;
+    private String selectedImagePath = "";
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Initialize DAOs
+        inventoryProductDAO = new InventoryProductDAO();
+        categoryDAO = new CategoryDAO();
+        supplierDAO = new SupplierDAO();
+
+        // Setup table columns
+        setupTableColumns();
+
+        // Load data
+        loadCategories();       // luong 1
+        loadSuppliers();        //luong 2
+        loadProducts();         //luong 3
+
+        // Setup table selection listener
+        setupTableSelectionListener();
+
+        // Disable edit/delete buttons initially
+        updateProductBtn.setDisable(true);
+        deleteProductBtn.setDisable(true);
     }
 
-    @FXML
-    void handleSelectImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        File file = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
-
-        if (file != null) {
-            imageUrl = file.toURI().toString();
-            try {
-                Image image = new Image(imageUrl);
-                productImageView.setImage(image);
-            } catch (Exception e) {
-                showErrorAlert("Lỗi", "Không thể tải hình ảnh: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Không có hình ảnh nào được chọn!");
-        }
-    }
-
-    @FXML
-    void handleAddProduct(ActionEvent event) {
-        if (!validateInputs()) {
-            return;
-        }
-
-        try {
-            Category selectedCategory = categoryComboBox.getSelectionModel().getSelectedItem();
-            if (selectedCategory == null) {
-                showErrorAlert("Lỗi", "Vui lòng chọn danh mục sản phẩm!");
-                return;
-            }
-
-            int productId = Integer.parseInt(productIdField.getText().trim());
-            String productName = productNameField.getText().trim();
-            String description = descriptionArea.getText().trim();
-            double price = Double.parseDouble(priceField.getText().trim());
-            int stockQuantity = Integer.parseInt(stockQuantityField.getText().trim());
-
-            // Validate positive values
-            if (price < 0) {
-                showErrorAlert("Lỗi", "Giá sản phẩm không thể âm!");
-                return;
-            }
-            if (stockQuantity < 0) {
-                showErrorAlert("Lỗi", "Số lượng tồn kho không thể âm!");
-                return;
-            }
-
-            // Create and add product
-            Product newProduct = new Product(productId, productName, description, price,
-                    imageUrl != null ? imageUrl : "", selectedCategory);
-
-            boolean productAdded = product.addProduct(newProduct);
-            if (productAdded) {
-                inventory.updateStock(productId, stockQuantity);
-
-                // Handle supplier logic
-                String supplierName = unitField.getText().trim();
-                if (!supplierName.isEmpty() && supplier.getSuppliersByName(supplierName).size() == 0) {
-                    // TODO: Open supplier form to add new supplier
-                    // For now, just show a message
-                    showInfoAlert("Thông báo", "Nhà cung cấp mới sẽ cần được thêm vào hệ thống!");
-                }
-
-                refreshProductTable();
-                clearForm();
-                showInfoAlert("Thành công", "Đã thêm sản phẩm thành công!");
-            } else {
-                showErrorAlert("Lỗi", "Không thể thêm sản phẩm. ID có thể đã tồn tại!");
-            }
-
-        } catch (NumberFormatException e) {
-            showErrorAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho ID, giá và số lượng!");
-        } catch (Exception e) {
-            showErrorAlert("Lỗi", "Có lỗi xảy ra: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    void handleUpdateProduct(ActionEvent event) {
-        if (!validateInputs()) {
-            return;
-        }
-
-        try {
-            Category selectedCategory = categoryComboBox.getSelectionModel().getSelectedItem();
-            if (selectedCategory == null) {
-                showErrorAlert("Lỗi", "Vui lòng chọn danh mục sản phẩm!");
-                return;
-            }
-
-            int productId = Integer.parseInt(productIdField.getText().trim());
-            String productName = productNameField.getText().trim();
-            String description = descriptionArea.getText().trim();
-            double price = Double.parseDouble(priceField.getText().trim());
-            int stockQuantity = Integer.parseInt(stockQuantityField.getText().trim());
-
-            // Validate positive values
-            if (price < 0) {
-                showErrorAlert("Lỗi", "Giá sản phẩm không thể âm!");
-                return;
-            }
-            if (stockQuantity < 0) {
-                showErrorAlert("Lỗi", "Số lượng tồn kho không thể âm!");
-                return;
-            }
-
-            Product updatedProduct = new Product(productId, productName, description, price,
-                    imageUrl != null ? imageUrl : "", selectedCategory);
-
-            boolean productUpdated = product.updateProduct(updatedProduct);
-            if (productUpdated) {
-                inventory.updateStock(productId, stockQuantity);
-                refreshProductTable();
-                showInfoAlert("Thành công", "Đã cập nhật sản phẩm thành công!");
-            } else {
-                showErrorAlert("Lỗi", "Không thể cập nhật sản phẩm!");
-            }
-
-        } catch (NumberFormatException e) {
-            showErrorAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho ID, giá và số lượng!");
-        } catch (Exception e) {
-            showErrorAlert("Lỗi", "Có lỗi xảy ra: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    void handleDeleteProduct(ActionEvent event) {
-        if (productIdField.getText().trim().isEmpty()) {
-            showErrorAlert("Lỗi", "Vui lòng nhập ID sản phẩm cần xóa!");
-            return;
-        }
-
-        try {
-            int productId = Integer.parseInt(productIdField.getText().trim());
-
-            // Show confirmation dialog
-            Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmAlert.setTitle("Xác nhận xóa");
-            confirmAlert.setHeaderText("Bạn có chắc chắn muốn xóa sản phẩm này?");
-            confirmAlert.setContentText("Hành động này không thể hoàn tác!");
-
-            if (confirmAlert.showAndWait().get() == ButtonType.OK) {
-                boolean productDeleted = product.deleteProduct(productId);
-                if (productDeleted) {
-                    inventory.deleteStock(productId);
-                    refreshProductTable();
-                    clearForm();
-                    showInfoAlert("Thành công", "Đã xóa sản phẩm thành công!");
-                } else {
-                    showErrorAlert("Lỗi", "Không thể xóa sản phẩm!");
-                }
-            }
-
-        } catch (NumberFormatException e) {
-            showErrorAlert("Lỗi", "ID sản phẩm phải là số!");
-        } catch (Exception e) {
-            showErrorAlert("Lỗi", "Có lỗi xảy ra: " + e.getMessage());
-        }
-    }
-
-    public void initialize() {
-        // Set up product table
-        setProductTable();
-
-        // Load categories into ComboBox
-        loadCategories();
-
-        // Set up category ComboBox display
-        setupCategoryComboBox();
-
-        // Add table selection listener
-        productTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        populateFormWithProduct(newValue);
-                    }
-                }
-        );
-    }
-
-    private void setupCategoryComboBox() {
-        // Set up StringConverter for proper display of Category objects
-        categoryComboBox.setConverter(new StringConverter<Category>() {
-            @Override
-            public String toString(Category category) {
-                if (category == null) {
-                    return null;
-                } else {
-                    return category.getCategoryName();
-                }
-            }
-
-            @Override
-            public Category fromString(String string) {
-                // This is used when the user types in the ComboBox (if editable)
-                // For now, return null as we're using selection only
-                return null;
-            }
-        });
-
-        // Set up cell factory for proper display in the dropdown
-        categoryComboBox.setCellFactory(new Callback<ListView<Category>, ListCell<Category>>() {
-            @Override
-            public ListCell<Category> call(ListView<Category> param) {
-                return new ListCell<Category>() {
-                    @Override
-                    protected void updateItem(Category item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setText(null);
-                        } else {
-                            setText(item.getCategoryName());
-                        }
-                    }
-                };
-            }
-        });
-
-        // Set up button cell for the ComboBox display
-        categoryComboBox.setButtonCell(new ListCell<Category>() {
-            @Override
-            protected void updateItem(Category item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText("Chọn danh mục...");
-                } else {
-                    setText(item.getCategoryName());
-                }
-            }
-        });
-    }
-
-    private void setProductTable() {
-        // Set up table columns
+    private void setupTableColumns() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("productDescription"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        // Custom cell value factory for stock column
-        stockColumn.setCellValueFactory(cellData -> {
-            Product product = cellData.getValue();
-            try {
-                InventoryItem inventoryItem = inventory.getInventoryByProductId(product.getProductId());
-                return new javafx.beans.property.SimpleIntegerProperty(
-                        inventoryItem != null ? inventoryItem.getQuantityOnHand() : 0
-                ).asObject();
-            } catch (Exception e) {
-                System.out.println("Error loading inventory for product " + product.getProductId() + ": " + e.getMessage());
-                return new javafx.beans.property.SimpleIntegerProperty(0).asObject();
-            }
-        });
-
-        // Custom cell value factory for supplier column
+        // Custom cell value factory for supplier names
         supplierColumn.setCellValueFactory(cellData -> {
-            Product product = cellData.getValue();
-            // This assumes you have a method to get supplier by product
-            // You might need to modify this based on your actual data structure
-            try {
-                // TODO: Implement actual supplier lookup logic
-                return new javafx.beans.property.SimpleStringProperty("N/A");
-            } catch (Exception e) {
-                return new javafx.beans.property.SimpleStringProperty("Error");
+            String suppliers = cellData.getValue().getSupplierName();
+            String supplierNames = String.join(", ", suppliers);
+            return new javafx.beans.property.SimpleStringProperty(supplierNames);
+        });
+    }
+
+    private void setupTableSelectionListener() {
+        productTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                populateFields(newSelection);
+                updateProductBtn.setDisable(false);
+                deleteProductBtn.setDisable(false);
+            } else {
+                clearFields();
+                updateProductBtn.setDisable(true);
+                deleteProductBtn.setDisable(true);
             }
         });
-
-        refreshProductTable();
     }
 
     private void loadCategories() {
         try {
-            List<Category> categoryList = category.getAllCategories();
-            if (categoryList != null && !categoryList.isEmpty()) {
-                ObservableList<Category> categories = FXCollections.observableArrayList(categoryList);
-                categoryComboBox.setItems(categories);
-            } else {
-                showErrorAlert("Cảnh báo", "Không có danh mục nào trong hệ thống. Vui lòng thêm danh mục trước!");
-            }
+            List<Category> categories = categoryDAO.getAllCategories();
+            categoryComboBox.setItems(FXCollections.observableArrayList(categories));
+
+            // Set display converter for ComboBox
+            categoryComboBox.setConverter(new StringConverter<Category>() {
+                @Override
+                public String toString(Category category) {
+                    return category != null ? category.getCategoryName() : "";
+                }
+
+                @Override
+                public Category fromString(String string) {
+                    return categoryComboBox.getItems().stream()
+                            .filter(item -> item.getCategoryName().equals(string))
+                            .findFirst()
+                            .orElse(null);
+                }
+            });
         } catch (Exception e) {
-            showErrorAlert("Lỗi", "Không thể tải danh sách danh mục: " + e.getMessage());
-            e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải danh sách danh mục: " + e.getMessage());
         }
     }
 
-    private void refreshProductTable() {
+    private void loadSuppliers() {
         try {
-            List<Product> products = product.getAllProductsWithCategory();
-            if (products != null) {
-                productList = FXCollections.observableArrayList(products);
-                productTable.setItems(productList);
-            }
+            List<Supplier> suppliers = supplierDAO.getAllSuppliers();
+            supplierComboBox.setItems(FXCollections.observableArrayList(suppliers));
+
+            // Set display converter for ComboBox
+            supplierComboBox.setConverter(new StringConverter<Supplier>() {
+                @Override
+                public String toString(Supplier supplier) {
+                    return supplier != null ? supplier.getSupplierName() : "";
+                }
+
+                @Override
+                public Supplier fromString(String string) {
+                    return supplierComboBox.getItems().stream()
+                            .filter(item -> item.getSupplierName().equals(string))
+                            .findFirst()
+                            .orElse(null);
+                }
+            });
         } catch (Exception e) {
-            showErrorAlert("Lỗi", "Không thể tải danh sách sản phẩm: " + e.getMessage());
-            e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải danh sách nhà cung cấp: " + e.getMessage());
         }
     }
 
-    private void populateFormWithProduct(Product selectedProduct) {
+    private void loadProducts() {
         try {
-            productIdField.setText(String.valueOf(selectedProduct.getProductId()));
-            productNameField.setText(selectedProduct.getProductName());
-            descriptionArea.setText(selectedProduct.getDescription());
-            priceField.setText(String.valueOf(selectedProduct.getPrice()));
-
-            // Set category in ComboBox
-            Category productCategory = selectedProduct.getCategory();
-            if (productCategory != null) {
-                // Find the matching category in the ComboBox items
-                ObservableList<Category> categories = categoryComboBox.getItems();
-                for (Category cat : categories) {
-                    if (cat.getCategoryId() == productCategory.getCategoryId()) {
-                        categoryComboBox.getSelectionModel().select(cat);
-                        break;
-                    }
-                }
-            } else {
-                categoryComboBox.getSelectionModel().clearSelection();
-            }
-
-            // Load image if exists
-            if (selectedProduct.getImageUrl() != null && !selectedProduct.getImageUrl().isEmpty()) {
-                try {
-                    Image image = new Image(selectedProduct.getImageUrl());
-                    productImageView.setImage(image);
-                    imageUrl = selectedProduct.getImageUrl();
-                } catch (Exception e) {
-                    System.out.println("Không thể tải hình ảnh: " + e.getMessage());
-                    productImageView.setImage(null);
-                    imageUrl = null;
-                }
-            } else {
-                productImageView.setImage(null);
-                imageUrl = null;
-            }
-
-            // Load stock quantity
-            try {
-                InventoryItem inventoryItem = inventory.getInventoryByProductId(selectedProduct.getProductId());
-                if (inventoryItem != null) {
-                    stockQuantityField.setText(String.valueOf(inventoryItem.getQuantityOnHand()));
-                } else {
-                    stockQuantityField.setText("0");
-                }
-            } catch (Exception e) {
-                System.out.println("Không thể tải thông tin tồn kho: " + e.getMessage());
-                stockQuantityField.setText("0");
-            }
+            productList = inventoryProductDAO.getAllInventoryProduct();
+            productTable.setItems(productList);
         } catch (Exception e) {
-            showErrorAlert("Lỗi", "Có lỗi xảy ra khi tải thông tin sản phẩm: " + e.getMessage());
+            showAlert("Lỗi", "Không thể tải danh sách sản phẩm: " + e.getMessage());
         }
     }
 
-    private boolean validateInputs() {
-        if (productIdField.getText().trim().isEmpty()) {
-            showErrorAlert("Lỗi", "Vui lòng nhập ID sản phẩm!");
-            return false;
+    private void populateFields(InventoryProduct product) {
+        productIdField.setText(String.valueOf(product.getProductId()));
+        productNameField.setText(product.getProductName());
+        descriptionArea.setText(product.getProductDescription());
+        priceField.setText(String.valueOf(product.getProductPrice()));
+        stockQuantityField.setText(String.valueOf(product.getQuantity()));
+
+        // Set category
+        Category selectedCategory = categoryComboBox.getItems().stream()
+                .filter(cat -> cat.getCategoryName().equals(product.getCategoryName()))
+                .findFirst()
+                .orElse(null);
+        categoryComboBox.setValue(selectedCategory);
+
+        // Set supplier (first supplier if multiple)
+        String supplierNames = product.getSupplierName();
+        if (!supplierNames.isEmpty()) {
+            Supplier selectedSupplier = supplierComboBox.getItems().stream()
+                    .filter(sup -> sup.getSupplierName().equals(supplierNames))
+                    .findFirst()
+                    .orElse(null);
+            supplierComboBox.setValue(selectedSupplier);
         }
-        if (productNameField.getText().trim().isEmpty()) {
-            showErrorAlert("Lỗi", "Vui lòng nhập tên sản phẩm!");
-            return false;
-        }
-        if (priceField.getText().trim().isEmpty()) {
-            showErrorAlert("Lỗi", "Vui lòng nhập giá sản phẩm!");
-            return false;
-        }
-        if (stockQuantityField.getText().trim().isEmpty()) {
-            showErrorAlert("Lỗi", "Vui lòng nhập số lượng tồn kho!");
-            return false;
-        }
-        if (categoryComboBox.getSelectionModel().getSelectedItem() == null) {
-            showErrorAlert("Lỗi", "Vui lòng chọn danh mục sản phẩm!");
-            return false;
-        }
-        return true;
+
+        // Load image if exists
+        // loadProductImage(product.getImageUrl());
     }
 
-    private void clearForm() {
+    private void clearFields() {
         productIdField.clear();
         productNameField.clear();
         descriptionArea.clear();
         priceField.clear();
         stockQuantityField.clear();
-        unitField.clear();
-        categoryComboBox.getSelectionModel().clearSelection();
+        supplyPriceField.clear();
+        categoryComboBox.setValue(null);
+        supplierComboBox.setValue(null);
         productImageView.setImage(null);
-        imageUrl = null;
+        selectedImagePath = "";
     }
 
-    private void showErrorAlert(String title, String message) {
+    @FXML
+    void handleSearch(ActionEvent event) {
+        String searchTerm = searchField.getText().trim().toLowerCase();
+
+        if (searchTerm.isEmpty()) {
+            productTable.setItems(productList);
+            return;
+        }
+
+        ObservableList<InventoryProduct> filteredList = productList.filtered(product ->
+                product.getProductName().toLowerCase().contains(searchTerm) ||
+                        product.getProductDescription().toLowerCase().contains(searchTerm) ||
+                        product.getCategoryName().toLowerCase().contains(searchTerm)
+        );
+
+        productTable.setItems(filteredList);
+    }
+
+    @FXML
+    void handleRefresh(ActionEvent event) {
+        loadProducts();
+        clearFields();
+        searchField.clear();
+        showInfo("Thành công", "Đã làm mới danh sách sản phẩm");
+    }
+
+    @FXML
+    void handleSortTable(ActionEvent event) {
+        // Toggle sort by name
+        if (nameColumn.getSortType() == TableColumn.SortType.ASCENDING) {
+            nameColumn.setSortType(TableColumn.SortType.DESCENDING);
+        } else {
+            nameColumn.setSortType(TableColumn.SortType.ASCENDING);
+        }
+        productTable.getSortOrder().clear();
+        productTable.getSortOrder().add(nameColumn);
+        productTable.sort();
+    }
+
+    @FXML
+    void handleSelectImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Chọn hình ảnh sản phẩm");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(selectImageButton.getScene().getWindow());
+        if (selectedFile != null) {
+            selectedImagePath = selectedFile.getAbsolutePath();
+
+            try {
+                Image image = new Image(selectedFile.toURI().toString());
+                productImageView.setImage(image);
+            } catch (Exception e) {
+                showAlert("Lỗi", "Không thể tải hình ảnh: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    void handleAddProduct(ActionEvent event) {
+        if (!validateInput()) {
+            return;
+        }
+
+        try {
+            String name = productNameField.getText().trim();
+            String description = descriptionArea.getText().trim();
+            float price = Float.parseFloat(priceField.getText().trim());
+            int quantity = Integer.parseInt(stockQuantityField.getText().trim());
+            float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
+            String categoryName = categoryComboBox.getValue().getCategoryName();
+            String supplierName = supplierComboBox.getValue().getSupplierName();
+            String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
+
+            inventoryProductDAO.addProduct(name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+
+            showInfo("Thành công", "Đã thêm sản phẩm thành công");
+            clearFields();
+            loadProducts();
+
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
+        } catch (Exception e) {
+            showAlert("Lỗi", "Không thể thêm sản phẩm: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void handleUpdateProduct(ActionEvent event) {
+        InventoryProduct selectedProduct = productTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null) {
+            showAlert("Lỗi", "Vui lòng chọn sản phẩm để cập nhật");
+            return;
+        }
+
+        if (!validateInput()) {
+            return;
+        }
+
+        try {
+            int productId = selectedProduct.getProductId();
+            String name = productNameField.getText().trim();
+            String description = descriptionArea.getText().trim();
+            float price = Float.parseFloat(priceField.getText().trim());
+            int quantity = Integer.parseInt(stockQuantityField.getText().trim());
+            float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
+            String categoryName = categoryComboBox.getValue().getCategoryName();
+            String supplierName = supplierComboBox.getValue().getSupplierName();
+            String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
+
+            inventoryProductDAO.updateProduct(productId, name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+
+            showInfo("Thành công", "Đã cập nhật sản phẩm thành công");
+            clearFields();
+            loadProducts();
+
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
+        } catch (Exception e) {
+            showAlert("Lỗi", "Không thể cập nhật sản phẩm: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void handleDeleteProduct(ActionEvent event) {
+        InventoryProduct selectedProduct = productTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null) {
+            showAlert("Lỗi", "Vui lòng chọn sản phẩm để xóa");
+            return;
+        }
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Xác nhận xóa");
+        confirmAlert.setHeaderText("Bạn có chắc chắn muốn xóa sản phẩm này?");
+        confirmAlert.setContentText("Sản phẩm: " + selectedProduct.getProductName());
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                inventoryProductDAO.deleteProduct(selectedProduct.getProductId());
+                showInfo("Thành công", "Đã xóa sản phẩm thành công");
+                clearFields();
+                loadProducts();
+            } catch (Exception e) {
+                showAlert("Lỗi", "Không thể xóa sản phẩm: " + e.getMessage());
+            }
+        }
+    }
+
+    private boolean validateInput() {
+        if (productNameField.getText().trim().isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập tên sản phẩm");
+            return false;
+        }
+
+        if (priceField.getText().trim().isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập giá sản phẩm");
+            return false;
+        }
+
+        if (stockQuantityField.getText().trim().isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập số lượng tồn kho");
+            return false;
+        }
+
+        if (supplyPriceField.getText().trim().isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập giá nhập");
+            return false;
+        }
+
+        if (categoryComboBox.getValue() == null) {
+            showAlert("Lỗi", "Vui lòng chọn danh mục");
+            return false;
+        }
+
+        if (supplierComboBox.getValue() == null) {
+            showAlert("Lỗi", "Vui lòng chọn nhà cung cấp");
+            return false;
+        }
+
+        try {
+            Float.parseFloat(priceField.getText().trim());
+            Integer.parseInt(stockQuantityField.getText().trim());
+            Float.parseFloat(supplyPriceField.getText().trim());
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi", "Vui lòng nhập đúng định dạng số");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -501,7 +466,7 @@ public class InventoryProductController {
         alert.showAndWait();
     }
 
-    private void showInfoAlert(String title, String message) {
+    private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);

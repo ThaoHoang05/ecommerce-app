@@ -14,9 +14,9 @@
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="88.0" prefWidth="1315.0" spacing="20.0" styleClass="white-background" stylesheets="@../styles/style.css" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <VBox fx:id="accountVbox">
+            <VBox fx:id="accountVbox" onMouseExited="#hideLogoutDropdown">
                <children>
-                  <HBox fx:id="AccountHbox" alignment="CENTER" onMouseClicked="#toggleLogoutDropdown" prefHeight="50.0" prefWidth="328.0" style="-fx-background-color: rgba(255,107,53,0.05);" stylesheets="@../styles/style.css">
+                  <HBox fx:id="AccountHbox" alignment="CENTER" onMouseEntered="#toggleLogoutDropdown" prefHeight="50.0" prefWidth="328.0" style="-fx-background-color: rgba(255,107,53,0.05);" stylesheets="@../styles/style.css">
                      <children>
                         <Label fx:id="customerName" alignment="CENTER" prefHeight="49.0" prefWidth="187.0" text="Customer Name" textFill="#dd1818">
                            <font>
@@ -50,7 +50,7 @@
                </padding>
             </VBox>
             <Region prefHeight="109.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Label alignment="CENTER" prefHeight="67.0" prefWidth="598.0" text="Stationery" textFill="#d63031">
+            <Label alignment="CENTER" onMouseClicked="#returnInitialViewClicked" prefHeight="67.0" prefWidth="598.0" text="Stationery" textFill="#d63031">
                <font>
                   <Font name="Georgia Bold" size="50.0" />
                </font>

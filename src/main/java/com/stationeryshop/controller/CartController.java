@@ -164,7 +164,7 @@ public class CartController {
 
             // Cập nhật Session
             Session.addToCart(productId, quantity);
-            
+        
             refreshCartDisplay();
             return 1; // thành công
 
@@ -206,7 +206,6 @@ public class CartController {
             e.printStackTrace();
             return -1;
         }
-
         try {
             // Kiểm tra tồn kho
             int stockInDB = inventoryDAO.getStockLevel(productId);
@@ -229,6 +228,17 @@ public class CartController {
             e.printStackTrace();
             return -1;
         }
+        // Kiểm tra tồn kho
+        int stockInDB = inventoryDAO.getStockLevel(productId);
+        if (newQuantity > stockInDB) {
+            return 0; // vượt quá tồn kho
+        }
+
+        // Cập nhật số lượng
+        CartItem item = cartItems.get(productId);
+        item.setQuantity(newQuantity);
+
+        return 1;
     }
 
     /**
@@ -379,6 +389,25 @@ public class CartController {
                     javafx.scene.layout.AnchorPane.setRightAnchor(shopViewPane, 0.0);
                 }
 
+
+                // Lấy ShopViewController để setup nếu cần
+                // ShopViewController shopController = loader.getController();
+
+                // Thay thế nội dung của parent container
+                parentContainer.getChildren().clear();
+                parentContainer.getChildren().add(shopViewPane);
+
+                // Nếu parent là AnchorPane, set anchor constraints
+                if (parentContainer instanceof javafx.scene.layout.AnchorPane) {
+                    javafx.scene.layout.AnchorPane.setTopAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setBottomAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setLeftAnchor(shopViewPane, 0.0);
+                    javafx.scene.layout.AnchorPane.setRightAnchor(shopViewPane, 0.0);
+                }
+
+                // Hoặc nếu parent là khác loại Pane, có thể cần binding size
+                // shopViewPane.prefWidthProperty().bind(parentContainer.widthProperty());
+                // shopViewPane.prefHeightProperty().bind(parentContainer.heightProperty());
             } else {
                 showErrorAlert("Lỗi", "Không thể quay lại trang sản phẩm - Parent container chưa được thiết lập");
             }
@@ -521,7 +550,6 @@ public class CartController {
                 break;
         }
     }
-
     /**
      * Lấy danh sách các item trong giỏ hàng
      *
@@ -670,7 +698,6 @@ public class CartController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
-
     /**
      * Đồng bộ dữ liệu từ Session vào CartController
      */
@@ -708,10 +735,6 @@ public class CartController {
         // Refresh UI
         refreshCartDisplay();
     }
-
-    /**
-     * Đồng bộ dữ liệu từ CartController vào Session
-     */
     public void syncToSession() {
         Session.cart.clear();
 
@@ -719,6 +742,7 @@ public class CartController {
             Session.cart.put(entry.getKey(), entry.getValue().getQuantity());
         }
     }
+
 
     /**
      * Get CartItem by product ID
