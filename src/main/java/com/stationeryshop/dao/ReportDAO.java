@@ -3,6 +3,7 @@ package com.stationeryshop.dao;
 import com.stationeryshop.model.Invoice;
 import com.stationeryshop.utils.DBConnection;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.*;
@@ -54,13 +55,17 @@ public class ReportDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS daily_revenue " +
+        String sql = "SELECT COALESCE(SUM(final_amount), 0) AS daily_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) = ? " +
-                     "AND payment_status = 'PAID'";
+                     "AND status = 'PAID'";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return revenue;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(date));
             rs = stmt.executeQuery();
@@ -92,13 +97,17 @@ public class ReportDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS weekly_revenue " +
+        String sql = "SELECT COALESCE(SUM(final_amount), 0) AS weekly_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                     "AND payment_status = 'PAID'";
+                     "AND status = 'PAID'";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return revenue;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -131,14 +140,18 @@ public class ReportDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS monthly_revenue " +
+        String sql = "SELECT COALESCE(SUM(final_amount), 0) AS monthly_revenue " +
                      "FROM invoices " +
                      "WHERE EXTRACT(MONTH FROM invoice_date) = ? " +
                      "AND EXTRACT(YEAR FROM invoice_date) = ? " +
-                     "AND payment_status = 'PAID'";
+                     "AND status = 'PAID'";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return revenue;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, month);
             stmt.setInt(2, year);
@@ -171,13 +184,17 @@ public class ReportDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        String sql = "SELECT COALESCE(SUM(total_amount), 0) AS range_revenue " +
+        String sql = "SELECT COALESCE(SUM(final_amount), 0) AS range_revenue " +
                      "FROM invoices " +
                      "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                     "AND payment_status = 'PAID'";
+                     "AND status = 'PAID'";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return revenue;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -215,19 +232,23 @@ public class ReportDAO {
                      "    p.product_id, " +
                      "    p.product_name, " +
                      "    SUM(id.quantity) AS total_quantity, " +
-                     "    SUM(id.line_total) AS total_revenue, " +
+                     "    SUM(id.subtotal) AS total_revenue, " +
                      "    AVG(id.unit_price) AS avg_price " +
                      "FROM invoice_details id " +
                      "JOIN products p ON id.product_id = p.product_id " +
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "AND i.payment_status = 'PAID' " +
+                     "AND i.status = 'PAID' " +
                      "GROUP BY p.product_id, p.product_name " +
                      "ORDER BY total_quantity DESC " +
                      "LIMIT ?";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return topProducts;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -270,19 +291,23 @@ public class ReportDAO {
                      "    p.product_id, " +
                      "    p.product_name, " +
                      "    SUM(id.quantity) AS total_quantity, " +
-                     "    SUM(id.line_total) AS total_revenue, " +
+                     "    SUM(id.subtotal) AS total_revenue, " +
                      "    AVG(id.unit_price) AS avg_price " +
                      "FROM invoice_details id " +
                      "JOIN products p ON id.product_id = p.product_id " +
                      "JOIN invoices i ON id.invoice_id = i.invoice_id " +
                      "WHERE DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "AND i.payment_status = 'PAID' " +
-                     "GROUP BY p.product_id, p.product_name" +
+                     "AND i.status = 'PAID' " +
+                     "GROUP BY p.product_id, p.product_name " +
                      "ORDER BY total_revenue DESC " +
                      "LIMIT ?";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return topProducts;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -325,18 +350,22 @@ public class ReportDAO {
                      "    u.full_name, " +
                      "    u.username, " +
                      "    COUNT(i.invoice_id) AS total_invoices, " +
-                     "    SUM(i.total_amount) AS total_revenue, " +
-                     "    AVG(i.total_amount) AS avg_invoice " +
+                     "    SUM(i.final_amount) AS total_revenue, " +
+                     "    AVG(i.final_amount) AS avg_invoice " +
                      "FROM users u " +
-                     "LEFT JOIN invoices i ON u.user_id = i.created_by " +
+                     "LEFT JOIN invoices i ON u.user_id = i.user_id " +
                      "    AND DATE(i.invoice_date) BETWEEN ? AND ? " +
-                     "    AND i.payment_status = 'PAID' " +
+                     "    AND i.status = 'PAID' " +
                      "WHERE u.role IN ('STAFF', 'MANAGER') " +
                      "GROUP BY u.user_id, u.full_name, u.username " +
                      "ORDER BY total_revenue DESC NULLS LAST";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return staffSales;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -344,7 +373,7 @@ public class ReportDAO {
             
             while (rs.next()) {
                 Map<String, Object> staff = new HashMap<>();
-                staff.put("userId", rs.getInt("user_id"));
+                staff.put("userId", rs.getString("user_id"));
                 staff.put("fullName", rs.getString("full_name"));
                 staff.put("username", rs.getString("username"));
                 staff.put("totalInvoices", rs.getInt("total_invoices"));
@@ -373,24 +402,30 @@ public class ReportDAO {
         ResultSet rs = null;
         
         String sql = "SELECT " +
-                     "    p.product_id, " +
-                     "    p.product_name, " +
-                     "    p.stock_quantity, " +
-                     "    p.unit_price, " +
-                     "    p.stock_quantity * p.unit_price AS stock_value, " +
+                     "    ip.product_id, " +
+                     "    ip.product_name, " +
+                     "    ip.quantity_on_hand, " +
+                     "    ip.price, " +
+                     "    ip.supply_price, " +
+                     "    ip.quantity_on_hand * ip.price AS stock_value, " +
                      "    c.category_name, " +
+                     "    s.supplier_name, " +
                      "    CASE " +
-                     "        WHEN p.stock_quantity <= 10 THEN 'LOW' " +
-                     "        WHEN p.stock_quantity <= 50 THEN 'MEDIUM' " +
+                     "        WHEN ip.quantity_on_hand <= 10 THEN 'LOW' " +
+                     "        WHEN ip.quantity_on_hand <= 50 THEN 'MEDIUM' " +
                      "        ELSE 'HIGH' " +
                      "    END AS stock_level " +
-                     "FROM products p " +
-                     "LEFT JOIN categories c ON p.category_id = c.category_id " +
-                     "WHERE p.is_active = true " +
-                     "ORDER BY p.stock_quantity ASC, p.product_name";
+                     "FROM inventoryProduct ip " +
+                     "LEFT JOIN categories c ON ip.category_id = c.category_id " +
+                     "LEFT JOIN suppliers s ON ip.supplier_id = s.supplier_id " +
+                     "ORDER BY ip.quantity_on_hand ASC, ip.product_name";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return inventory;
+            }
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             
@@ -398,10 +433,12 @@ public class ReportDAO {
                 Map<String, Object> item = new HashMap<>();
                 item.put("productId", rs.getInt("product_id"));
                 item.put("productName", rs.getString("product_name"));
-                item.put("stockQuantity", rs.getInt("stock_quantity"));
-                item.put("unitPrice", rs.getBigDecimal("unit_price"));
+                item.put("stockQuantity", rs.getInt("quantity_on_hand"));
+                item.put("unitPrice", rs.getBigDecimal("price"));
+                item.put("supplyPrice", rs.getBigDecimal("supply_price"));
                 item.put("stockValue", rs.getBigDecimal("stock_value"));
                 item.put("categoryName", rs.getString("category_name"));
+                item.put("supplierName", rs.getString("supplier_name"));
                 item.put("stockLevel", rs.getString("stock_level"));
                 
                 inventory.add(item);
@@ -430,7 +467,9 @@ public class ReportDAO {
                 "i.invoice_id, " +
                 "i.invoice_date, " +
                 "i.total_amount, " +
-                "i.payment_status, " +
+                "i.discount_amount, " +
+                "i.final_amount, " +
+                "i.status, " +
                 "c.customer_id, " +
                 "c.customer_name, " +
                 "c.phone_number, " +
@@ -438,12 +477,16 @@ public class ReportDAO {
                 "u.full_name AS staff_name " +
                 "FROM invoices i " +
                 "LEFT JOIN customers c ON i.customer_id = c.customer_id " +
-                "LEFT JOIN users u ON i.created_by = u.user_id " +
+                "LEFT JOIN users u ON i.user_id = u.user_id " +
                 "WHERE DATE(i.invoice_date) = ? " +
                 "ORDER BY i.invoice_date DESC";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return invoices;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(date));
             rs = stmt.executeQuery();
@@ -453,11 +496,13 @@ public class ReportDAO {
                 invoice.put("invoiceId", rs.getInt("invoice_id"));
                 invoice.put("invoiceDate", rs.getTimestamp("invoice_date"));
                 invoice.put("totalAmount", rs.getBigDecimal("total_amount"));
-                invoice.put("paymentStatus", rs.getString("payment_status"));
+                invoice.put("discountAmount", rs.getBigDecimal("discount_amount"));
+                invoice.put("finalAmount", rs.getBigDecimal("final_amount"));
+                invoice.put("status", rs.getString("status"));
                 invoice.put("customerId", rs.getInt("customer_id"));
                 invoice.put("customerName", rs.getString("customer_name"));
                 invoice.put("phoneNumber", rs.getString("phone_number"));
-                invoice.put("userId", rs.getInt("user_id"));
+                invoice.put("userId", rs.getString("user_id"));
                 invoice.put("staffName", rs.getString("staff_name"));
                 
                 invoices.add(invoice);
@@ -485,15 +530,19 @@ public class ReportDAO {
         
         String sql = "SELECT " +
                 "COUNT(invoice_id) AS total_invoices, " +
-                "SUM(total_amount) AS total_revenue, " +
-                "AVG(total_amount) AS average_invoice, " +
+                "SUM(final_amount) AS total_revenue, " +
+                "AVG(final_amount) AS average_invoice, " +
                 "COUNT(DISTINCT customer_id) AS unique_customers " +
                 "FROM invoices " +
                 "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                "AND payment_status = 'PAID'";
+                "AND status = 'PAID'";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return summary;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -529,15 +578,19 @@ public class ReportDAO {
         String sql = "SELECT " +
                 "DATE(invoice_date) AS day, " +
                 "COUNT(invoice_id) AS invoice_count, " +
-                "SUM(total_amount) AS daily_revenue " +
+                "SUM(final_amount) AS daily_revenue " +
                 "FROM invoices " +
                 "WHERE DATE(invoice_date) BETWEEN ? AND ? " +
-                "AND payment_status = 'PAID' " +
+                "AND status = 'PAID' " +
                 "GROUP BY DATE(invoice_date) " +
                 "ORDER BY DATE(invoice_date)";
         
         try {
             conn = db.connect();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+                return dailyRevenue;
+            }
             stmt = conn.prepareStatement(sql);
             stmt.setDate(1, Date.valueOf(startDate));
             stmt.setDate(2, Date.valueOf(endDate));
@@ -574,11 +627,4 @@ public class ReportDAO {
             e.printStackTrace();
         }
     }
-
-    public void close() {
-    }
-
-    /**
-     * Closes the database connection when done with this DAO.
-     */
 }
