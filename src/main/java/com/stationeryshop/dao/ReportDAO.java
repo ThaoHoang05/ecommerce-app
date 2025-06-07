@@ -578,6 +578,7 @@ public class ReportDAO {
     }
 
     public void close() {
+        
     }
 
     /**
