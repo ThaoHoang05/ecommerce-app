@@ -49,8 +49,8 @@ public class CartController {
     private List<Cart_ItemController> itemControllers;
 
     // Current user and customer for checkout
-    private User currentUser = Session.getCurrentUser();
-    private Customer currentCustomer = new UserDAO().getCustomerById(currentUser.getUser_id());
+    private User currentUser;
+    private Customer currentCustomer;
 
     // Inner class để lưu thông tin item trong giỏ hàng
     public static class CartItem {
@@ -91,9 +91,23 @@ public class CartController {
         }
     }
 
-    public CartController() throws SQLException {
+    public CartController() {
         this.cartItems = new HashMap<>();
         this.itemControllers = new ArrayList<>();
+
+        // Initialize user and customer safely
+        try {
+            this.currentUser = Session.getCurrentUser();
+            if (this.currentUser != null) {
+                UserDAO userDAO = new UserDAO();
+                this.currentCustomer = userDAO.getCustomerById(currentUser.getUser_id());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Set defaults if initialization fails
+            this.currentUser = null;
+            this.currentCustomer = null;
+        }
     }
 
     public void setParentContainer(Pane parentContainer) {
@@ -119,16 +133,12 @@ public class CartController {
      * @return 1: thành công, 0: vượt quá tồn kho, -1: lỗi
      */
     public int handleAddToCart(int productId, int quantity) {
-        Properties prop = new Properties();
         ProductDAO productDAO;
         InventoryDAO inventoryDAO;
 
         try {
-            prop.load(getClass().getResourceAsStream("/config.properties"));
-            String admin = prop.getProperty("db.admin");
-            String adminpass = prop.getProperty("db.adminpwd");
-            productDAO = new ProductDAO(admin, adminpass);
-            inventoryDAO = new InventoryDAO(admin, adminpass);
+            productDAO = new ProductDAO();
+            inventoryDAO = new InventoryDAO();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -164,7 +174,7 @@ public class CartController {
 
             // Cập nhật Session
             Session.addToCart(productId, quantity);
-        
+
             refreshCartDisplay();
             return 1; // thành công
 
@@ -194,18 +204,15 @@ public class CartController {
             return 1;
         }
 
-        Properties prop = new Properties();
         InventoryDAO inventoryDAO;
 
         try {
-            prop.load(getClass().getResourceAsStream("/config.properties"));
-            String admin = prop.getProperty("db.admin");
-            String adminpass = prop.getProperty("db.adminpwd");
-            inventoryDAO = new InventoryDAO(admin, adminpass);
+            inventoryDAO = new InventoryDAO();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
+
         try {
             // Kiểm tra tồn kho
             int stockInDB = inventoryDAO.getStockLevel(productId);
@@ -219,26 +226,15 @@ public class CartController {
 
             // Cập nhật Session
             Session.updateCartQuantity(productId, newQuantity);
-            
+
             // Refresh UI để cập nhật hiển thị
             refreshCartDisplay();
-            
+
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
-        // Kiểm tra tồn kho
-        int stockInDB = inventoryDAO.getStockLevel(productId);
-        if (newQuantity > stockInDB) {
-            return 0; // vượt quá tồn kho
-        }
-
-        // Cập nhật số lượng
-        CartItem item = cartItems.get(productId);
-        item.setQuantity(newQuantity);
-
-        return 1;
     }
 
     /**
@@ -255,7 +251,7 @@ public class CartController {
         } else {
             result = 0;
         }
-        
+
         if (result == 1) {
             // Cập nhật Session
             Session.removeFromCart(productId);
@@ -369,7 +365,7 @@ public class CartController {
     }
 
     @FXML
-    void continueShopping(ActionEvent event) throws IOException {
+    void continueShopping(ActionEvent event) {
         try {
             if (parentContainer != null) {
                 // Load ShopView FXML
@@ -389,25 +385,6 @@ public class CartController {
                     javafx.scene.layout.AnchorPane.setRightAnchor(shopViewPane, 0.0);
                 }
 
-
-                // Lấy ShopViewController để setup nếu cần
-                // ShopViewController shopController = loader.getController();
-
-                // Thay thế nội dung của parent container
-                parentContainer.getChildren().clear();
-                parentContainer.getChildren().add(shopViewPane);
-
-                // Nếu parent là AnchorPane, set anchor constraints
-                if (parentContainer instanceof javafx.scene.layout.AnchorPane) {
-                    javafx.scene.layout.AnchorPane.setTopAnchor(shopViewPane, 0.0);
-                    javafx.scene.layout.AnchorPane.setBottomAnchor(shopViewPane, 0.0);
-                    javafx.scene.layout.AnchorPane.setLeftAnchor(shopViewPane, 0.0);
-                    javafx.scene.layout.AnchorPane.setRightAnchor(shopViewPane, 0.0);
-                }
-
-                // Hoặc nếu parent là khác loại Pane, có thể cần binding size
-                // shopViewPane.prefWidthProperty().bind(parentContainer.widthProperty());
-                // shopViewPane.prefHeightProperty().bind(parentContainer.heightProperty());
             } else {
                 showErrorAlert("Lỗi", "Không thể quay lại trang sản phẩm - Parent container chưa được thiết lập");
             }
@@ -550,6 +527,7 @@ public class CartController {
                 break;
         }
     }
+
     /**
      * Lấy danh sách các item trong giỏ hàng
      *
@@ -698,6 +676,7 @@ public class CartController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
+
     /**
      * Đồng bộ dữ liệu từ Session vào CartController
      */
@@ -735,6 +714,7 @@ public class CartController {
         // Refresh UI
         refreshCartDisplay();
     }
+
     public void syncToSession() {
         Session.cart.clear();
 
@@ -742,7 +722,6 @@ public class CartController {
             Session.cart.put(entry.getKey(), entry.getValue().getQuantity());
         }
     }
-
 
     /**
      * Get CartItem by product ID
