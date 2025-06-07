@@ -22,13 +22,16 @@ public class InventoryProduct {
                            String imageUrl, String category) {
         this.product = new Product(productId, productName, description, price, imageUrl, this.category);
     }
-    public void setSupplier(String supplier) throws SQLException {
+    public void setSupplier(int supplier) throws SQLException {
         SupplierDAO supply = new SupplierDAO();
-        this.supplier = supply.getSuppliersByName(supplier);
+        this.supplier = supply.getSupplierById(supplier);
     }
     public void setInventoryItem(int product_id) {
         InventoryDAO inventory = new InventoryDAO();
         this.inventoryItem = inventory.getInventoryByProductId(product_id);
+    }
+    public void setCategory(Category category) {
+        this.category = category;
     }
     public int getProductId(){
         return this.product.getProductId();
