@@ -195,8 +195,8 @@ public class SupplierDAO {
     }
 
     // Tìm nhà cung cấp theo tên
-    public List<Supplier> getSuppliersByName(String supplierName) throws SQLException {
-        List<Supplier> suppliers = new ArrayList<>();
+    public Supplier getSuppliersByName(String supplierName) throws SQLException {
+        Supplier supplier = new Supplier();
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -212,7 +212,6 @@ public class SupplierDAO {
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Supplier supplier = new Supplier();
                 supplier.setSupplierId(rs.getInt("supplier_id"));
                 supplier.setSupplierName(rs.getString("supplier_name"));
                 supplier.setContactPerson(rs.getString("contact_person"));
@@ -221,7 +220,6 @@ public class SupplierDAO {
                 supplier.setAddress(rs.getString("address"));
                 supplier.setCreatedAt(rs.getTimestamp("created_at"));
                 supplier.setUpdatedAt(rs.getTimestamp("updated_at"));
-                suppliers.add(supplier);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -230,7 +228,7 @@ public class SupplierDAO {
             stmt.close();
             conn.close();
         }
-        return suppliers;
+        return supplier;
     }
 
 }

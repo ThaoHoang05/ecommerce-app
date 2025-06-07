@@ -163,7 +163,7 @@ public class SupplierController implements Initializable {
         if (keyword.isEmpty()) {
             loadSuppliers();
         } else {
-            List<Supplier> suppliers = supplierDAO.getSuppliersByName(keyword);
+            Supplier suppliers = supplierDAO.getSuppliersByName(keyword);
             supplierList.setAll(suppliers);
             tableSuppliers.setItems(supplierList);
         }

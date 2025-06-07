@@ -17,7 +17,7 @@
         </Label>
         <HBox spacing="10.0">
             <children>
-                <TextField fx:id="categoryIdField" disable="true" promptText="ID" />
+                <TextField fx:id="categoryIdField" promptText="ID" />
                 <TextField fx:id="categoryNameField" promptText="Tên danh mục" />
                 <TextField fx:id="categoryDescField" promptText="Mô tả" />
                 <Button fx:id="addCategoryBtn" onAction="#handleAddCategory" style="-fx-background-color: #228b22; -fx-text-fill: white;" text="Thêm" />
