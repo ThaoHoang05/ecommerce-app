@@ -55,16 +55,15 @@ public class InvoiceDAO {
             conn.setAutoCommit(false); // Bắt đầu transaction
 
             // 1. Insert hóa đơn
-            String invoiceSQL = "INSERT INTO invoices (user_id, customer_id, invoice_date, total_amount, discount_amount, final_amount, status) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String invoiceSQL = "INSERT INTO invoices (user_id, customer_id, invoice_date, total_amount, discount_amount, status) " +
+                                "VALUES (?, ?, ?, ?, ?, ?)";
             invoiceStmt = conn.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);
             invoiceStmt.setString(1, invoice.getUser().getUser_id());
             invoiceStmt.setInt(2, invoice.getCustomer().getId());
             invoiceStmt.setDate(3, Date.valueOf(invoice.getInvoiceDate()));
             invoiceStmt.setDouble(4, invoice.getTotalAmount());
             invoiceStmt.setDouble(5, invoice.getDiscountAmount());
-            invoiceStmt.setDouble(6, invoice.getFinalAmount());
-            invoiceStmt.setString(7, invoice.getStatus());
+            invoiceStmt.setString(6, invoice.getStatus());
 
             int affectedRows = invoiceStmt.executeUpdate();
             if (affectedRows == 0) {
