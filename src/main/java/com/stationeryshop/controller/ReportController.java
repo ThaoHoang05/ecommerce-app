@@ -350,6 +350,8 @@ public class ReportController implements Initializable {
             for (Map<String, Object> item : reportData) {
                 String customerName = (String) item.get("customerName");
                 String phoneNumber = (String) item.get("phoneNumber");
+                System.out.println(item.get("customerName"));
+                System.out.println(item.get("phoneNumber"));
                 
                 if ((customerName != null && customerName.toLowerCase().contains(searchTerm.toLowerCase())) ||
                     (phoneNumber != null && phoneNumber.contains(searchTerm))) {
