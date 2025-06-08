@@ -658,10 +658,6 @@ public class ReportDAO {
                 customer.setEmail(rs.getString("email"));
                 customer.setAddress(rs.getString("address"));
             
-                // Tạo User object (có thể cần import User class)
-                User user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.    setFullName(rs.getString("staff_name"));
                 
                 // Tạo Invoice object
                 Invoice invoice = new Invoice();
@@ -672,7 +668,7 @@ public class ReportDAO {
                 invoice.setFinalAmount(rs.getDouble("final_amount"));
                 invoice.setStatus(rs.getString("status"));
                 invoice.setCustomer(customer);
-                invoice.setUser(user);
+                invoice.setUser(null);
             
                 customerInvoices.add(invoice);
             }
