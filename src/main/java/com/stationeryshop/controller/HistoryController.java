@@ -35,13 +35,12 @@ public class HistoryController implements Initializable {
     @FXML
     private Label totalSpentLbl;
 
-    private InvoiceDAO invoiceDAO;
+    private InvoiceDAO invoiceDAO = new InvoiceDAO();
     private User currentUser = Session.getCurrentUser();
     private DecimalFormat currencyFormatter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceDAO = new InvoiceDAO();
         currencyFormatter = new DecimalFormat("#,###.##");
         
         // Thiết lập ScrollPane

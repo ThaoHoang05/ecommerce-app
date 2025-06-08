@@ -6,6 +6,7 @@ import com.stationeryshop.dao.ProductDAO;
 import com.stationeryshop.model.Invoice;
 import com.stationeryshop.model.InvoiceDetail;
 import com.stationeryshop.model.Product;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -170,7 +171,7 @@ public class History_Order_ItemController implements Initializable {
      * Xử lý khi click vào ID đơn hàng (có thể copy to clipboard)
      */
     @FXML
-    void ID(javafx.event.ActionEvent event) {
+    void ID(ActionEvent event) {
         try {
             if (currentInvoice != null) {
                 // Copy ID to clipboard
