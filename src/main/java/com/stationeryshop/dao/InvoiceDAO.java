@@ -547,13 +547,8 @@ public class InvoiceDAO {
         Invoice invoice = new Invoice();
         invoice.setInvoiceId(rs.getInt("invoice_id"));
 
-        User user = new User();
-        user.setUser_id(rs.getString("user_id"));
-        invoice.setUser(user);
-        
-        Customer customer = new Customer();
-        customer.setId(rs.getInt("customer_id"));
-        invoice.setCustomer(customer);
+        invoice.setUser(rs.getString("user_id"));
+        invoice.setCustomer(rs.getInt("customer_id"));
 
         invoice.setInvoiceDate(rs.getDate("invoice_date").toLocalDate());
         invoice.setTotalAmount(rs.getDouble("total_amount"));
