@@ -1,5 +1,8 @@
 package com.stationeryshop.test;
 
+import com.stationeryshop.dao.UserDAO;
+import com.stationeryshop.model.User;
+import com.stationeryshop.utils.Session;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +19,9 @@ public class TestHistory extends Application{
         primaryStage.show();
     }
     public static void main(String[] args) {
+        UserDAO userDAO = new UserDAO();
+        User cur = userDAO.getUser("customer2");
+        Session.setCurrentUser(cur);
         launch(args);
     }
 }
