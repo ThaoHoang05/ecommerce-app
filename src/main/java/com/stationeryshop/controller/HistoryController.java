@@ -1,4 +1,3 @@
-
 package com.stationeryshop.controller;
 
 import com.stationeryshop.dao.InvoiceDAO;
@@ -17,6 +16,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class HistoryController implements Initializable {
 
@@ -59,20 +59,22 @@ public class HistoryController implements Initializable {
     }
 
     /**
-     * Load lịch sử đơn hàng của user
+     * Load lịch sử đơn hàng của user hiện tại
      */
     private void loadOrderHistory() {
         try {
-            // Lấy tất cả đơn hàng (có thể filter theo user nếu cần)
-            List<Invoice> invoices = invoiceDAO.getAllInvoices();
+            // Lấy tất cả đơn hàng
+            List<Invoice> allInvoices = invoiceDAO.getAllInvoices();
             
-            // Nếu cần filter theo user cụ thể, có thể thêm logic ở đây
-            // List<Invoice> userInvoices = invoices.stream()
-            //     .filter(invoice -> invoice.getUser().getUser_id().equals(currentUser.getUser_id()))
-            //     .collect(Collectors.toList());
+            // Lọc theo user hiện tại
+            List<Invoice> userInvoices = allInvoices.stream()
+                .filter(invoice -> invoice.getUser() != null && 
+                        invoice.getUser().getUser_id() != null &&
+                        invoice.getUser().getUser_id().equals(currentUser.getUser_id()))
+                .collect(Collectors.toList());
 
-            displayOrderHistory(invoices);
-            updateSummaryLabels(invoices);
+            displayOrderHistory(userInvoices);
+            updateSummaryLabels(userInvoices);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,14 +155,19 @@ public class HistoryController implements Initializable {
     }
 
     /**
-     * Lọc đơn hàng theo trạng thái
+     * Lọc đơn hàng theo trạng thái cho user hiện tại
      */
     public void filterByStatus(String status) {
         try {
             List<Invoice> allInvoices = invoiceDAO.getAllInvoices();
+            
+            // Lọc theo user hiện tại và trạng thái
             List<Invoice> filteredInvoices = allInvoices.stream()
+                    .filter(invoice -> invoice.getUser() != null && 
+                            invoice.getUser().getUser_id() != null &&
+                            invoice.getUser().getUser_id().equals(currentUser.getUser_id()))
                     .filter(invoice -> status.equals("ALL") || status.equals(invoice.getStatus()))
-                    .toList();
+                    .collect(Collectors.toList());
             
             displayOrderHistory(filteredInvoices);
             updateSummaryLabels(filteredInvoices);
@@ -172,7 +179,7 @@ public class HistoryController implements Initializable {
     }
 
     /**
-     * Tìm kiếm đơn hàng theo ID
+     * Tìm kiếm đơn hàng theo ID cho user hiện tại
      */
     public void searchByOrderId(String orderId) {
         if (orderId == null || orderId.trim().isEmpty()) {
@@ -184,11 +191,16 @@ public class HistoryController implements Initializable {
             int invoiceId = Integer.parseInt(orderId.trim());
             Invoice invoice = invoiceDAO.getInvoiceById(invoiceId);
             
-            if (invoice != null) {
+            // Kiểm tra xem hóa đơn có thuộc về user hiện tại không
+            if (invoice != null && 
+                invoice.getUser() != null && 
+                invoice.getUser().getUser_id() != null &&
+                invoice.getUser().getUser_id().equals(currentUser.getUser_id())) {
+                
                 displayOrderHistory(List.of(invoice));
                 updateSummaryLabels(List.of(invoice));
             } else {
-                showErrorMessage("Không tìm thấy đơn hàng với ID: " + orderId);
+                showErrorMessage("Không tìm thấy đơn hàng với ID: " + orderId + " trong lịch sử của bạn");
             }
             
         } catch (NumberFormatException e) {
