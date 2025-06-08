@@ -77,11 +77,11 @@ public class UserDAO {
         return user;
     }
 
-    public User createUser(String username, String password, String fullname, String email){
+    public User createUser(String username, String password, String fullname, String email,String phone_number, String address){
         //Lưu thông tin người dùng vào database
         Connection conn = null;
         PreparedStatement stmt = null;
-        String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,email) values(?,?,?,?,?,?)";
+        String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,phone_number,email,address) values(?,?,?,?,?,?, ?, ?)";
         String pwd = new PwdHash(password).getHash();
         String user_id = new RandomUserId().getRandomUserId();
         User user = null;
@@ -93,7 +93,9 @@ public class UserDAO {
             stmt.setString(3,pwd);
             stmt.setInt(4,3);
             stmt.setString(5,fullname);
-            stmt.setString(6,email);
+            stmt.setString(6,phone_number);
+            stmt.setString(7,email);
+            stmt.setString(8,address);
             stmt.executeUpdate();
             user = new User(user_id, username, "customer");
             System.out.println("Create user success");
@@ -108,6 +110,8 @@ public class UserDAO {
         }
         return user;
     }
+
+
     public boolean findUserByUsername(String username) {
         Connection conn = null;
         PreparedStatement pstmt = null;
