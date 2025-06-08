@@ -5,6 +5,7 @@ import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -106,11 +107,9 @@ public class MainViewController {
     @FXML
     private AnchorPane mainPane;
 
-    @FXML
-    private ScrollPane mainScrollPane;
+    public static AnchorPane parentPane;
 
-    @FXML
-    private VBox mainInitial;
+    private VBox intialMain;
 
     // Method để clear nội dung cũ trước khi load nội dung mới
     private void clearMainPane() {
@@ -186,7 +185,10 @@ public class MainViewController {
         String role = Session.getCurrentRole();
         if("customer".equals(role)) {
             final String HISTORY_PATH = "/fxml/History.fxml";
-            Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_PATH));
+            Pane historyPane = loader.load();
+            HistoryController historyController = loader.getController();
+            historyController.setCurrentUser();
             loadContentToMainPane(historyPane);
         }
         else{
@@ -318,24 +320,15 @@ public class MainViewController {
         clearMainPane();
     }
 
-    void initialMain() {
-        try{
-            mainScrollPane = new ScrollPane();
-            mainInitial = new VBox();
-
-            // Thêm categoryBox vào VBox
-            mainInitial.getChildren().add(categoryBox());
-            //mainInitial.getChildren().add(bestSellerBox());
-
-            // Đặt VBox làm nội dung của ScrollPane
-            mainScrollPane.setContent(mainInitial);
-            AnchorPane.setLeftAnchor(mainScrollPane, 0.0);
-            AnchorPane.setRightAnchor(mainScrollPane, 0.0);
-
-            mainPane.getChildren().add(mainScrollPane);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+    void initialMain() throws IOException {
+        final String INITIALMAIN_PATH = "/fxml/InitialMainPane.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(INITIALMAIN_PATH));
+        intialMain = loader.load();
+        AnchorPane.setTopAnchor(intialMain, 0.0);
+        AnchorPane.setBottomAnchor(intialMain, 0.0);
+        AnchorPane.setLeftAnchor(intialMain, 0.0);
+        AnchorPane.setRightAnchor(intialMain, 0.0);
+        mainPane.getChildren().add(intialMain);
     }
 
     VBox categoryBox() throws IOException{
@@ -349,10 +342,10 @@ public class MainViewController {
         clearMainPane();
         loadMainView();
     }
-    //VBox bestSellerBox() throws IOException{
-    //    final String BESTSELLER_PATH = "/fxml/BestSellers_Top5.fxml";
-    //    FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
-    //    VBox best = loader.load();
-    //    return best;
-    //}
+    VBox bestSellerBox() throws IOException{
+        final String BESTSELLER_PATH = "/fxml/BestSellers_Top5.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
+        VBox best = loader.load();
+        return best;
+    }
 }

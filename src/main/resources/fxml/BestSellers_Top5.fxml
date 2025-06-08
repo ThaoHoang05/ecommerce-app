@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.BestSellers_Top5Controller">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.BestSellers_Top5Controller">
     <children>
         <!-- Header Section -->
         <VBox spacing="10.0" style="-fx-background-color: #F8F9FA;">
@@ -23,16 +23,18 @@
         </VBox>
 
         <!-- Best Sellers Products Section -->
-        <ScrollPane fitToWidth="true" hbarPolicy="AS_NEEDED" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER">
+        <ScrollPane fitToWidth="true" hbarPolicy="ALWAYS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent; -fx-background: transparent;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
             <content>
-                <VBox spacing="20.0">
-                    <padding>
-                        <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
-                    </padding>
+                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="295.0" prefWidth="1009.0" spacing="5.0">
                     <children>
                         <!-- Best Sellers Products Row -->
-                        <HBox fx:id="top5BestSellersHBox" alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: transparent;">
-                        </HBox>
+                        <HBox fx:id="top5BestSellersHBox" alignment="CENTER_LEFT" prefHeight="289.0" prefWidth="989.0" spacing="10.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></HBox>
                     </children>
                 </VBox>
             </content>

@@ -555,9 +555,4 @@ public class ReportController implements Initializable {
     /**
      * Clean up resources
      */
-    public void cleanup() {
-        if (reportDAO != null) {
-            reportDAO.close();
-        }
-    }
 }

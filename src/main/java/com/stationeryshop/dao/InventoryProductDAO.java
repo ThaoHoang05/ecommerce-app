@@ -1,6 +1,7 @@
 package com.stationeryshop.dao;
 
 
+import com.stationeryshop.model.Category;
 import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.utils.DBConnection;
 import javafx.collections.FXCollections;
@@ -201,7 +202,7 @@ public class InventoryProductDAO {
         String sql = "SELECT ip.product_id ,ip.product_name, ip.description, ip.price, " +
                 "ip.quantity_on_hand, ip.image_url, " +
                 "c. category_id , c.category_name, c.description, " +
-                "s.supplier_name " +
+                "s.supplier_id " +
                 "FROM " +
                 "inventoryProduct ip " +
                 "JOIN categories c ON ip.category_id = c.category_id " +
@@ -233,7 +234,7 @@ public class InventoryProductDAO {
                 );
 
                 // Set supplier information
-                inventoryProduct.setSupplier(rs.getString("supplier_name"));
+                inventoryProduct.setSupplier(rs.getInt("supplier_id"));
 
                 // Set inventory item information
                 inventoryProduct.setInventoryItem(rs.getInt("product_id"));
@@ -256,11 +257,12 @@ public class InventoryProductDAO {
         return inventoryList;
     }
 
-    public InventoryProduct getInventoryProductById(int productId) {
+    public InventoryProduct getInventoryProductById(int productId) throws SQLException {
         Connection conn = db.connect();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String sql = "SELECT * FROM inventoryProduct WHERE product_id = ?";
+        Category  category;
         try{
             ps = conn.prepareStatement(sql);
             ps.setInt(1, productId);
@@ -268,11 +270,9 @@ public class InventoryProductDAO {
             if(rs.next()) {
                 InventoryProduct inventoryProduct = new InventoryProduct();
                 // Set category information
+                category= getCategory(rs.getInt("category_id"));
                 inventoryProduct.setCategory(
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getString("description")
-                );
+                        category);
 
                 // Set product information
                 inventoryProduct.setProduct(
@@ -281,11 +281,11 @@ public class InventoryProductDAO {
                         rs.getString("description"),
                         rs.getDouble("price"),
                         rs.getString("image_url"),
-                        rs.getString("category_name")
+                        category.getCategoryName()
                 );
 
                 // Set supplier information
-                inventoryProduct.setSupplier(rs.getString("supplier_name"));
+                inventoryProduct.setSupplier(rs.getInt("supplier_id"));
 
                 // Set inventory item information
                 inventoryProduct.setInventoryItem(rs.getInt("product_id"));
@@ -294,6 +294,38 @@ public class InventoryProductDAO {
         }catch(Exception e){
             e.printStackTrace();
         }
+        finally {
+            conn.close();
+            ps.close();
+            rs.close();
+        }
         return null;
+    }
+
+    Category getCategory(int category_id) throws SQLException {
+        Connection conn = db.connect();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT category_name, description FROM categories WHERE category_id = ?";
+        Category category = new Category();
+        try{
+            if(conn != null) {
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, category_id);
+                rs = ps.executeQuery();
+                while(rs.next()) {
+                    category.setCategoryId(category_id);
+                    category.setCategoryName(rs.getString("category_name"));
+                    category.setDescription(rs.getString("description"));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            conn.close();
+            ps.close();
+            rs.close();
+        }
+        return category;
     }
 }

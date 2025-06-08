@@ -29,7 +29,7 @@ public class TestShopItem extends Application{
         product = new InventoryProduct();
         product.setCategory(1,"food", "nothing");
         product.setProduct(1,"test", "des", 0.0, null, "food");
-        product.setSupplier("Nha cung cap 2");
+        product.setSupplier(2);
         product.setInventoryItem(1);
 
         launch(args);
