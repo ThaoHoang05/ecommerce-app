@@ -1,6 +1,8 @@
 package com.stationeryshop.dao;
 
+import com.stationeryshop.model.Customer;
 import com.stationeryshop.model.Invoice;
+import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
 
 import javax.swing.*;
