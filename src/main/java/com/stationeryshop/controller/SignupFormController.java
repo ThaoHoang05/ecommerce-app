@@ -53,7 +53,7 @@ public class SignupFormController {
         switch (result){
             case 1: System.out.println("Signup Successful");
             //Thoat ra tro ve mainview voi session phu hop voi role nguoi dung
-                Session.setCurrentUser( new UserDAO().createUser(usernameField.getText(), passwordField.getText(),nameField.getText(),emailField.getText()));
+                Session.setCurrentUser( new UserDAO().createUser(usernameField.getText(), passwordField.getText(),nameField.getText(),emailField.getText(), phoneField.getText(), addressField.getText()));
                 //Chuyen den mainview
                 this.returnMainView(event);
                 break;
