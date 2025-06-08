@@ -17,7 +17,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class HistoryController implements Initializable {
 
@@ -64,15 +63,8 @@ public class HistoryController implements Initializable {
      */
     private void loadOrderHistory() {
         try {
-            // Lấy tất cả đơn hàng
-            List<Invoice> allInvoices = invoiceDAO.getAllInvoices();
-            
-            // Lọc theo user hiện tại
-            List<Invoice> userInvoices = allInvoices.stream()
-                .filter(invoice -> invoice.getUser() != null && 
-                        invoice.getUser().getUser_id() != null &&
-                        invoice.getUser().getUser_id().equals(currentUser.getUser_id()))
-                .collect(Collectors.toList());
+            // Lấy đơn hàng theo user ID - hiệu quả hơn
+            List<Invoice> userInvoices = invoiceDAO.getInvoicesByUserId(currentUser.getUser_id());
 
             displayOrderHistory(userInvoices);
             updateSummaryLabels(userInvoices);
@@ -160,15 +152,13 @@ public class HistoryController implements Initializable {
      */
     public void filterByStatus(String status) {
         try {
-            List<Invoice> allInvoices = invoiceDAO.getAllInvoices();
+            List<Invoice> filteredInvoices;
             
-            // Lọc theo user hiện tại và trạng thái
-            List<Invoice> filteredInvoices = allInvoices.stream()
-                    .filter(invoice -> invoice.getUser() != null && 
-                            invoice.getUser().getUser_id() != null &&
-                            invoice.getUser().getUser_id().equals(currentUser.getUser_id()))
-                    .filter(invoice -> status.equals("ALL") || status.equals(invoice.getStatus()))
-                    .collect(Collectors.toList());
+            if (status.equals("ALL")) {
+                filteredInvoices = invoiceDAO.getInvoicesByUserId(currentUser.getUser_id());
+            } else {
+                filteredInvoices = invoiceDAO.getInvoicesByUserIdAndStatus(currentUser.getUser_id(), status);
+            }
             
             displayOrderHistory(filteredInvoices);
             updateSummaryLabels(filteredInvoices);
