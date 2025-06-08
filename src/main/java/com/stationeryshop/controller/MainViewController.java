@@ -185,7 +185,10 @@ public class MainViewController {
         String role = Session.getCurrentRole();
         if("customer".equals(role)) {
             final String HISTORY_PATH = "/fxml/History.fxml";
-            Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_PATH));
+            Pane historyPane = loader.load();
+            HistoryController historyController = loader.getController();
+            historyController.setCurrentUser();
             loadContentToMainPane(historyPane);
         }
         else{

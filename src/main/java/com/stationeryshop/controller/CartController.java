@@ -295,8 +295,8 @@ public class CartController {
 
             // Tạo hóa đơn
             Invoice invoice = new Invoice();
-            invoice.setUser(user);
-            invoice.setCustomer(customer);
+            invoice.setUser(user.getUser_id());
+            invoice.setCustomer(customer.getId());
             invoice.setInvoiceDate(LocalDate.now());
             invoice.setTotalAmount(calculateTotalAmount());
             invoice.setDiscountAmount(discountAmount);

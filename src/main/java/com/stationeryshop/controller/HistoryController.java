@@ -3,6 +3,7 @@ package com.stationeryshop.controller;
 import com.stationeryshop.dao.InvoiceDAO;
 import com.stationeryshop.model.Invoice;
 import com.stationeryshop.model.User;
+import com.stationeryshop.utils.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,13 +35,12 @@ public class HistoryController implements Initializable {
     @FXML
     private Label totalSpentLbl;
 
-    private InvoiceDAO invoiceDAO;
-    private User currentUser;
+    private InvoiceDAO invoiceDAO = new InvoiceDAO();
+    private User currentUser = Session.getCurrentUser();
     private DecimalFormat currencyFormatter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceDAO = new InvoiceDAO();
         currencyFormatter = new DecimalFormat("#,###.##");
         
         // Thiết lập ScrollPane
@@ -52,8 +52,8 @@ public class HistoryController implements Initializable {
     /**
      * Thiết lập user hiện tại và load dữ liệu đơn hàng
      */
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
+    public void setCurrentUser() {
+        this.currentUser = Session.getCurrentUser();
         loadOrderHistory();
     }
 

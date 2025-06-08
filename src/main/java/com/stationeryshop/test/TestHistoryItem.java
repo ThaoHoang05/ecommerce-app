@@ -1,7 +1,9 @@
 package com.stationeryshop.test;
 
-import com.stationeryshop.controller.HistoryController;
+import com.stationeryshop.controller.History_Order_ItemController;
+import com.stationeryshop.dao.InvoiceDAO;
 import com.stationeryshop.dao.UserDAO;
+import com.stationeryshop.model.Invoice;
 import com.stationeryshop.model.User;
 import com.stationeryshop.utils.Session;
 import javafx.application.Application;
@@ -10,14 +12,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TestHistory extends Application{
+import java.util.List;
+
+public class TestHistoryItem extends Application{
+    static Invoice currentInvoice;
     public void start(Stage primaryStage) throws Exception {
-        final String LOGIN_FXML_PATH = "/fxml/History.fxml";
+        final String LOGIN_FXML_PATH = "/fxml/History_Order_Item.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML_PATH));
         Parent root = loader.load();
-        HistoryController controller = loader.getController();
-        controller.setCurrentUser();
-        primaryStage.setTitle("History");
+        History_Order_ItemController controller = loader.getController();
+        controller.setInvoiceData(currentInvoice);
+        primaryStage.setTitle("History Item");
         primaryStage.setScene(new Scene(root, 550, 800));
         primaryStage.show();
     }
@@ -25,6 +30,9 @@ public class TestHistory extends Application{
         UserDAO userDAO = new UserDAO();
         User cur = userDAO.getUser("customer2");
         Session.setCurrentUser(cur);
+        InvoiceDAO invoiceDAO = new InvoiceDAO();
+        List<Invoice> list = invoiceDAO.getInvoicesByUserId(cur.getUser_id());
+        currentInvoice = list.get(0);
         launch(args);
     }
 }

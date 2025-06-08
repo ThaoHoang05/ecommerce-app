@@ -1,8 +1,11 @@
 package com.stationeryshop.model;
 
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.stationeryshop.dao.UserDAO;
 
 public class Invoice {
     private int invoiceId;
@@ -12,14 +15,16 @@ public class Invoice {
     private double totalAmount;
     private double discountAmount;
     private double finalAmount;
-    private String status;              // "pending", "completed"
+    private String status;
+
+    private UserDAO dao = new UserDAO();// "pending", "completed"
 
     private List<InvoiceDetail> details;
 
     // Constructors
     public Invoice() {}
 
-    public Invoice(int invoiceId, User user, Customer customer, LocalDate invoiceDate,
+    public Invoice(int invoiceId, User user,Customer customer, LocalDate invoiceDate,
                    double totalAmount, double discountAmount, double finalAmount,
                    String status, List<InvoiceDetail> details) {
         this.invoiceId = invoiceId;
@@ -39,10 +44,12 @@ public class Invoice {
     public void setInvoiceId(int invoiceId) { this.invoiceId = invoiceId; }
 
     public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public void setUser(String user_id) throws SQLException { this.user = dao.getUserById(user_id); }
 
     public Customer getCustomer() { return customer; }
-    public void setCustomer(Customer customer) { this.customer = customer; }
+    public void setCustomer(int customer_id) throws SQLException {
+
+        this.customer = dao.getCustomerById(customer_id);}
 
     public LocalDate getInvoiceDate() { return invoiceDate; }
     public void setInvoiceDate(LocalDate invoiceDate) { this.invoiceDate = invoiceDate; }
@@ -61,5 +68,6 @@ public class Invoice {
 
     public List<InvoiceDetail> getDetails() { return details; }
     public void setDetails(List<InvoiceDetail> details) { this.details = details; }
+
 }
 

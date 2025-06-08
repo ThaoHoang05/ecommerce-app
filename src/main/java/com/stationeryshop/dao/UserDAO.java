@@ -238,4 +238,63 @@ public class UserDAO {
         }
         return null;
     }
+
+    public Customer getCustomerById(int customer_id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String query = "select * from customer where customer_id=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, customer_id);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                Customer customer = new Customer();
+                customer.setFull_name(rs.getString("full_name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setId(rs.getInt("customer_id"));
+                customer.setAddress(rs.getString("address"));
+                customer.setPhone_number(rs.getString("phone_number"));
+                return customer;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            conn.close();
+            stmt.close();
+            rs.close();
+        }
+        return null;
+    }
+    public User getUserById(String user_id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String query = "select u.user_name, r.role_name from users u join roles r on r.role_id = u.role_id where u.user_id=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, user_id);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                User user = new User();
+                user.setUser_id(user_id);
+                user.setUsername(rs.getString("user_name"));
+                user.setRole(rs.getString("role_name"));
+                return user;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            conn.close();
+            stmt.close();
+            rs.close();
+        }
+        return null;
+    }
 }
