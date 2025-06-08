@@ -41,6 +41,13 @@ public class SignupFormController {
     private Button SignupConfirmBtn;
 
     @FXML
+    private TextField addressField;
+
+    @FXML
+    private TextField phoneField;
+
+
+    @FXML
     void handleSignup(ActionEvent event) {
         int result = new UserController().handleSignup(usernameField.getText());
         switch (result){
