@@ -248,6 +248,7 @@ public class MainViewController {
         Session.setCurrentUser(null);
         System.out.println(Session.getCurrentRole());
         refreshMainView();
+        loadMainView();
     }
 
     @FXML

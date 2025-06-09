@@ -135,34 +135,61 @@ public class ReportController implements Initializable {
      */
     private void setupTableColumns() {
         if (orderIDColumn != null) {
-            orderIDColumn.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(
-                    String.valueOf(cellData.getValue().get("invoiceId"))
-                )
-            );
+            orderIDColumn.setCellValueFactory(cellData -> {
+                Map<String, Object> data = cellData.getValue();
+                String invoiceId = getStringValue(data, "invoiceId", "invoice_id");
+                return new javafx.beans.property.SimpleStringProperty(invoiceId != null ? invoiceId : "");
+            });
         }
-        
+
         if (customerNameColumn != null) {
-            customerNameColumn.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(
-                    (String) cellData.getValue().get("customerName")
-                )
-            );
+            customerNameColumn.setCellValueFactory(cellData -> {
+                Map<String, Object> data = cellData.getValue();
+                String customerName = getStringValue(data, "customerName", "customer_name");
+                return new javafx.beans.property.SimpleStringProperty(customerName != null ? customerName : "");
+            });
         }
-        
+
         if (customerPhoneColumn != null) {
-            customerPhoneColumn.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(
-                    (String) cellData.getValue().get("phoneNumber")
-                )
-            );
+            customerPhoneColumn.setCellValueFactory(cellData -> {
+                Map<String, Object> data = cellData.getValue();
+                String phoneNumber = getStringValue(data, "phoneNumber", "phone_number");
+                return new javafx.beans.property.SimpleStringProperty(phoneNumber != null ? phoneNumber : "");
+            });
         }
-        
+
+        if (customerEmailColumn != null) {
+            customerEmailColumn.setCellValueFactory(cellData -> {
+                Map<String, Object> data = cellData.getValue();
+                String email = getStringValue(data, "customerEmail", "email");
+                return new javafx.beans.property.SimpleStringProperty(email != null ? email : "");
+            });
+        }
+
         if (SpentColumn != null) {
             SpentColumn.setCellValueFactory(cellData -> {
-                BigDecimal amount = (BigDecimal) cellData.getValue().get("totalAmount");
+                Map<String, Object> data = cellData.getValue();
+                Object amountObj = data.get("totalAmount");
+                if (amountObj == null) {
+                    amountObj = data.get("finalAmount");
+                }
+                if (amountObj == null) {
+                    amountObj = data.get("final_amount");
+                }
+
+                BigDecimal amount = null;
+                if (amountObj instanceof BigDecimal) {
+                    amount = (BigDecimal) amountObj;
+                } else if (amountObj != null) {
+                    try {
+                        amount = new BigDecimal(amountObj.toString());
+                    } catch (NumberFormatException e) {
+                        amount = BigDecimal.ZERO;
+                    }
+                }
+
                 return new javafx.beans.property.SimpleStringProperty(
-                    formatCurrency(amount)
+                        formatCurrency(amount != null ? amount : BigDecimal.ZERO)
                 );
             });
         }
@@ -338,32 +365,70 @@ public class ReportController implements Initializable {
     @FXML
     void handleSearchCustomer(ActionEvent event) {
         String searchTerm = customerSearchField.getText().trim();
+
         if (searchTerm.isEmpty()) {
             showAlert("Thông báo", "Vui lòng nhập từ khóa tìm kiếm", Alert.AlertType.INFORMATION);
             return;
         }
 
         try {
+            // Check if we have data to search
+            if (reportData.isEmpty()) {
+                showAlert("Thông báo", "Không có dữ liệu để tìm kiếm. Vui lòng tạo báo cáo trước.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
             // Filter current data based on search term
             ObservableList<Map<String, Object>> filteredData = FXCollections.observableArrayList();
-            
+
             for (Map<String, Object> item : reportData) {
-                String customerName = (String) item.get("customerName");
-                String phoneNumber = (String) item.get("phoneNumber");
-                System.out.println(item.get("customerName"));
-                System.out.println(item.get("phoneNumber"));
-                
-                if ((customerName != null && customerName.toLowerCase().contains(searchTerm.toLowerCase())) ||
-                    (phoneNumber != null && phoneNumber.contains(searchTerm))) {
+                // Try multiple naming conventions for customer data
+                String customerName = getStringValue(item, "customerName", "customer_name");
+                String phoneNumber = getStringValue(item, "phoneNumber", "phone_number");
+                String customerEmail = getStringValue(item, "customerEmail", "email");
+                String invoiceId = getStringValue(item, "invoiceId", "invoice_id");
+
+                // Check if search term matches any searchable field
+                boolean matches = false;
+
+                if (customerName != null && customerName.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    matches = true;
+                } else if (phoneNumber != null && phoneNumber.contains(searchTerm)) {
+                    matches = true;
+                } else if (customerEmail != null && customerEmail.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    matches = true;
+                } else if (invoiceId != null && invoiceId.contains(searchTerm)) {
+                    matches = true;
+                }
+
+                if (matches) {
                     filteredData.add(item);
                 }
             }
-            
+
+            // Update table with filtered data
             customerOrdersTable.setItems(filteredData);
-            
+
+            // Show result message without dialog for better UX
+            if (filteredData.isEmpty()) {
+                // Could add a status label instead of dialog
+                System.out.println("No results found for: " + searchTerm);
+            } else {
+                System.out.println("Found " + filteredData.size() + " results for: " + searchTerm);
+            }
+
         } catch (Exception e) {
             showAlert("Lỗi", "Có lỗi xảy ra khi tìm kiếm: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
+    }
+
+    private String getStringValue(Map<String, Object> map, String primaryKey, String fallbackKey) {
+        Object value = map.get(primaryKey);
+        if (value == null) {
+            value = map.get(fallbackKey);
+        }
+        return value != null ? value.toString() : null;
     }
 
     /**

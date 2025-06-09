@@ -51,6 +51,8 @@ public class ShopView_ItemController {
 
     @FXML
     void addToCartOnPressed(ActionEvent event) {
+        System.out.println(Session.getCurrentUser().getUsername());
+        if(Session.getCurrentUsername() != null){
         if (product == null) {
             showErrorAlert("Lỗi", "Thông tin sản phẩm không hợp lệ");
             return;
@@ -81,6 +83,9 @@ public class ShopView_ItemController {
 
             showSuccessAlert("Thành công",
                     String.format("Đã thêm %d %s vào giỏ hàng", quantityToAdd, product.getProductName()));
+        }}
+        else{
+            showErrorAlert("Chưa đăng nhập", "Xin hãy đăng nhập rồi mới thêm vào giỏ hàng");
         }
     }
 
@@ -99,6 +104,18 @@ public class ShopView_ItemController {
         productNameLbl.setText(product.getProductName());
         productPriceLbl.setText(String.format("%.2f VND", product.getProductPrice()));
         productSupplierLbl.setText(product.getSupplierName());
+        try {
+            if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+                String url = product.getImageUrl();
+                if (url != null && url.startsWith("C:\\")) {
+                    url = "file:/" + url.replace("\\", "/"); // Chuyển đổi sang định dạng file URL hợp lệ
+                }
+                productImage.setImage(new Image(url));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi để kiểm tra
+        }
+
 
         // Disable button nếu hết hàng
         if(product.getQuantity() == 0) {
