@@ -107,8 +107,6 @@ public class MainViewController {
     @FXML
     private AnchorPane mainPane;
 
-    public static AnchorPane parentPane;
-
     private VBox intialMain;
 
     // Method để clear nội dung cũ trước khi load nội dung mới
@@ -250,6 +248,7 @@ public class MainViewController {
         Session.setCurrentUser(null);
         System.out.println(Session.getCurrentRole());
         refreshMainView();
+        loadMainView();
     }
 
     @FXML
@@ -335,6 +334,15 @@ public class MainViewController {
         final String CAT = "/fxml/Categories.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(CAT));
         VBox category = loader.load();
+        CategoriesController controller = loader.getController();
+        controller.setItemSelectedHandler(category1 -> {
+            try {
+                System.out.println(category1);
+                handleItemSelected(category1);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         return category;
     }
     @FXML
@@ -347,5 +355,26 @@ public class MainViewController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
         VBox best = loader.load();
         return best;
+    }
+
+    @FXML
+    void gotoBestSeller(MouseEvent event) {
+
+    }
+
+    void handleItemSelected(String category) throws IOException {
+        System.out.println(category);
+
+        // Ví dụ: hiển thị chi tiết sản phẩm
+        showShopViewByCategory(category);
+    }
+
+    void showShopViewByCategory(String category) throws IOException {
+        final String SHOPVIEW_CATEGORY = "/fxml/ShopView.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SHOPVIEW_CATEGORY));
+        Pane pane = loader.load();
+        ShopViewController controller = loader.getController();
+        controller.setup(category);
+        loadContentToMainPane(pane);
     }
 }

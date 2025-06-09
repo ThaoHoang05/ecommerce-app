@@ -473,12 +473,12 @@ public class ReportDAO {
                 "i.final_amount, " +
                 "i.status, " +
                 "c.customer_id, " +
-                "c.customer_name, " +
+                "c.full_name, " +
                 "c.phone_number, " +
                 "u.user_id, " +
-                "u.full_name AS staff_name " +
+                "u.user_name AS staff_name " +
                 "FROM invoices i " +
-                "LEFT JOIN customers c ON i.customer_id = c.customer_id " +
+                "LEFT JOIN customer c ON i.customer_id = c.customer_id " +
                 "LEFT JOIN users u ON i.user_id = u.user_id " +
                 "WHERE DATE(i.invoice_date) = ? " +
                 "ORDER BY i.invoice_date DESC";
@@ -502,7 +502,7 @@ public class ReportDAO {
                 invoice.put("finalAmount", rs.getBigDecimal("final_amount"));
                 invoice.put("status", rs.getString("status"));
                 invoice.put("customerId", rs.getInt("customer_id"));
-                invoice.put("customerName", rs.getString("customer_name"));
+                invoice.put("customerName", rs.getString("full_name"));
                 invoice.put("phoneNumber", rs.getString("phone_number"));
                 invoice.put("userId", rs.getString("user_id"));
                 invoice.put("staffName", rs.getString("staff_name"));
@@ -669,7 +669,7 @@ public class ReportDAO {
                 invoice.setDiscountAmount(rs.getDouble("discount_amount"));
                 invoice.setFinalAmount(rs.getDouble("final_amount"));
                 invoice.setStatus(rs.getString("status"));
-                invoice.setCustomer(customer);
+                invoice.setCustomer(rs.getInt("customer_id"));
                 invoice.setUser(null);
             
                 customerInvoices.add(invoice);
@@ -680,6 +680,8 @@ public class ReportDAO {
         
         return customerInvoices;
     }
+
+
 
     
     /**

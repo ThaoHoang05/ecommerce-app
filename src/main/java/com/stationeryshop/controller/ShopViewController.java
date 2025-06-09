@@ -41,11 +41,15 @@ public class ShopViewController {
 
     public void initialize(){
         products = getProducts();
-        if(categoryFilter == null){
-            importProductData(products);
-        }else{
+        importProductData(products);
+    }
+
+    void setup(String category){
+        this.categoryFilter = category;
+        if(categoryFilter != null){
+            System.out.println(categoryFilter);
             CategoryLbl.setText(categoryFilter);
-            handleFiltered(categoryFilter);
+            handleCategoryFilter(categoryFilter);
         }
     }
     // Lay product tu csdl
@@ -59,6 +63,7 @@ public class ShopViewController {
     void importProductData(ObservableList<InventoryProduct> product){
         ThreadUtil<VBox> threadImport = new ThreadUtil<>(5);
         for(InventoryProduct p : product){
+            System.out.println(p.getCategoryName());
             Future<VBox> pVBox = (threadImport.executeTask(()->{
                 try {
                     return setDataItem(p);
@@ -97,7 +102,6 @@ public class ShopViewController {
         if (searchTerm.isEmpty()) {
             clearFilter();
             importProductData(products);
-            return;
         }else{
             clearFilter();
             ObservableList<InventoryProduct> filteredList = products.filtered(product ->
@@ -105,15 +109,22 @@ public class ShopViewController {
                             product.getProductDescription().toLowerCase().contains(searchTerm) ||
                             product.getCategoryName().toLowerCase().contains(searchTerm)
             );
-            if(categoryFilter != null) products = filteredList;
+            if(filteredList == null){
+                System.out.println("Nothing to search");
+            }
             importProductData(filteredList);
 
         }
     }
 
-    public void getCategory(String category){
-        this.categoryFilter = category;
+    void handleCategoryFilter(String categoryName) {
+        clearFilter();
+        ObservableList<InventoryProduct> filteredList = products.filtered(product ->
+                product.getCategoryName().equalsIgnoreCase(categoryName.trim())
+        );
+        importProductData(filteredList);
     }
+
 
     @FXML
     void sortByChoose(ActionEvent event) {
