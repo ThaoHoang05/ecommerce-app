@@ -1,6 +1,7 @@
 package com.stationeryshop.controller;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -91,10 +92,14 @@ public class SupplierController implements Initializable {
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        loadSuppliers();
+        try {
+            loadSuppliers();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void loadSuppliers() {
+    private void loadSuppliers() throws SQLException {
         supplierList.clear();
         List<Supplier> suppliers = supplierDAO.getAllSuppliers();
         supplierList.addAll(suppliers);
@@ -153,24 +158,24 @@ public class SupplierController implements Initializable {
     }
 
     @FXML
-    void handleSearch(ActionEvent event) {
+    void handleSearch(ActionEvent event) throws SQLException {
         String keyword = txtSearch.getText().trim();
         if (keyword.isEmpty()) {
             loadSuppliers();
         } else {
-            List<Supplier> suppliers = supplierDAO.getSuppliersByName(keyword);
+            Supplier suppliers = supplierDAO.getSuppliersByName(keyword);
             supplierList.setAll(suppliers);
             tableSuppliers.setItems(supplierList);
         }
     }
 
     @FXML
-    void handleSearchSupplier(ActionEvent event) {
+    void handleSearchSupplier(ActionEvent event) throws SQLException {
         handleSearch(event);
     }
 
     @FXML
-    void handleAddSupplier(ActionEvent event) {
+    void handleAddSupplier(ActionEvent event) throws SQLException {
         Supplier supplier = new Supplier();
         supplier.setSupplierName(txtSupplierName.getText());
         supplier.setContactPerson(txtContactPerson.getText());

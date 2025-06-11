@@ -5,6 +5,7 @@ public class Customer {
     private String full_name;
     private String email;
     private String phone_number;
+    private String address;
 
     public int getId() {
         return id;
@@ -22,6 +23,10 @@ public class Customer {
         this.full_name = full_name;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -36,5 +41,8 @@ public class Customer {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+    public String getAddress() {
+        return address;
     }
 }

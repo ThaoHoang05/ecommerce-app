@@ -73,7 +73,7 @@ public class Cart_ItemController {
                 productImage.setImage(image);
             } catch (Exception e) {
         // Use default image if product image not found
-        productImage.setImage(new Image(getClass().getResourceAsStream("/images/default-product.png")));
+        productImage.setImage(null);
             }
         }
 
