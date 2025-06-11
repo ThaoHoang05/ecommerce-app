@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.Main</mainClass>
+                            <mainClass>com.stationeryshop.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
