@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stationeryshop.controller.InvoiceDetailController">
+    <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: linear-gradient(to right, #FF6B6B, #FF8E53); -fx-background-radius: 15 15 0 0;">
+            <children>
+                  <Label text="INVOICE DETAILS " textFill="WHITE">
+                      <font>
+                          <Font name="System Bold" size="24.0" />
+                      </font>
+                  </Label>
+            </children>
+         <padding>
+            <Insets left="30.0" />
+         </padding>
+        </HBox>
+
+        <VBox style="-fx-background-color: #F8F9FA; -fx-padding: 20;">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <children>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="ID:" textFill="#495057">
+                                    <font>
+                                        <Font name="System Bold" size="21.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="invoiceIdLbl" textFill="#212529">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Order Date:" textFill="#495057">
+                                    <font>
+                                        <Font name="System Bold" size="21.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="orderDateLbl" textFill="#212529">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" style="-fx-background-color: #E9ECEF; -fx-padding: 0 20;">
+            <children>
+                <Label prefWidth="200.0" text="Name" textFill="#495057">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" prefWidth="80.0" text="Price" textFill="#495057">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" prefWidth="80.0" text="Quantity" textFill="#495057">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Cost" textFill="#495057">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Products List -->
+        <ScrollPane fitToWidth="true" style="-fx-background-color: white; -fx-border-color: #DEE2E6;">
+            <content>
+                <VBox fx:id="productsContainerBox" style="-fx-background-color: white;">
+                    <!-- Products will be loaded dynamically -->
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <VBox style="-fx-background-color: #F8F9FA; -fx-padding: 20; -fx-border-color: #DEE2E6; -fx-border-width: 1 0 0 0;">
+            <children>
+                <Separator prefWidth="200.0" />
+                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                    <children>
+                        <VBox alignment="CENTER_RIGHT" spacing="5.0">
+                            <children>
+                                <Label text="Total Cost:" textFill="#495057">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <Label fx:id="totalCostLbl" textFill="#FF6B6B">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
