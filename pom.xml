@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.stationeryshop.Main</mainClass>
+                            <mainClass>com.stationeryshop.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
