@@ -21,20 +21,7 @@ public class SupplierDAO {
 
     // Khởi tạo với username và password cho DBConnection
     public SupplierDAO() {
-        Properties props = new Properties();
-        try {
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String useradmin = props.getProperty("db.admin");
-        String pwdadmin = props.getProperty("db.adminpwd");
-        if (useradmin == null || pwdadmin == null) {
-            JOptionPane.showMessageDialog(null, "Database credentials not found in properties file", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        this.dbConnection = new DBConnection(useradmin, pwdadmin);
+        this.dbConnection = new DBConnection();
     }
 
     // Thêm nhà cung cấp

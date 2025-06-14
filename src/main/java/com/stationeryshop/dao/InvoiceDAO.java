@@ -19,19 +19,7 @@ public class InvoiceDAO {
     
     // Constructor mặc định - đọc từ file properties
     public InvoiceDAO(){
-        Properties props = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        String useradmin = props.getProperty("db.admin");
-        System.out.println(useradmin);
-        String pwdadmin = props.getProperty("db.adminpwd");
-        System.out.println(pwdadmin);
-        this.db = new DBConnection(useradmin, pwdadmin);
+        this.db = new DBConnection();
     }
     
     // Constructor với tham số
