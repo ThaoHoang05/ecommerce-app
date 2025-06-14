@@ -7,9 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class ShopView_ItemController {
     @FXML
@@ -35,8 +35,14 @@ public class ShopView_ItemController {
 
     private InventoryProduct product;
 
+    private Consumer<InventoryProduct> viewDetailsClicked;
+
     public ShopView_ItemController() {
         // Constructor mặc định để FXML có thể tạo instance
+    }
+
+    public void setOnItemClicked(Consumer<InventoryProduct> handler) {
+        this.viewDetailsClicked = handler;
     }
 
     public ShopView_ItemController(InventoryProduct product) {
@@ -92,8 +98,8 @@ public class ShopView_ItemController {
     @FXML
     void viewDetailsOnPressed(ActionEvent event) {
         // Implement product details view
-        if (product != null) {
-            showProductDetails();
+        if(viewDetailsClicked != null){
+            viewDetailsClicked.accept(product);
         }
     }
 
@@ -107,8 +113,9 @@ public class ShopView_ItemController {
         try {
             if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
                 String url = product.getImageUrl();
-                if (url != null && url.startsWith("C:\\")) {
+                if (url != null) {
                     url = "file:/" + url.replace("\\", "/"); // Chuyển đổi sang định dạng file URL hợp lệ
+                    System.out.println(url);
                 }
                 productImage.setImage(new Image(url));
             }
