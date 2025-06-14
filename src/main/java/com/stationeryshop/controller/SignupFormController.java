@@ -41,12 +41,19 @@ public class SignupFormController {
     private Button SignupConfirmBtn;
 
     @FXML
+    private TextField addressField;
+
+    @FXML
+    private TextField phoneField;
+
+
+    @FXML
     void handleSignup(ActionEvent event) {
         int result = new UserController().handleSignup(usernameField.getText());
         switch (result){
             case 1: System.out.println("Signup Successful");
             //Thoat ra tro ve mainview voi session phu hop voi role nguoi dung
-                Session.setCurrentUser( new UserDAO().createUser(usernameField.getText(), passwordField.getText(),nameField.getText(),emailField.getText()));
+                Session.setCurrentUser( new UserDAO().createUser(usernameField.getText(), passwordField.getText(),nameField.getText(),emailField.getText(), phoneField.getText(), addressField.getText()));
                 //Chuyen den mainview
                 this.returnMainView(event);
                 break;

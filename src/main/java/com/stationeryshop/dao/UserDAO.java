@@ -77,11 +77,11 @@ public class UserDAO {
         return user;
     }
 
-    public User createUser(String username, String password, String fullname, String email){
+    public User createUser(String username, String password, String fullname, String email,String phone_number, String address){
         //Lưu thông tin người dùng vào database
         Connection conn = null;
         PreparedStatement stmt = null;
-        String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,email) values(?,?,?,?,?,?)";
+        String query = "insert into signup_view(user_id,user_name,pwd_hash,role_id,full_name,phone_number,email,address) values(?,?,?,?,?,?, ?, ?)";
         String pwd = new PwdHash(password).getHash();
         String user_id = new RandomUserId().getRandomUserId();
         User user = null;
@@ -93,7 +93,9 @@ public class UserDAO {
             stmt.setString(3,pwd);
             stmt.setInt(4,3);
             stmt.setString(5,fullname);
-            stmt.setString(6,email);
+            stmt.setString(6,phone_number);
+            stmt.setString(7,email);
+            stmt.setString(8,address);
             stmt.executeUpdate();
             user = new User(user_id, username, "customer");
             System.out.println("Create user success");
@@ -108,6 +110,8 @@ public class UserDAO {
         }
         return user;
     }
+
+
     public boolean findUserByUsername(String username) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -226,6 +230,65 @@ public class UserDAO {
                 customer.setAddress(rs.getString("address"));
                 customer.setPhone_number(rs.getString("phone_number"));
                 return customer;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            conn.close();
+            stmt.close();
+            rs.close();
+        }
+        return null;
+    }
+
+    public Customer getCustomerById(int customer_id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String query = "select * from customer where customer_id=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, customer_id);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                Customer customer = new Customer();
+                customer.setFull_name(rs.getString("full_name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setId(rs.getInt("customer_id"));
+                customer.setAddress(rs.getString("address"));
+                customer.setPhone_number(rs.getString("phone_number"));
+                return customer;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            conn.close();
+            stmt.close();
+            rs.close();
+        }
+        return null;
+    }
+    public User getUserById(String user_id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String query = "select u.user_name, r.role_name from users u join roles r on r.role_id = u.role_id where u.user_id=?";
+        try{
+            conn = db.connect();
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, user_id);
+            rs = stmt.executeQuery();
+            if(rs.next()){
+                User user = new User();
+                user.setUser_id(user_id);
+                user.setUsername(rs.getString("user_name"));
+                user.setRole(rs.getString("role_name"));
+                return user;
             }
 
         }catch (SQLException e){

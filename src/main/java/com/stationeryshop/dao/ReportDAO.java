@@ -1,6 +1,8 @@
 package com.stationeryshop.dao;
 
+import com.stationeryshop.model.Customer;
 import com.stationeryshop.model.Invoice;
+import com.stationeryshop.model.User;
 import com.stationeryshop.utils.DBConnection;
 
 import javax.swing.*;
@@ -471,12 +473,12 @@ public class ReportDAO {
                 "i.final_amount, " +
                 "i.status, " +
                 "c.customer_id, " +
-                "c.customer_name, " +
+                "c.full_name, " +
                 "c.phone_number, " +
                 "u.user_id, " +
-                "u.full_name AS staff_name " +
+                "u.user_name AS staff_name " +
                 "FROM invoices i " +
-                "LEFT JOIN customers c ON i.customer_id = c.customer_id " +
+                "LEFT JOIN customer c ON i.customer_id = c.customer_id " +
                 "LEFT JOIN users u ON i.user_id = u.user_id " +
                 "WHERE DATE(i.invoice_date) = ? " +
                 "ORDER BY i.invoice_date DESC";
@@ -500,7 +502,7 @@ public class ReportDAO {
                 invoice.put("finalAmount", rs.getBigDecimal("final_amount"));
                 invoice.put("status", rs.getString("status"));
                 invoice.put("customerId", rs.getInt("customer_id"));
-                invoice.put("customerName", rs.getString("customer_name"));
+                invoice.put("customerName", rs.getString("full_name"));
                 invoice.put("phoneNumber", rs.getString("phone_number"));
                 invoice.put("userId", rs.getString("user_id"));
                 invoice.put("staffName", rs.getString("staff_name"));
@@ -610,6 +612,77 @@ public class ReportDAO {
         
         return dailyRevenue;
     }
+    /**
+     * Gets all invoices for a specific customer.
+     * 
+     * @param customerId The customer ID to get invoices for
+     * @return List of Invoice objects for the customer
+     * @throws SQLException if a database error occurs
+     */
+    public List<Invoice> getCustomerInvoices(int customerId) throws SQLException {
+        List<Invoice> customerInvoices = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+    
+        String sql = "SELECT " +
+                 "    i.invoice_id, " +
+                 "    i.invoice_date, " +
+                 "    i.total_amount, " +
+                 "    i.discount_amount, " +
+                 "    i.final_amount, " +
+                 "    i.status, " +
+                 "    c.customer_id, " +
+                 "    c.customer_name, " +
+                 "    c.phone_number, " +
+                 "    c.email, " +
+                 "    c.address, " +
+                 "    u.user_id, " +
+                 "    u.full_name AS staff_name " +
+                 "FROM invoices i " +
+                 "JOIN customers c ON i.customer_id = c.customer_id " +
+                 "LEFT JOIN users u ON i.created_by = u.user_id " +
+                 "WHERE i.customer_id = ? " +
+                 "ORDER BY i.invoice_date DESC";
+    
+        try {
+            conn = db.connect();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, customerId);
+            rs = stmt.executeQuery();
+        
+            while (rs.next()) {
+                // Tạo Customer object
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("customer_id"));
+                customer.setFull_name(rs.getString("customer_name"));
+                customer.setPhone_number(rs.getString("phone_number"));
+                customer.setEmail(rs.getString("email"));
+                customer.setAddress(rs.getString("address"));
+            
+                
+                // Tạo Invoice object
+                Invoice invoice = new Invoice();
+                invoice.setInvoiceId(rs.getInt("invoice_id"));
+                invoice.setInvoiceDate(rs.getDate("invoice_date").toLocalDate());
+                invoice.setTotalAmount(rs.getDouble("total_amount"));
+                invoice.setDiscountAmount(rs.getDouble("discount_amount"));
+                invoice.setFinalAmount(rs.getDouble("final_amount"));
+                invoice.setStatus(rs.getString("status"));
+                invoice.setCustomer(rs.getInt("customer_id"));
+                invoice.setUser(null);
+            
+                customerInvoices.add(invoice);
+            }
+        } finally {
+            closeResources(rs, stmt, conn);
+        }
+        
+        return customerInvoices;
+    }
+
+
+
     
     /**
      * Helper method to close database resources safely.

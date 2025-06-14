@@ -38,8 +38,10 @@ public class BestSellers_Top5Controller {
             LocalDate endDate = LocalDate.now();
             LocalDate startDate = endDate.minusDays(30);
 
-            List<Map<String, Object>> topProducts = reportDAO.getTopSellingProducts(startDate, endDate, 5);
-
+            List<Map<String, Object>> topProducts = reportDAO.getTopSellingProductsByRevenue(startDate, endDate, 5);
+            if(topProducts.isEmpty()){
+                throw new SQLException("No products found");
+            }
             ObservableList<InventoryProduct> productList = FXCollections.observableArrayList();
 
             for (Map<String, Object> productData : topProducts) {
@@ -50,9 +52,9 @@ public class BestSellers_Top5Controller {
             return productList;
         }
 
-    private InventoryProduct createInventoryProductFromMap(Map<String, Object> productData) {
-        InventoryProduct product = new InventoryProduct();
-        inventoryProductDAO.getInventoryProductById((Integer) productData.get("productId"));
+    private InventoryProduct createInventoryProductFromMap(Map<String, Object> productData) throws SQLException {
+        InventoryProduct product;
+        product = inventoryProductDAO.getInventoryProductById((Integer) productData.get("productId"));
         return product;
     }
 

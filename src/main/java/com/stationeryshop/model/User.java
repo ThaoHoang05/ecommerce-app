@@ -57,4 +57,5 @@ public class User {
     public Date getUpdated_at() {
         return updated_at;
     }
+    public void setUsername(String username) { this.username = username;}
 }
