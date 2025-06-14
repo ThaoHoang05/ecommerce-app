@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 public class ShopViewController {
     @FXML
@@ -38,6 +39,12 @@ public class ShopViewController {
     private ObservableList<InventoryProduct> products;
 
     private String categoryFilter;
+
+    private Consumer<InventoryProduct> viewDetailsItem;
+
+    public void setItemSelectedHandler(Consumer<InventoryProduct> handler) {
+        this.viewDetailsItem = handler;
+    }
 
     public void initialize(){
         products = getProducts();
@@ -87,6 +94,7 @@ public class ShopViewController {
         System.out.println(getClass().getResource(ITEM_PATH));
         FXMLLoader loader = new FXMLLoader(getClass().getResource(ITEM_PATH));
         ShopView_ItemController controller = new ShopView_ItemController(p);
+        controller.setOnItemClicked(this::handleItemClicked);
         loader.setController(controller);
         VBox vBox = loader.load();
         controller.setData();
@@ -154,6 +162,12 @@ public class ShopViewController {
             default:
         }
         importProductData(product);
+    }
+
+    private void handleItemClicked(InventoryProduct product) {
+        if (viewDetailsItem != null) {
+            viewDetailsItem.accept(product);
+        }
     }
 
         void clearFilter () {
