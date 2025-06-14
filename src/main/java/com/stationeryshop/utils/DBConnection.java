@@ -4,6 +4,7 @@ package com.stationeryshop.utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,12 +33,14 @@ public class DBConnection {
     }
     public DBConnection() {
         Properties prop = new Properties();
-        try{
-            FileInputStream fix = new FileInputStream("src/main/resources/db.properties");
-            prop.load(fix);
+        try (InputStream input = getClass().getResourceAsStream("/db.properties")) {
+            if (input == null) {
+                throw new FileNotFoundException("Properties file not found in classpath");
+            }
+            prop.load(input);
             this.username = prop.getProperty("db.admin");
             this.password = prop.getProperty("db.adminpwd");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
