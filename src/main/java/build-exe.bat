@@ -1,17 +1,16 @@
 @echo off
+echo === Building jar ===
+mvn clean package
 
-:: Cấu hình các biến
-set JAVAFX_SDK=D:\javafx-sdk-21
-set JAR_NAME=ecommerce-1.0-SNAPSHOT.jar
-set MAIN_CLASS=com.stationeryshop.App
-
-:: Tạo exe với jpackage
+echo === Creating EXE ===
 jpackage ^
-  --type exe ^
-  --name StationeryShop ^
   --input target ^
-  --main-jar %JAR_NAME% ^
-  --main-class %MAIN_CLASS% ^
-  --module-path "%JAVAFX_SDK%\lib" ^
-  --add-modules javafx.controls,javafx.fxml ^
-  --java-options "--enable-preview"
+  --name Stationery Shop ^
+  --main-jar ecommerce-1.0-SNAPSHOT.jar ^
+  --main-class com.stationeryshop.Main ^
+  --type exe ^
+  --icon icon.ico ^
+  --java-options "--add-modules javafx.controls,javafx.fxml" ^
+  --module-path "C:\Program Files (x86)\Java FX\javafx-sdk-24.0.1\lib" ^
+  --win-dir-chooser ^
+  --win-shortcut
