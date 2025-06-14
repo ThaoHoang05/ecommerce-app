@@ -14,17 +14,7 @@ import java.util.Properties;
 public class UserDAO {
     private static DBConnection db;
     public UserDAO(){
-        Properties props = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        String useradmin = props.getProperty("db.admin");
-        String pwdadmin = props.getProperty("db.adminpwd");
-        this.db = new DBConnection(useradmin, pwdadmin);
+        this.db = new DBConnection();
     }
     public UserDAO(String useradmin, String pwdadmin){
         this.db = new DBConnection(useradmin, pwdadmin);

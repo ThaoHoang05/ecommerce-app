@@ -4,10 +4,9 @@ package com.stationeryshop.utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -32,22 +31,20 @@ public class DBConnection {
     }
     public DBConnection() {
         Properties prop = new Properties();
-        try{
-            FileInputStream fix = new FileInputStream("src/main/resources/db.properties");
-            prop.load(fix);
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
+            if (input == null) {
+                throw new FileNotFoundException("Properties file not found in classpath");
+            }
+            prop.load(input);
+            this.urlDB = prop.getProperty("db.url");
             this.username = prop.getProperty("db.admin");
             this.password = prop.getProperty("db.adminpwd");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public Connection connect(){
-        Properties props = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-        urlDB = props.getProperty("db.url");
-        if(urlDB == null) throw new RuntimeException("Database URL not found");else{
         try{
             Class.forName(className);
             conn = DriverManager.getConnection(urlDB, username, password);
@@ -56,11 +53,6 @@ public class DBConnection {
         catch(Exception e){
             System.out.println(e);
             return null;
-        }
-        }} catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
