@@ -34,7 +34,7 @@ public class InventoryProductController implements Initializable {
     private Button addProductBtn;
 
     @FXML
-    private TextField unitField;
+    private TextField supplyPriceField;
 
     @FXML
     private TextField searchField;
@@ -86,9 +86,6 @@ public class InventoryProductController implements Initializable {
 
     @FXML
     private TextField stockQuantityField;
-
-    @FXML
-    private TextField supplyPriceField;
 
     @FXML
     private TableColumn<InventoryProduct, String> supplierColumn;
@@ -227,6 +224,7 @@ public class InventoryProductController implements Initializable {
         productIdField.setText(String.valueOf(product.getProductId()));
         productNameField.setText(product.getProductName());
         descriptionArea.setText(product.getProductDescription());
+        supplyPriceField.setText(String.valueOf(product.getSupplyPrice()));
         priceField.setText(String.valueOf(product.getProductPrice()));
         stockQuantityField.setText(String.valueOf(product.getQuantity()));
 

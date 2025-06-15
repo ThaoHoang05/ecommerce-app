@@ -189,7 +189,7 @@ public class InventoryProductDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String sql = "SELECT ip.product_id ,ip.product_name, ip.description, ip.price, " +
+        String sql = "SELECT ip.product_id ,ip.product_name, ip.description, ip.price, ip.supply_price, " +
                 "ip.quantity_on_hand, ip.image_url, " +
                 "c. category_id , c.category_name, c.description, " +
                 "s.supplier_id " +
@@ -228,6 +228,7 @@ public class InventoryProductDAO {
 
                 // Set inventory item information
                 inventoryProduct.setInventoryItem(rs.getInt("product_id"));
+                inventoryProduct.setSupplyPrice(rs.getDouble("supply_price"));
 
                 inventoryList.add(inventoryProduct);
             }

@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class History_Order_ItemController implements Initializable {
@@ -46,6 +48,12 @@ public class History_Order_ItemController implements Initializable {
     private DateTimeFormatter dateFormatter;
     private InvoiceDAO invoiceDAO;
     private ProductDAO productDAO;
+
+    private Pane parent;
+
+    public void setParentContainer(Pane parentContainer) {
+        this.parent = parentContainer;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -201,18 +209,25 @@ public class History_Order_ItemController implements Initializable {
 
         try {
             // Load chi tiết đầy đủ từ database
-            Invoice fullInvoice = invoiceDAO.getInvoiceById(currentInvoice.getInvoiceId());
+            List<InvoiceDetail> fullInvoice = invoiceDAO.getInvoiceDetailsInternal(currentInvoice.getInvoiceId());
             if (fullInvoice == null) {
                 showErrorAlert("Lỗi", "Không tìm thấy thông tin chi tiết đơn hàng");
-                return;
             }
-
-            // Load thông tin sản phẩm cho từng detail
-            loadProductDetailsForInvoice(fullInvoice);
-            
-            // Mở popup hiển thị chi tiết
-            openOrderDetailsPopup(fullInvoice);
-            
+            //Load vao main pane
+            final String INVOICE_DETAILS_PATH = "/fxml/InvoiceDetail.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(INVOICE_DETAILS_PATH));
+            Pane detailPane = loader.load();
+            InvoiceDetailController controller = loader.getController();
+            controller.setParentContainer(parent);
+            controller.setup(currentInvoice,fullInvoice);
+            parent.getChildren().clear();
+            parent.getChildren().add(detailPane);
+            if (parent instanceof javafx.scene.layout.AnchorPane) {
+                javafx.scene.layout.AnchorPane.setTopAnchor(detailPane, 0.0);
+                javafx.scene.layout.AnchorPane.setBottomAnchor(detailPane, 0.0);
+                javafx.scene.layout.AnchorPane.setLeftAnchor(detailPane, 0.0);
+                javafx.scene.layout.AnchorPane.setRightAnchor(detailPane, 0.0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             showErrorAlert("Lỗi", "Không thể hiển thị chi tiết đơn hàng: " + e.getMessage());

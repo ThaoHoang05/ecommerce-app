@@ -130,7 +130,7 @@ public class InvoiceDAO {
             if (rs.next()) {
                 invoice = mapInvoiceFromResultSet(rs);
                 // Lấy chi tiết hóa đơn
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoiceId));
+                invoice.setDetails(getInvoiceDetailsInternal(invoiceId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,7 +166,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal(invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -208,7 +208,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal(invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -250,7 +250,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal( invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -293,7 +293,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal( invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -333,7 +333,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal(invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -377,7 +377,7 @@ public class InvoiceDAO {
 
             while (rs.next()) {
                 Invoice invoice = mapInvoiceFromResultSet(rs);
-                invoice.setDetails(getInvoiceDetailsInternal(conn, invoice.getInvoiceId()));
+                invoice.setDetails(getInvoiceDetailsInternal(invoice.getInvoiceId()));
                 list.add(invoice);
             }
         } catch (SQLException e) {
@@ -466,8 +466,12 @@ public class InvoiceDAO {
     }
 
     // Helper method: Lấy chi tiết hóa đơn với connection có sẵn
-    private List<InvoiceDetail> getInvoiceDetailsInternal(Connection conn, int invoiceId) throws SQLException {
+    public List<InvoiceDetail> getInvoiceDetailsInternal(int invoiceId) throws SQLException {
         List<InvoiceDetail> details = new ArrayList<>();
+        Connection conn = db.connect();
+        if(conn == null) {
+            JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
@@ -516,7 +520,7 @@ public class InvoiceDAO {
                 return details;
             }
             
-            details = getInvoiceDetailsInternal(conn, invoiceId);
+            details = getInvoiceDetailsInternal(invoiceId);
             
         } catch (SQLException e) {
             e.printStackTrace();

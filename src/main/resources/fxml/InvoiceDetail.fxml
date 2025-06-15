@@ -119,5 +119,6 @@
                 </HBox>
             </children>
         </VBox>
+      <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGoBack" prefHeight="31.0" style="-fx-background-color: #720505; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 10px 15px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="Go Back" textFill="WHITE" />
     </children>
 </VBox>
