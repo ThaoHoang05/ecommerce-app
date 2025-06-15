@@ -187,7 +187,9 @@ public class MainViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_PATH));
             Pane historyPane = loader.load();
             HistoryController historyController = loader.getController();
+            historyController.setParentContainer(mainPane);
             historyController.setCurrentUser();
+            if(mainPane == null){System.out.println("Null");}
             loadContentToMainPane(historyPane);
         }
         else{
@@ -217,6 +219,7 @@ public class MainViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(SHOPVIEW_PATH));
             Pane shopviewPane = loader.load();
             ShopViewController controller = loader.getController();
+            controller.setup(null);
             if(controller == null){
                 System.out.println("controller is null");
                 System.exit(0);

@@ -48,7 +48,6 @@ public class ShopViewController {
 
     public void initialize(){
         products = getProducts();
-        importProductData(products);
     }
 
     void setup(String category){
@@ -57,8 +56,9 @@ public class ShopViewController {
             System.out.println(categoryFilter);
             CategoryLbl.setText(categoryFilter);
             handleCategoryFilter(categoryFilter);
-        }
-    }
+        }else{
+        importProductData(products);
+    }}
     // Lay product tu csdl
     ObservableList<InventoryProduct> getProducts() {
         InventoryProductDAO inventory = new InventoryProductDAO();
@@ -130,7 +130,8 @@ public class ShopViewController {
         ObservableList<InventoryProduct> filteredList = products.filtered(product ->
                 product.getCategoryName().equalsIgnoreCase(categoryName.trim())
         );
-        importProductData(filteredList);
+        products = filteredList;
+        importProductData(products);
     }
 
 
@@ -146,22 +147,35 @@ public class ShopViewController {
     }
 
     void sorted(ObservableList<InventoryProduct> product, int type) {
+        try{
+            ObservableList<InventoryProduct> sortableList;
+
+            // Nếu là FilteredList, tạo ObservableList mới
+            if (product instanceof javafx.collections.transformation.FilteredList) {
+                sortableList = FXCollections.observableArrayList(product);
+            } else {
+                sortableList = product;
+            }
         switch(type){
             case 0:
-                product.sort(Comparator.comparing(InventoryProduct::getProductPrice));
+                sortableList.sort(Comparator.comparing(InventoryProduct::getProductPrice));
                 break;
             case 1:
-                product.sort(Comparator.comparing(InventoryProduct::getProductPrice).reversed());
+                sortableList.sort(Comparator.comparing(InventoryProduct::getProductPrice).reversed());
                 break;
             case 2:
-                product.sort(Comparator.comparing(InventoryProduct::getProductName));
+                sortableList.sort(Comparator.comparing(InventoryProduct::getProductName));
                 break;
             case 3:
-                product.sort(Comparator.comparing(InventoryProduct::getProductName).reversed());
+                sortableList.sort(Comparator.comparing(InventoryProduct::getProductName).reversed());
                 break;
             default:
         }
-        importProductData(product);
+            importProductData(sortableList);
+        }
+        catch(UnsupportedOperationException  e){
+            e.printStackTrace();
+        }
     }
 
     private void handleItemClicked(InventoryProduct product) {

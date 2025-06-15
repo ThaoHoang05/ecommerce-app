@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class HistoryController implements Initializable {
     private InvoiceDAO invoiceDAO = new InvoiceDAO();
     private User currentUser = Session.getCurrentUser();
     private DecimalFormat currencyFormatter;
+    private Pane parent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,6 +62,12 @@ public class HistoryController implements Initializable {
     /**
      * Load lịch sử đơn hàng của user hiện tại
      */
+    public void setParentContainer(Pane parentContainer) {
+        this.parent = parentContainer;
+        if(parentContainer == null ){
+            System.out.println("Parent History container is null");
+        }
+    }
     private void loadOrderHistory() {
         try {
             // Lấy đơn hàng theo user ID - hiệu quả hơn
@@ -109,7 +117,11 @@ public class HistoryController implements Initializable {
         // Lấy controller và truyền dữ liệu
         History_Order_ItemController itemController = loader.getController();
         itemController.setInvoiceData(invoice);
-        
+        if(parent != null) {
+            itemController.setParentContainer(parent);
+        }else{
+            System.out.println("Parent is null");
+        }
         return orderItem;
     }
 
