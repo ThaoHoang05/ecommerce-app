@@ -110,6 +110,7 @@ public class ProductDetailController {
                 ShopViewController shopController = loader.getController();
                 if (shopController != null && navigationHandler != null) {
                     // Thiết lập lại handler cho việc click item
+                    shopController.setup(null);
                     shopController.setItemSelectedHandler(navigationHandler);
                 }
 
