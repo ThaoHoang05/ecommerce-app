@@ -6,7 +6,6 @@ import com.stationeryshop.dao.SupplierDAO;
 import com.stationeryshop.model.Category;
 import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.model.Supplier;
-import com.stationeryshop.utils.ThreadUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -247,6 +246,10 @@ public class InventoryProductController implements Initializable {
 
         // Load image if exists
         // loadProductImage(product.getImageUrl());
+        if(product.getImageUrl() != null) {
+            String url = "file:/" + product.getImageUrl().replace("\\", "/"); // Chuyển đổi sang định dạng file URL hợp lệ
+            productImageView.setImage(new Image(url));
+        }
     }
 
     private void clearFields() {
