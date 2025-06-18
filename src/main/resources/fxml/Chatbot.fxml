@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.Chatbot"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.stationeryshop.controller.ChatbotController"
+      prefWidth="900.0" prefHeight="700.0" spacing="10.0" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+    <padding>
+        <Insets top="20" left="30" right="30" bottom="20"/>
+    </padding>
+    <children>
+        <Label text="AI Chatbot" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #d63031;"/>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" prefHeight="500.0">
+            <content>
+                <TextArea fx:id="chatArea" editable="false" wrapText="true" prefHeight="500.0" prefWidth="800.0"
+                          style="-fx-font-size: 16px;"/>
+            </content>
+        </ScrollPane>
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <TextField fx:id="userInput" promptText="Nhập tin nhắn..." HBox.hgrow="ALWAYS" prefWidth="700.0"/>
+            <Button text="Gửi" fx:id="sendBtn" onAction="#handleSend" prefWidth="80.0" style="-fx-background-color: #d63031; -fx-text-fill: white;"/>
+        </HBox>
+    </children>
+</VBox>
