@@ -198,8 +198,14 @@ public class MainViewController {
     }
 
     @FXML
-    void gotoAIChatbot(ActionEvent event) {
-        // Implementation for AI Chatbot
+    private void gotoAIChatbot(javafx.event.ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Chatbot.fxml"));
+            VBox chatbotPane = loader.load();
+            mainPane.getChildren().setAll(chatbotPane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

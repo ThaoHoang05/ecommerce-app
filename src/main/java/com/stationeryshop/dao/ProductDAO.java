@@ -27,7 +27,7 @@ public class ProductDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "INSERT INTO products (product_name, description, price, category_id, image_url, created_at, updated_at) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             conn = db.connect();
             if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -62,7 +62,7 @@ public class ProductDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "UPDATE products SET product_name = ?, description = ?, price = ?, category_id = ?, image_url = ?, updated_at = ? " +
-                     "WHERE product_id = ?";
+                "WHERE product_id = ?";
         try {
             conn = db.connect();
             if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -123,7 +123,7 @@ public class ProductDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String sql = "SELECT p.*, c.category_id, c.category_name, c.description as category_desc " +
-                     "FROM products p LEFT JOIN categories c ON p.category_id = c.category_id WHERE p.product_id = ?";
+                "FROM products p LEFT JOIN categories c ON p.category_id = c.category_id WHERE p.product_id = ?";
         try {
             conn = db.connect();
             if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -132,19 +132,19 @@ public class ProductDAO {
             rs = stmt.executeQuery();
             if (rs.next()) {
                 Category category = new Category(
-                    rs.getInt("category_id"),
-                    rs.getString("category_name"),
-                    rs.getString("category_desc")
+                        rs.getInt("category_id"),
+                        rs.getString("category_name"),
+                        rs.getString("category_desc")
                 );
                 return new Product(
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("description"),
-                    rs.getDouble("price"),
-                    rs.getString("image_url"),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getTimestamp("updated_at").toLocalDateTime(),
-                    category
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        category
                 );
             }
         } catch (SQLException e) {
@@ -175,14 +175,14 @@ public class ProductDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 list.add(new Product(
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("description"),
-                    rs.getDouble("price"),
-                    rs.getString("image_url"),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getTimestamp("updated_at").toLocalDateTime(),
-                    null
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        null
                 ));
             }
         } catch (SQLException e) {
@@ -213,14 +213,14 @@ public class ProductDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 list.add(new Product(
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("description"),
-                    rs.getDouble("price"),
-                    rs.getString("image_url"),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getTimestamp("updated_at").toLocalDateTime(),
-                    null
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        null
                 ));
             }
         } catch (SQLException e) {
@@ -243,7 +243,7 @@ public class ProductDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String sql = "SELECT p.*, c.category_id, c.category_name, c.description as category_desc " +
-                     "FROM products p LEFT JOIN categories c ON p.category_id = c.category_id";
+                "FROM products p LEFT JOIN categories c ON p.category_id = c.category_id";
         try {
             conn = db.connect();
             if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -251,11 +251,49 @@ public class ProductDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Category category = new Category(
-                    rs.getInt("category_id"),
-                    rs.getString("category_name"),
-                    rs.getString("category_desc")
+                        rs.getInt("category_id"),
+                        rs.getString("category_name"),
+                        rs.getString("category_desc")
                 );
                 Product product = new Product(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("description"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("updated_at").toLocalDateTime(),
+                        category
+                );
+                list.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public List<Product> getAllProducts() {
+        List<Product> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM products";
+        try {
+            conn = db.connect();
+            if (conn == null) JOptionPane.showMessageDialog(null, "The password is incorrect", "Warning", JOptionPane.WARNING_MESSAGE);
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
                     rs.getInt("product_id"),
                     rs.getString("product_name"),
                     rs.getString("description"),
@@ -263,9 +301,8 @@ public class ProductDAO {
                     rs.getString("image_url"),
                     rs.getTimestamp("created_at").toLocalDateTime(),
                     rs.getTimestamp("updated_at").toLocalDateTime(),
-                    category
-                );
-                list.add(product);
+                    null
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
