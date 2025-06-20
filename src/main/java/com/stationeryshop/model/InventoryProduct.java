@@ -4,6 +4,7 @@ import com.stationeryshop.dao.InventoryDAO;
 import com.stationeryshop.dao.SupplierDAO;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,5 +65,9 @@ public class InventoryProduct {
     }
     public String getImageUrl(){
         return this.product.getImageUrl();
+    }
+    public String getLastStockedDate(){
+        DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return this.inventoryItem.getLastStockedDate().format(formatTime);
     }
 }

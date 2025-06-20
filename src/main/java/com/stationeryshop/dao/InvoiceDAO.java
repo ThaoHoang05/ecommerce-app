@@ -476,7 +476,7 @@ public class InvoiceDAO {
         ResultSet rs = null;
         
         try {
-            String sql = "SELECT * FROM invoice_details WHERE invoice_id = ?";
+            String sql = "SELECT id.* , p.product_name FROM invoice_details id JOIN products p on id.product_id = p.product_id WHERE invoice_id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, invoiceId);
             rs = stmt.executeQuery();
@@ -491,6 +491,7 @@ public class InvoiceDAO {
                 // Gán Product tạm (nếu cần lấy chi tiết hơn thì join hoặc DAO riêng)
                 Product product = new Product();
                 product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
                 detail.setProduct(product);
 
                 details.add(detail);

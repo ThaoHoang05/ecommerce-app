@@ -5,8 +5,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="Categories.fxml" />
-        <fx:include source="BestSellers_Top5.fxml" />
+        <fx:include fx:id="categoriesInclude" source="Categories.fxml" />
     </children>
 
 </VBox>

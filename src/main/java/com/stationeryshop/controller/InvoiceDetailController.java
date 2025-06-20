@@ -96,6 +96,7 @@ public class InvoiceDetailController {
     }
     HBox showInvoiceDetail(InvoiceDetail invoiceDetail) {
         Product product = invoiceDetail.getProduct();
+        System.out.println(product.getProductName());
         Label nameLabel = new Label(product.getProductName());
         nameLabel.setStyle("-fx-text-fill: #495057; -fx-font-size: 15px; -fx-font-weight: bold;");
         nameLabel.setPrefWidth(200);
