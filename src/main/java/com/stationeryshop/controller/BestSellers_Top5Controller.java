@@ -29,16 +29,18 @@ public class BestSellers_Top5Controller {
     private InventoryProductDAO inventoryProductDAO = new InventoryProductDAO();
 
     public void initialize() throws SQLException {
-        top5BestSellersObservableList = getTop5BestSellersObservableList();
-        importProductData(top5BestSellersObservableList);
+        top5BestSellersObservableList = getTop5BestSellersObservableList(30);
+    }
+    public void setupType(int limit){
+            importProductData(top5BestSellersObservableList, limit);
     }
 
-        ObservableList<InventoryProduct> getTop5BestSellersObservableList() throws SQLException {
+        ObservableList<InventoryProduct> getTop5BestSellersObservableList(int limit) throws SQLException {
             // Get data for last 30 days (you can modify this period as needed)
             LocalDate endDate = LocalDate.now();
             LocalDate startDate = endDate.minusDays(30);
 
-            List<Map<String, Object>> topProducts = reportDAO.getTopSellingProductsByRevenue(startDate, endDate, 5);
+            List<Map<String, Object>> topProducts = reportDAO.getTopSellingProductsByRevenue(startDate, endDate, limit);
             if(topProducts.isEmpty()){
                 throw new SQLException("No products found");
             }
@@ -58,9 +60,12 @@ public class BestSellers_Top5Controller {
         return product;
     }
 
-    void importProductData(ObservableList<InventoryProduct> product){
+    void importProductData(ObservableList<InventoryProduct> product,int limit){
+        int sizeProduct = (limit < product.size()) ? limit : product.size();
+        System.out.println("sizeProduct: " + sizeProduct);
         ThreadUtil<VBox> threadImport = new ThreadUtil<>(5);
-        for(InventoryProduct p : product){
+        for(int i = 0; i< sizeProduct; i++){
+            InventoryProduct p = product.get(i);
             Future<VBox> pVBox = (threadImport.executeTask(()->{
                 try {
                     return setDataItem(p);

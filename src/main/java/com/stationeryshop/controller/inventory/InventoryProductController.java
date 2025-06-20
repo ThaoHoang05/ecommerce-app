@@ -6,8 +6,10 @@ import com.stationeryshop.dao.SupplierDAO;
 import com.stationeryshop.model.Category;
 import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.model.Supplier;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,89 +25,48 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 
 public class InventoryProductController implements Initializable {
 
-    @FXML
-    private TextField productNameField;
-
-    @FXML
-    private Button addProductBtn;
-
-    @FXML
-    private TextField supplyPriceField;
-
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private Button selectImageButton;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private TableView<InventoryProduct> productTable;
-
-    @FXML
-    private TableColumn<InventoryProduct, String> categoryColumn;
-
-    @FXML
-    private Button deleteProductBtn;
-
-    @FXML
-    private TableColumn<InventoryProduct, Integer> stockColumn;
-
-    @FXML
-    private Button updateProductBtn;
-
-    @FXML
-    private Button refreshBtn;
-
-    @FXML
-    private ImageView productImageView;
-
-    @FXML
-    private ComboBox<Category> categoryComboBox;
-
-    @FXML
-    private ComboBox<Supplier> supplierComboBox;
-
-    @FXML
-    private TextArea descriptionArea;
-
-    @FXML
-    private TableColumn<InventoryProduct, String> nameColumn;
-
-    @FXML
-    private TextField productIdField;
-
-    @FXML
-    private TextField priceField;
-
-    @FXML
-    private TextField stockQuantityField;
-
-    @FXML
-    private TableColumn<InventoryProduct, String> supplierColumn;
-
-    @FXML
-    private TableColumn<InventoryProduct, Double> priceColumn;
-
-    @FXML
-    private TableColumn<InventoryProduct, Integer> idColumn;
-
-    @FXML
-    private TableColumn<InventoryProduct, String> descriptionColumn;
+    @FXML private TextField productNameField;
+    @FXML private Button addProductBtn;
+    @FXML private TextField supplyPriceField;
+    @FXML private TextField searchField;
+    @FXML private Button selectImageButton;
+    @FXML private Button searchBtn;
+    @FXML private TableView<InventoryProduct> productTable;
+    @FXML private TableColumn<InventoryProduct, String> categoryColumn;
+    @FXML private Button deleteProductBtn;
+    @FXML private TableColumn<InventoryProduct, Integer> stockColumn;
+    @FXML private Button updateProductBtn;
+    @FXML private Button refreshBtn;
+    @FXML private ImageView productImageView;
+    @FXML private ComboBox<Category> categoryComboBox;
+    @FXML private ComboBox<Supplier> supplierComboBox;
+    @FXML private TextArea descriptionArea;
+    @FXML private TableColumn<InventoryProduct, String> nameColumn;
+    @FXML private TextField productIdField;
+    @FXML private TextField priceField;
+    @FXML private TextField stockQuantityField;
+    @FXML private TableColumn<InventoryProduct, String> supplierColumn;
+    @FXML private TableColumn<InventoryProduct, Double> priceColumn;
+    @FXML private TableColumn<InventoryProduct, Integer> idColumn;
+    @FXML private TableColumn<InventoryProduct, String> descriptionColumn;
 
     // DAO instances
     private InventoryProductDAO inventoryProductDAO;
     private CategoryDAO categoryDAO;
     private SupplierDAO supplierDAO;
 
-    // Data
+    // Data caching
     private ObservableList<InventoryProduct> productList;
+    private ObservableList<Category> categoryList;
+    private ObservableList<Supplier> supplierList;
     private String selectedImagePath = "";
+
+    // Loading indicator
+    @FXML private ProgressIndicator loadingIndicator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,20 +75,78 @@ public class InventoryProductController implements Initializable {
         categoryDAO = new CategoryDAO();
         supplierDAO = new SupplierDAO();
 
-        // Setup table columns
+        // Setup table columns immediately (UI thread)
         setupTableColumns();
-
-        // Load data
-        loadCategories();       // luong 1
-        loadSuppliers();        //luong 2
-        loadProducts();         //luong 3
-
-        // Setup table selection listener
         setupTableSelectionListener();
 
-        // Disable edit/delete buttons initially
+        // Disable buttons initially
         updateProductBtn.setDisable(true);
         deleteProductBtn.setDisable(true);
+
+        // Load data asynchronously to avoid blocking UI
+        loadDataAsync();
+    }
+
+    /**
+     * Load data asynchronously to prevent UI blocking
+     */
+    private void loadDataAsync() {
+        // Show loading indicator if available
+        if (loadingIndicator != null) {
+            loadingIndicator.setVisible(true);
+        }
+
+        // Load all data in parallel using CompletableFuture
+        CompletableFuture<List<Category>> categoriesTask = CompletableFuture.supplyAsync(() -> {
+            try {
+                return categoryDAO.getAllCategories();
+            } catch (Exception e) {
+                Platform.runLater(() -> showAlert("Lỗi", "Không thể tải danh mục: " + e.getMessage()));
+                return FXCollections.emptyObservableList();
+            }
+        });
+
+        CompletableFuture<List<Supplier>> suppliersTask = CompletableFuture.supplyAsync(() -> {
+            try {
+                return supplierDAO.getAllSuppliers();
+            } catch (Exception e) {
+                Platform.runLater(() -> showAlert("Lỗi", "Không thể tải nhà cung cấp: " + e.getMessage()));
+                return FXCollections.emptyObservableList();
+            }
+        });
+
+        CompletableFuture<ObservableList<InventoryProduct>> productsTask = CompletableFuture.supplyAsync(() -> {
+            try {
+                return inventoryProductDAO.getAllInventoryProduct();
+            } catch (Exception e) {
+                Platform.runLater(() -> showAlert("Lỗi", "Không thể tải sản phẩm: " + e.getMessage()));
+                return FXCollections.emptyObservableList();
+            }
+        });
+
+        // Wait for all tasks to complete and update UI
+        CompletableFuture.allOf(categoriesTask, suppliersTask, productsTask)
+                .thenRun(() -> {
+                    Platform.runLater(() -> {
+                        try {
+                            // Update UI with loaded data
+                            categoryList = FXCollections.observableArrayList(categoriesTask.get());
+                            supplierList = FXCollections.observableArrayList(suppliersTask.get());
+                            productList = productsTask.get();
+
+                            setupCategoryComboBox();
+                            setupSupplierComboBox();
+                            productTable.setItems(productList);
+
+                            // Hide loading indicator
+                            if (loadingIndicator != null) {
+                                loadingIndicator.setVisible(false);
+                            }
+                        } catch (Exception e) {
+                            showAlert("Lỗi", "Lỗi khi cập nhật giao diện: " + e.getMessage());
+                        }
+                    });
+                });
     }
 
     private void setupTableColumns() {
@@ -141,8 +160,19 @@ public class InventoryProductController implements Initializable {
         // Custom cell value factory for supplier names
         supplierColumn.setCellValueFactory(cellData -> {
             String suppliers = cellData.getValue().getSupplierName();
-            String supplierNames = String.join(", ", suppliers);
-            return new javafx.beans.property.SimpleStringProperty(supplierNames);
+            return new javafx.beans.property.SimpleStringProperty(suppliers);
+        });
+
+        // Optimize table performance
+        productTable.setRowFactory(tv -> {
+            TableRow<InventoryProduct> row = new TableRow<>();
+            // Only create context menu when needed
+            row.setOnContextMenuRequested(event -> {
+                if (!row.isEmpty()) {
+                    // Create context menu on demand
+                }
+            });
+            return row;
         });
     }
 
@@ -160,63 +190,65 @@ public class InventoryProductController implements Initializable {
         });
     }
 
-    private void loadCategories() {
-        try {
-            List<Category> categories = categoryDAO.getAllCategories();
-            categoryComboBox.setItems(FXCollections.observableArrayList(categories));
+    private void setupCategoryComboBox() {
+        categoryComboBox.setItems(categoryList);
+        categoryComboBox.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category category) {
+                return category != null ? category.getCategoryName() : "";
+            }
 
-            // Set display converter for ComboBox
-            categoryComboBox.setConverter(new StringConverter<Category>() {
-                @Override
-                public String toString(Category category) {
-                    return category != null ? category.getCategoryName() : "";
-                }
-
-                @Override
-                public Category fromString(String string) {
-                    return categoryComboBox.getItems().stream()
-                            .filter(item -> item.getCategoryName().equals(string))
-                            .findFirst()
-                            .orElse(null);
-                }
-            });
-        } catch (Exception e) {
-            showAlert("Lỗi", "Không thể tải danh sách danh mục: " + e.getMessage());
-        }
+            @Override
+            public Category fromString(String string) {
+                return categoryList.stream()
+                        .filter(item -> item.getCategoryName().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
     }
 
-    private void loadSuppliers() {
-        try {
-            List<Supplier> suppliers = supplierDAO.getAllSuppliers();
-            supplierComboBox.setItems(FXCollections.observableArrayList(suppliers));
+    private void setupSupplierComboBox() {
+        supplierComboBox.setItems(supplierList);
+        supplierComboBox.setConverter(new StringConverter<Supplier>() {
+            @Override
+            public String toString(Supplier supplier) {
+                return supplier != null ? supplier.getSupplierName() : "";
+            }
 
-            // Set display converter for ComboBox
-            supplierComboBox.setConverter(new StringConverter<Supplier>() {
-                @Override
-                public String toString(Supplier supplier) {
-                    return supplier != null ? supplier.getSupplierName() : "";
-                }
-
-                @Override
-                public Supplier fromString(String string) {
-                    return supplierComboBox.getItems().stream()
-                            .filter(item -> item.getSupplierName().equals(string))
-                            .findFirst()
-                            .orElse(null);
-                }
-            });
-        } catch (Exception e) {
-            showAlert("Lỗi", "Không thể tải danh sách nhà cung cấp: " + e.getMessage());
-        }
+            @Override
+            public Supplier fromString(String string) {
+                return supplierList.stream()
+                        .filter(item -> item.getSupplierName().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
     }
 
+    /**
+     * Reload products asynchronously
+     */
     private void loadProducts() {
-        try {
-            productList = inventoryProductDAO.getAllInventoryProduct();
-            productTable.setItems(productList);
-        } catch (Exception e) {
-            showAlert("Lỗi", "Không thể tải danh sách sản phẩm: " + e.getMessage());
-        }
+        Task<ObservableList<InventoryProduct>> task = new Task<ObservableList<InventoryProduct>>() {
+            @Override
+            protected ObservableList<InventoryProduct> call() throws Exception {
+                return inventoryProductDAO.getAllInventoryProduct();
+            }
+
+            @Override
+            protected void succeeded() {
+                productList = getValue();
+                productTable.setItems(productList);
+            }
+
+            @Override
+            protected void failed() {
+                showAlert("Lỗi", "Không thể tải danh sách sản phẩm: " + getException().getMessage());
+            }
+        };
+
+        new Thread(task).start();
     }
 
     private void populateFields(InventoryProduct product) {
@@ -228,27 +260,53 @@ public class InventoryProductController implements Initializable {
         stockQuantityField.setText(String.valueOf(product.getQuantity()));
 
         // Set category
-        Category selectedCategory = categoryComboBox.getItems().stream()
+        Category selectedCategory = categoryList.stream()
                 .filter(cat -> cat.getCategoryName().equals(product.getCategoryName()))
                 .findFirst()
                 .orElse(null);
         categoryComboBox.setValue(selectedCategory);
 
-        // Set supplier (first supplier if multiple)
+        // Set supplier
         String supplierNames = product.getSupplierName();
         if (!supplierNames.isEmpty()) {
-            Supplier selectedSupplier = supplierComboBox.getItems().stream()
+            Supplier selectedSupplier = supplierList.stream()
                     .filter(sup -> sup.getSupplierName().equals(supplierNames))
                     .findFirst()
                     .orElse(null);
             supplierComboBox.setValue(selectedSupplier);
         }
 
-        // Load image if exists
-        // loadProductImage(product.getImageUrl());
-        if(product.getImageUrl() != null) {
-            String url = "file:/" + product.getImageUrl().replace("\\", "/"); // Chuyển đổi sang định dạng file URL hợp lệ
-            productImageView.setImage(new Image(url));
+        // Load image asynchronously to avoid blocking UI
+        loadProductImageAsync(product.getImageUrl());
+    }
+
+    /**
+     * Load product image asynchronously
+     */
+    private void loadProductImageAsync(String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Task<Image> imageTask = new Task<Image>() {
+                @Override
+                protected Image call() throws Exception {
+                    String url = "file:/" + imageUrl.replace("\\", "/");
+                    return new Image(url, true); // Load in background
+                }
+
+                @Override
+                protected void succeeded() {
+                    productImageView.setImage(getValue());
+                }
+
+                @Override
+                protected void failed() {
+                    // Set default image or leave empty
+                    productImageView.setImage(null);
+                }
+            };
+
+            new Thread(imageTask).start();
+        } else {
+            productImageView.setImage(null);
         }
     }
 
@@ -274,6 +332,7 @@ public class InventoryProductController implements Initializable {
             return;
         }
 
+        // Use filtered list for better performance
         ObservableList<InventoryProduct> filteredList = productList.filtered(product ->
                 product.getProductName().toLowerCase().contains(searchTerm) ||
                         product.getProductDescription().toLowerCase().contains(searchTerm) ||
@@ -288,7 +347,7 @@ public class InventoryProductController implements Initializable {
         loadProducts();
         clearFields();
         searchField.clear();
-        showInfo("Thành công", "Đã làm mới danh sách sản phẩm");
+        showInfo("Thành công", "Đang làm mới danh sách sản phẩm...");
     }
 
     @FXML
@@ -316,42 +375,72 @@ public class InventoryProductController implements Initializable {
         if (selectedFile != null) {
             selectedImagePath = selectedFile.getAbsolutePath();
 
-            try {
-                Image image = new Image(selectedFile.toURI().toString());
-                productImageView.setImage(image);
-            } catch (Exception e) {
-                showAlert("Lỗi", "Không thể tải hình ảnh: " + e.getMessage());
-            }
+            // Load image asynchronously
+            Task<Image> imageTask = new Task<Image>() {
+                @Override
+                protected Image call() throws Exception {
+                    return new Image(selectedFile.toURI().toString(), true);
+                }
+
+                @Override
+                protected void succeeded() {
+                    productImageView.setImage(getValue());
+                }
+
+                @Override
+                protected void failed() {
+                    showAlert("Lỗi", "Không thể tải hình ảnh: " + getException().getMessage());
+                }
+            };
+
+            new Thread(imageTask).start();
         }
     }
 
+    // Database operations remain the same but should also be made async
     @FXML
     void handleAddProduct(ActionEvent event) {
-        if (!validateInput()) {
-            return;
-        }
+        if (!validateInput()) return;
 
-        try {
-            String name = productNameField.getText().trim();
-            String description = descriptionArea.getText().trim();
-            float price = Float.parseFloat(priceField.getText().trim());
-            int quantity = Integer.parseInt(stockQuantityField.getText().trim());
-            float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
-            String categoryName = categoryComboBox.getValue().getCategoryName();
-            String supplierName = supplierComboBox.getValue().getSupplierName();
-            String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
+        Task<Void> addTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                String name = productNameField.getText().trim();
+                String description = descriptionArea.getText().trim();
+                float price = Float.parseFloat(priceField.getText().trim());
+                int quantity = Integer.parseInt(stockQuantityField.getText().trim());
+                float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
+                String categoryName = categoryComboBox.getValue().getCategoryName();
+                String supplierName = supplierComboBox.getValue().getSupplierName();
+                String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
 
-            inventoryProductDAO.addProduct(name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+                inventoryProductDAO.addProduct(name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+                return null;
+            }
 
-            showInfo("Thành công", "Đã thêm sản phẩm thành công");
-            clearFields();
-            loadProducts();
+            @Override
+            protected void succeeded() {
+                Platform.runLater(() -> {
+                    showInfo("Thành công", "Đã thêm sản phẩm thành công");
+                    clearFields();
+                    loadProducts();
+                });
+            }
 
-        } catch (NumberFormatException e) {
-            showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
-        } catch (Exception e) {
-            showAlert("Lỗi", "Không thể thêm sản phẩm: " + e.getMessage());
-        }
+            @Override
+            protected void failed() {
+                Platform.runLater(() -> {
+                    Throwable exception = getException();
+                    if (exception instanceof NumberFormatException) {
+                        showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
+                    } else {
+                        showAlert("Lỗi", "Không thể thêm sản phẩm: " + exception.getMessage());
+                    }
+                });
+            }
+        };
+
+        new Thread(addTask).start();
     }
 
     @FXML
@@ -362,32 +451,48 @@ public class InventoryProductController implements Initializable {
             return;
         }
 
-        if (!validateInput()) {
-            return;
-        }
+        if (!validateInput()) return;
 
-        try {
-            int productId = selectedProduct.getProductId();
-            String name = productNameField.getText().trim();
-            String description = descriptionArea.getText().trim();
-            float price = Float.parseFloat(priceField.getText().trim());
-            int quantity = Integer.parseInt(stockQuantityField.getText().trim());
-            float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
-            String categoryName = categoryComboBox.getValue().getCategoryName();
-            String supplierName = supplierComboBox.getValue().getSupplierName();
-            String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
+        Task<Void> updateTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                int productId = selectedProduct.getProductId();
+                String name = productNameField.getText().trim();
+                String description = descriptionArea.getText().trim();
+                float price = Float.parseFloat(priceField.getText().trim());
+                int quantity = Integer.parseInt(stockQuantityField.getText().trim());
+                float supplyPrice = Float.parseFloat(supplyPriceField.getText().trim());
+                String categoryName = categoryComboBox.getValue().getCategoryName();
+                String supplierName = supplierComboBox.getValue().getSupplierName();
+                String imagePath = selectedImagePath.isEmpty() ? "default.png" : selectedImagePath;
 
-            inventoryProductDAO.updateProduct(productId, name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+                inventoryProductDAO.updateProduct(productId, name, description, price, quantity, categoryName, imagePath, supplierName, supplyPrice);
+                return null;
+            }
 
-            showInfo("Thành công", "Đã cập nhật sản phẩm thành công");
-            clearFields();
-            loadProducts();
+            @Override
+            protected void succeeded() {
+                Platform.runLater(() -> {
+                    showInfo("Thành công", "Đã cập nhật sản phẩm thành công");
+                    clearFields();
+                    loadProducts();
+                });
+            }
 
-        } catch (NumberFormatException e) {
-            showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
-        } catch (Exception e) {
-            showAlert("Lỗi", "Không thể cập nhật sản phẩm: " + e.getMessage());
-        }
+            @Override
+            protected void failed() {
+                Platform.runLater(() -> {
+                    Throwable exception = getException();
+                    if (exception instanceof NumberFormatException) {
+                        showAlert("Lỗi", "Vui lòng nhập đúng định dạng số cho giá và số lượng");
+                    } else {
+                        showAlert("Lỗi", "Không thể cập nhật sản phẩm: " + exception.getMessage());
+                    }
+                });
+            }
+        };
+
+        new Thread(updateTask).start();
     }
 
     @FXML
@@ -405,14 +510,31 @@ public class InventoryProductController implements Initializable {
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                inventoryProductDAO.deleteProduct(selectedProduct.getProductId());
-                showInfo("Thành công", "Đã xóa sản phẩm thành công");
-                clearFields();
-                loadProducts();
-            } catch (Exception e) {
-                showAlert("Lỗi", "Không thể xóa sản phẩm: " + e.getMessage());
-            }
+            Task<Void> deleteTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    inventoryProductDAO.deleteProduct(selectedProduct.getProductId());
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                    Platform.runLater(() -> {
+                        showInfo("Thành công", "Đã xóa sản phẩm thành công");
+                        clearFields();
+                        loadProducts();
+                    });
+                }
+
+                @Override
+                protected void failed() {
+                    Platform.runLater(() ->
+                            showAlert("Lỗi", "Không thể xóa sản phẩm: " + getException().getMessage())
+                    );
+                }
+            };
+
+            new Thread(deleteTask).start();
         }
     }
 

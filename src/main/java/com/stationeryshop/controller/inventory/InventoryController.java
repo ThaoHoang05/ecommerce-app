@@ -2,6 +2,7 @@ package com.stationeryshop.controller.inventory;
 
 import com.stationeryshop.dao.InventoryProductDAO;
 import com.stationeryshop.model.InventoryProduct;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -79,8 +80,12 @@ public class InventoryController implements Initializable {
         invLastStockedColumn.setCellValueFactory(cellData -> {
             // Giả sử bạn sẽ thêm phương thức getLastStockedDate() vào InventoryProduct
             // Hiện tại return một giá trị mặc định
-            return new javafx.beans.property.SimpleStringProperty("N/A");
-        });
+            if(cellData.getValue() != null) {
+                return new SimpleStringProperty(String.valueOf(cellData.getValue().getLastStockedDate()));
+            }else {
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            }
+            });
 
         // Căn giữa cho cột ID và Quantity
         invIdColumn.setStyle("-fx-alignment: CENTER;");

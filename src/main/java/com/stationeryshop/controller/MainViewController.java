@@ -344,8 +344,14 @@ public class MainViewController {
 
     void initialMain() throws IOException {
         final String INITIALMAIN_PATH = "/fxml/InitialMainPane.fxml";
+        final String BESTSELLERTOP5 = "/fxml/BestSellers_Top5.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(INITIALMAIN_PATH));
         intialMain = loader.load();
+        FXMLLoader bestsellerLoader = new FXMLLoader(getClass().getResource(BESTSELLERTOP5));
+        Node bestSellersInclude = bestsellerLoader.load();
+        BestSellers_Top5Controller bestSellerController = bestsellerLoader.getController();
+        bestSellerController.setupType(5);
+        intialMain.getChildren().add(bestSellersInclude);
         AnchorPane.setTopAnchor(intialMain, 0.0);
         AnchorPane.setBottomAnchor(intialMain, 0.0);
         AnchorPane.setLeftAnchor(intialMain, 0.0);
@@ -377,12 +383,23 @@ public class MainViewController {
         final String BESTSELLER_PATH = "/fxml/BestSellers_Top5.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
         VBox best = loader.load();
+        BestSellers_Top5Controller controller = loader.getController();
+        controller.setupType(5);
         return best;
     }
 
     @FXML
-    void gotoBestSeller(MouseEvent event) {
-
+    void gotoBestSeller(MouseEvent event) throws IOException {
+        final String BESTSELLER_PATH = "/fxml/BestSellers_Top5.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(BESTSELLER_PATH));
+        VBox best = loader.load();
+        BestSellers_Top5Controller controller = loader.getController();
+        controller.setupType(20);
+        AnchorPane.setTopAnchor(best, 0.0);
+        AnchorPane.setBottomAnchor(best, 0.0);
+        AnchorPane.setLeftAnchor(best, 0.0);
+        AnchorPane.setRightAnchor(best, 0.0);
+        mainPane.getChildren().setAll(best);
     }
 
     void handleItemSelected(String category) throws IOException {
