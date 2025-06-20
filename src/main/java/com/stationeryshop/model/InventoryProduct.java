@@ -14,6 +14,7 @@ public class InventoryProduct {
     private Product product;
     private Supplier supplier;
     private InventoryItem inventoryItem;
+    private double supplyPrice;
 
     public void setCategory(int category_id,String category_name, String category_description) {
         this.category = new Category(category_id, category_name, category_description);
@@ -29,6 +30,9 @@ public class InventoryProduct {
     public void setInventoryItem(int product_id) {
         InventoryDAO inventory = new InventoryDAO();
         this.inventoryItem = inventory.getInventoryByProductId(product_id);
+    }
+    public void setSupplyPrice(double supply_price) {
+        this.supplyPrice = supply_price;
     }
     public void setCategory(Category category) {
         this.category = category;
@@ -54,6 +58,9 @@ public class InventoryProduct {
     public String getSupplierName(){
         String supplierName = this.supplier.getSupplierName();
         return supplierName;
+    }
+    public double getSupplyPrice(){
+        return this.supplyPrice;
     }
     public String getImageUrl(){
         return this.product.getImageUrl();

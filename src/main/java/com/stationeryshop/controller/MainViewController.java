@@ -1,6 +1,7 @@
 package com.stationeryshop.controller;
 
 import com.stationeryshop.controller.inventory.ProductController;
+import com.stationeryshop.model.InventoryProduct;
 import com.stationeryshop.utils.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -186,7 +187,9 @@ public class MainViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_PATH));
             Pane historyPane = loader.load();
             HistoryController historyController = loader.getController();
+            historyController.setParentContainer(mainPane);
             historyController.setCurrentUser();
+            if(mainPane == null){System.out.println("Null");}
             loadContentToMainPane(historyPane);
         }
         else{
@@ -218,9 +221,23 @@ public class MainViewController {
     @FXML
     void gotoShopViewForm(MouseEvent mouseEvent) throws IOException {
         // Load lại trang main với categories
-            final String HISTORY_PATH = "/fxml/ShopView.fxml";
-            Pane historyPane = (new FXMLLoader(getClass().getResource(HISTORY_PATH))).load();
-            loadContentToMainPane(historyPane);
+            final String SHOPVIEW_PATH = "/fxml/ShopView.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(SHOPVIEW_PATH));
+            Pane shopviewPane = loader.load();
+            ShopViewController controller = loader.getController();
+            controller.setup(null);
+            if(controller == null){
+                System.out.println("controller is null");
+                System.exit(0);
+            }
+            controller.setItemSelectedHandler(product ->{
+                try{
+                    handleItemSelected(product);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            loadContentToMainPane(shopviewPane);
     }
 
     @FXML
@@ -375,12 +392,37 @@ public class MainViewController {
         showShopViewByCategory(category);
     }
 
+    void handleItemSelected(InventoryProduct product) throws IOException {
+        System.out.println(product.getProductName());
+        showProductDetails(product);
+    }
+
     void showShopViewByCategory(String category) throws IOException {
         final String SHOPVIEW_CATEGORY = "/fxml/ShopView.fxml";
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SHOPVIEW_CATEGORY));
         Pane pane = loader.load();
         ShopViewController controller = loader.getController();
         controller.setup(category);
+        loadContentToMainPane(pane);
+    }
+
+    void showProductDetails(InventoryProduct product) throws IOException {
+        final String PRODUCT_DETAIL_PATH = "/fxml/ProductDetail.fxml";
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(PRODUCT_DETAIL_PATH));
+        ScrollPane pane = loader.load();
+        ProductDetailController controller = loader.getController();
+        controller.setParentContainer(mainPane);
+        controller.setNavigationHandler(product1 -> {
+            try {
+                handleItemSelected(product1);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }); // Truyền handler
+        controller.setup(product);
+        if(pane == null){
+            System.out.println("pane is null");
+        }
         loadContentToMainPane(pane);
     }
 }

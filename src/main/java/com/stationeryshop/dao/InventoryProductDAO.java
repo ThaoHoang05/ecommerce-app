@@ -7,28 +7,16 @@ import com.stationeryshop.utils.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.time.LocalDate;
 
 public class InventoryProductDAO {
     private DBConnection db;
     public InventoryProductDAO() {
-        Properties props = new Properties();
-        try{
-            FileInputStream fis = new FileInputStream("src/main/resources/db.properties");
-            props.load(fis);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        String useradmin = props.getProperty("db.admin");
-        String pwdadmin = props.getProperty("db.adminpwd");
-        this.db = new DBConnection(useradmin, pwdadmin);
+        this.db = new DBConnection();
     }
 
     public void addProduct(String name, String description, float price, int quantity, String category, String image, String supplier_name, float supply_price) {
@@ -199,7 +187,7 @@ public class InventoryProductDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String sql = "SELECT ip.product_id ,ip.product_name, ip.description, ip.price, " +
+        String sql = "SELECT ip.product_id ,ip.product_name, ip.description, ip.price, ip.supply_price, " +
                 "ip.quantity_on_hand, ip.image_url, " +
                 "c. category_id , c.category_name, c.description, " +
                 "s.supplier_id " +
@@ -238,6 +226,7 @@ public class InventoryProductDAO {
 
                 // Set inventory item information
                 inventoryProduct.setInventoryItem(rs.getInt("product_id"));
+                inventoryProduct.setSupplyPrice(rs.getDouble("supply_price"));
 
                 inventoryList.add(inventoryProduct);
             }
