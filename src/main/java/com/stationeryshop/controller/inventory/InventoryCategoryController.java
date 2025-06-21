@@ -46,6 +46,7 @@ public class InventoryCategoryController {
     private TableView<Category> categoryTable;
 
     private ObservableList<Category> categoryList;
+    private boolean refresh = false;
 
     private CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -64,6 +65,7 @@ public class InventoryCategoryController {
             // For add operation, we don't need ID from user input (auto-generated)
             Category newCategory = new Category(0, categoryName, categoryDesc);
             categoryDAO.addCategory(newCategory);
+            refresh = true;
 
             // Refresh table and clear fields
             refreshTable();
@@ -97,6 +99,7 @@ public class InventoryCategoryController {
             int categoryId = Integer.parseInt(categoryIdText);
             Category updatedCategory = new Category(categoryId, categoryName, categoryDesc);
             categoryDAO.updateCategory(updatedCategory);
+            refresh = true;
 
             // Refresh table and clear fields
             refreshTable();
@@ -134,6 +137,7 @@ public class InventoryCategoryController {
             }
 
             categoryDAO.deleteCategory(categoryId);
+            refresh = true;
 
             // Refresh table and clear fields
             refreshTable();
@@ -171,6 +175,10 @@ public class InventoryCategoryController {
     private void refreshTable() {
         categoryList = getCategoryList();
         categoryTable.setItems(categoryList);
+        refresh = false;
+    }
+    public boolean handleRefreshCategory() {
+        return refresh;
     }
 
     private ObservableList<Category> getCategoryList() {

@@ -279,7 +279,9 @@ public class InventoryProductController implements Initializable {
         // Load image asynchronously to avoid blocking UI
         loadProductImageAsync(product.getImageUrl());
     }
-
+    public void refreshDataBar(boolean choice){
+        this.loadDataAsync();
+    }
     /**
      * Load product image asynchronously
      */

@@ -24,38 +24,41 @@ public class ProductController {
     private boolean isLoadedProduct = false;
     private boolean isLoadedInventory = false;
     private boolean isLoadedCategory = false;
+    private InventoryProductController inventoryProductController;
+    private InventoryCategoryController inventoryCategoryController;
 
     public void initialize() {
         tabPane.getSelectionModel().select(ProductTab);
         loadDefault();
 
         ProductTab.setOnSelectionChanged(event -> {
-            if (ProductTab.isSelected() && !isLoadedProduct) {
-                try {
-                    Parent content = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryProductTab.fxml"))).load();
-                    ProductTab.setContent(content);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if (ProductTab.isSelected() && isLoadedProduct) {
+                if(isLoadedCategory){
+                    System.out.println("Doan nay chay");
+                    inventoryProductController.refreshDataBar(inventoryCategoryController.handleRefreshCategory());
                 }
             }
         });
         CategoryTab.setOnSelectionChanged(event -> {
-            if (CategoryTab.isSelected() && !isLoadedInventory) {
+            if (CategoryTab.isSelected()&& !isLoadedCategory) {
                 try {
-                    Parent content = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryCategoryTab.fxml"))).load();
+                    FXMLLoader loader = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryCategoryTab.fxml")));
+                    Parent content = loader.load();
                     CategoryTab.setContent(content);
-                    isLoadedInventory = true;
+                    inventoryCategoryController =  loader.getController();
+                    isLoadedCategory = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                }
             }
-        });
+        );
         InventoryTab.setOnSelectionChanged(event -> {
             if (InventoryTab.isSelected() && !isLoadedCategory) {
                 try {
                     Parent content = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryTab.fxml"))).load();
                     InventoryTab.setContent(content);
-                    isLoadedCategory = true;
+                    isLoadedInventory = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -64,8 +67,10 @@ public class ProductController {
     }
     void loadDefault(){
         try {
-            Parent content = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryProductTab.fxml"))).load();
+            FXMLLoader loader = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryProductTab.fxml")));
+            Parent content = loader.load(); //
             ProductTab.setContent(content);
+            inventoryProductController = loader.getController();
             isLoadedProduct = true;
         } catch (IOException e) {
             e.printStackTrace();
