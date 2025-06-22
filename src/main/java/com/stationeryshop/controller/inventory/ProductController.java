@@ -54,7 +54,7 @@ public class ProductController {
             }
         );
         InventoryTab.setOnSelectionChanged(event -> {
-            if (InventoryTab.isSelected() && !isLoadedCategory) {
+            if (InventoryTab.isSelected() && !isLoadedInventory) {
                 try {
                     Parent content = (new FXMLLoader(getClass().getResource("/fxml/Inventory/InventoryTab.fxml"))).load();
                     InventoryTab.setContent(content);
